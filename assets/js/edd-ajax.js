@@ -164,6 +164,8 @@ jQuery(document).ready(function ($) {
 			post_data: $(form).serialize()
 		};
 
+		console.log(data);
+
 		$.ajax({
 			type: "POST",
 			data: data,
@@ -173,6 +175,7 @@ jQuery(document).ready(function ($) {
 				withCredentials: true
 			},
 			success: function (response) {
+				console.log(response);
 				if( edd_scripts.redirect_to_checkout == '1' && form.find( '#edd_redirect_to_checkout' ).val() == '1' ) {
 
 					window.location = edd_scripts.checkout_page;
@@ -372,20 +375,13 @@ function edd_load_gateway( payment_mode ) {
 
 	// Show the ajax loader
 	jQuery('.edd-cart-ajax').show();
-	jQuery('#edd_purchase_form_wrap').html('<img src="' + edd_scripts.ajax_loader + '"/>');
+	$("#loading").show();
+	// jQuery('#edd_purchase_form_wrap').html('<img src="' + edd_scripts.ajax_loader + '"/>');
 
-	var url = edd_scripts.ajaxurl;
-
-	if ( url.indexOf( '?' ) > 0 ) {
-		url = url + '&';
-	} else {
-		url = url + '?';
-	}
-
-	url = url + 'payment-mode=' + payment_mode;
-
-	jQuery.post(url, { action: 'edd_load_gateway', edd_payment_mode: payment_mode },
+	jQuery.post(edd_scripts.ajaxurl + '?payment-mode=' + payment_mode, { action: 'edd_load_gateway', edd_payment_mode: payment_mode },
 		function(response){
+			$("#loading").hide();
+
 			jQuery('#edd_purchase_form_wrap').html(response);
 			jQuery('.edd-no-js').hide();
 		}

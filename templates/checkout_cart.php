@@ -4,13 +4,14 @@
  */
 
 global $post; ?>
-<table id="edd_checkout_cart" <?php if ( ! edd_is_ajax_disabled() ) { echo 'class="ajaxed"'; } ?>>
+<h1	class="pageheader">Checkout</h1>
+<table id="edd_checkout_cart" <?php if ( ! edd_is_ajax_disabled() ) { echo 'class="table table-bordered table-hover ajaxed"'; } ?>>
 	<thead>
 		<tr class="edd_cart_header_row">
 			<?php do_action( 'edd_checkout_table_header_first' ); ?>
-			<th class="edd_cart_item_name"><?php _e( 'Item Name', 'easy-digital-downloads' ); ?></th>
-			<th class="edd_cart_item_price"><?php _e( 'Item Price', 'easy-digital-downloads' ); ?></th>
-			<th class="edd_cart_actions"><?php _e( 'Actions', 'easy-digital-downloads' ); ?></th>
+			<th class="edd_cart_item_name"><?php _e( 'Rate Plans', 'easy-digital-downloads' ); ?></th>
+			<th class="edd_cart_item_price"><?php _e( 'Price', 'easy-digital-downloads' ); ?></th>
+			<th class="edd_cart_actions"><?php _e( ' ', 'easy-digital-downloads' ); ?></th>
 			<?php do_action( 'edd_checkout_table_header_last' ); ?>
 		</tr>
 	</thead>
@@ -28,13 +29,16 @@ global $post; ?>
 									echo get_the_post_thumbnail( $item['id'], apply_filters( 'edd_checkout_image_size', array( 25,25 ) ) );
 								echo '</div>';
 							}
-							$item_title = edd_get_cart_item_name( $item );
-							echo '<span class="edd_checkout_cart_item_title">' . esc_html( $item_title ) . '</span>';
+							// $item_title = edd_get_cart_item_name( $item );
+							// print_r(json_encode($item));
+							$item_title = $item['options']['name'];
+							$restriction = $item['options']['restriction'];
+							echo '<span class="edd_checkout_cart_item_title">' . esc_html( $item_title ) . '</span></br><span class="condtion">'.esc_html($restriction).'</span>';
 							do_action( 'edd_checkout_cart_item_title_after', $item );
 						?>
 					</td>
 					<td class="edd_cart_item_price">
-						<?php 
+						<?php
 						echo edd_cart_item_price( $item['id'], $item['options'] );
 						do_action( 'edd_checkout_cart_item_price_after', $item );
 						?>
@@ -43,10 +47,10 @@ global $post; ?>
 						<?php if( edd_item_quantities_enabled() ) : ?>
 							<input type="number" min="1" step="1" name="edd-cart-download-<?php echo $key; ?>-quantity" data-key="<?php echo $key; ?>" class="edd-input edd-item-quantity" value="<?php echo edd_get_cart_item_quantity( $item['id'], $item['options'] ); ?>"/>
 							<input type="hidden" name="edd-cart-downloads[]" value="<?php echo $item['id']; ?>"/>
-							<input type="hidden" name="edd-cart-download-<?php echo $key; ?>-options" value="<?php echo esc_attr( json_encode( $item['options'] ) ); ?>"/>
+							<input type="hidden" name="edd-cart-download-<?php echo $key; ?>-options" value="<?php echo esc_attr( serialize( $item['options'] ) ); ?>"/>
 						<?php endif; ?>
 						<?php do_action( 'edd_cart_actions', $item, $key ); ?>
-						<a class="edd_cart_remove_item_btn" href="<?php echo esc_url( edd_remove_item_url( $key ) ); ?>"><?php _e( 'Remove', 'easy-digital-downloads' ); ?></a>
+						<a class="edd_cart_remove_item_btn btn btn-danger" href="<?php echo esc_url( edd_remove_item_url( $key ) ); ?>"><?php _e( 'x', 'easy-digital-downloads' ); ?></a>
 					</td>
 					<?php do_action( 'edd_checkout_table_body_last', $item ); ?>
 				</tr>

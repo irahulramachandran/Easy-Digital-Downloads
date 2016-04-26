@@ -52,7 +52,7 @@ function edd_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 			// "bundle" or "default"
 			$download_type = edd_get_download_type( $download['id'] );
-			$price_id      = isset( $download['item_number']['options']['price_id'] ) ? (int) $download['item_number']['options']['price_id'] : false;
+			$price_id      = isset( $download['item_number']['options']['price'] ) ? (int) $download['item_number']['options']['price'] : false;
 			// Increase earnings and fire actions once per quantity number
 			for( $i = 0; $i < $download['quantity']; $i++ ) {
 
@@ -86,6 +86,7 @@ function edd_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$customer->increase_value( $amount );
 
 	edd_increase_total_earnings( $amount );
+
 
 	// Check for discount codes and increment their use counts
 	if ( ! empty( $user_info['discount'] ) && $user_info['discount'] !== 'none' ) {
@@ -152,12 +153,54 @@ add_action( 'edd_update_payment_status', 'edd_record_status_change', 100, 3 );
  */
 function edd_undo_purchase_on_refund( $payment_id, $new_status, $old_status ) {
 
-	$backtrace = debug_backtrace();
-	_edd_deprecated_function( 'edd_undo_purchase_on_refund', '2.5.7', 'EDD_Payment->refund()', $backtrace );
+	global $edd_logs;
 
-	$payment = new EDD_Payment( $payment_id );
-	$payment->refund();
+	if ( 'publish' != $old_status && 'revoked' != $old_status ) {
+		return;
+	}
+
+	if ( 'refunded' != $new_status ) {
+		return;
+	}
+
+	$payment   = new EDD_Payment( $payment_id );
+	$downloads = $payment->cart_details;
+
+	if ( $downloads ) {
+		foreach( $downloads as $download ) {
+			edd_undo_purchase( $download['id'], $payment->ID );
+		}
+	}
+
+	// Decrease store earnings
+	edd_decrease_total_earnings( $payment->total );
+
+	// Decrement the stats for the customer
+	if ( ! empty( $payment->customer_id ) ) {
+
+		$customer = new EDD_Customer( $payment->customer_id );
+		$customer->decrease_value( $payment->total );
+		$customer->decrease_purchase_count();
+
+	}
+
+	// Remove related sale log entries
+	$edd_logs->delete_logs(
+		null,
+		'sale',
+		array(
+			array(
+				'key'   => '_edd_log_payment_id',
+				'value' => $payment->ID,
+			),
+		)
+	);
+
+	// Clear the This Month earnings (this_monththis_month is NOT a typo)
+	delete_transient( md5( 'edd_earnings_this_monththis_month' ) );
 }
+add_action( 'edd_update_payment_status', 'edd_undo_purchase_on_refund', 100, 3 );
+
 
 /**
  * Flushes the current user's purchase history transient when a payment status

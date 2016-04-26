@@ -22,7 +22,7 @@ function edd_checkout_cart() {
 
 	// Check if the Update cart button should be shown
 	if( edd_item_quantities_enabled() ) {
-		add_action( 'edd_cart_footer_buttons', 'edd_update_cart_button' );
+		//add_action( 'edd_cart_footer_buttons', 'edd_update_cart_button' );
 	}
 
 	// Check if the Save Cart button should be shown
@@ -192,7 +192,7 @@ function edd_update_cart_button() {
 	$color = edd_get_option( 'checkout_color', 'blue' );
 	$color = ( $color == 'inherit' ) ? '' : $color;
 ?>
-	<input type="submit" name="edd_update_cart_submit" class="edd-submit edd-no-js button<?php echo ' ' . $color; ?>" value="<?php _e( 'Update Cart', 'easy-digital-downloads' ); ?>"/>
+	<input type="submit" name="edd_update_cart_submit" class="edd-submit  btn btn-danger edd-no-js button<?php echo ' ' . $color; ?>" value="<?php _e( 'Update Cart', 'easy-digital-downloads' ); ?>"/>
 	<input type="hidden" name="edd_action" value="update_cart"/>
 <?php
 

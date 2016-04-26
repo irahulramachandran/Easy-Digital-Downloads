@@ -28,7 +28,7 @@ function edd_load_scripts() {
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
+	
 	// Get position in cart of current download
 	if ( isset( $post->ID ) ) {
 		$position = edd_get_item_position_in_cart( $post->ID );
@@ -39,6 +39,8 @@ function edd_load_scripts() {
 			wp_register_script( 'creditCardValidator', $js_dir . 'jquery.creditCardValidator' . $suffix . '.js', array( 'jquery' ), EDD_VERSION );
 			wp_enqueue_script( 'creditCardValidator' );
 		}
+		//
+		// $suffix = '';
 
 		wp_register_script( 'edd-checkout-global', $js_dir . 'edd-checkout-global' . $suffix . '.js', array( 'jquery' ), EDD_VERSION );
 		wp_enqueue_script( 'edd-checkout-global' );
@@ -48,8 +50,6 @@ function edd_load_scripts() {
 			'checkout_nonce'     => wp_create_nonce( 'edd_checkout_nonce' ),
 			'currency_sign'      => edd_currency_filter(''),
 			'currency_pos'       => edd_get_option( 'currency_position', 'before' ),
-			'decimal_separator'  => edd_get_option( 'decimal_separator', '.' ),
-			'thousands_separator'=> edd_get_option( 'thousands_separator', ',' ),
 			'no_gateway'         => __( 'Please select a payment method', 'easy-digital-downloads' ),
 			'no_discount'        => __( 'Please enter a discount code', 'easy-digital-downloads' ), // Blank discount code message
 			'enter_discount'     => __( 'Enter discount', 'easy-digital-downloads' ),

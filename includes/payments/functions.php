@@ -128,7 +128,7 @@ function edd_insert_payment( $payment_data = array() ) {
 
 			$args = array(
 				'quantity'   => $item['quantity'],
-				'price_id'   => isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null,
+				'id'   => isset( $item['item_number']['options']['id'] ) ? $item['item_number']['options']['id'] : null,
 				'tax'        => $item['tax'],
 				'item_price' => isset( $item['item_price'] ) ? $item['item_price'] : $item['price'],
 				'fees'       => isset( $item['fees'] ) ? $item['fees'] : array(),
@@ -223,9 +223,15 @@ function edd_delete_purchase( $payment_id = 0, $update_customer = true, $delete_
 	global $edd_logs;
 
 	$payment   = new EDD_Payment( $payment_id );
+	$downloads = $payment->downloads;
 
-	// Update sale counts and earnings for all purchased products
-	edd_undo_purchase( false, $payment_id );
+	if ( is_array( $downloads ) ) {
+		// Update sale counts and earnings for all purchased products
+		foreach ( $downloads as $download ) {
+			edd_undo_purchase( $download['id'], $payment_id );
+		}
+	}
+
 
 	$amount      = edd_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
@@ -297,17 +303,7 @@ function edd_delete_purchase( $payment_id = 0, $update_customer = true, $delete_
  * @param int $payment_id Payment ID
  * @return void
  */
-function edd_undo_purchase( $download_id = false, $payment_id ) {
-
-	/**
-	 * In 2.5.7, a bug was found that $download_id was an incorrect usage. Passing it in
-	 * now does nothing, but we're holding it in place for legacy support of the argument order.
-	 */
-
-	if ( ! empty( $download_id ) ) {
-		$download_id = false;
-		_edd_deprected_argument( 'download_id', 'edd_undo_purchase', '2.5.7' );
-	}
+function edd_undo_purchase( $download_id, $payment_id ) {
 
 	$payment = new EDD_Payment( $payment_id );
 
@@ -324,30 +320,24 @@ function edd_undo_purchase( $download_id = false, $payment_id ) {
 			// Decrease earnings/sales and fire action once per quantity number
 			for( $i = 0; $i < $item['quantity']; $i++ ) {
 
-				// variable priced downloads
-				if ( false === $amount && edd_has_variable_prices( $item['id'] ) ) {
+ 				// variable priced downloads
+				if ( false === $amount && edd_has_variable_prices( $download_id ) ) {
 					$price_id = isset( $item['item_number']['options']['price_id'] ) ? $item['item_number']['options']['price_id'] : null;
-					$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? edd_get_price_option_amount( $item['id'], $price_id ) : $item['price'];
+					$amount   = ! isset( $item['price'] ) && 0 !== $item['price'] ? edd_get_price_option_amount( $download_id, $price_id ) : $item['price'];
 				}
 
-				if ( ! $amount ) {
-					// This function is only used on payments with near 1.0 cart data structure
-					$amount = edd_get_download_final_price( $item['id'], $user_info, $amount );
-				}
+ 				if ( ! $amount ) {
+ 					// This function is only used on payments with near 1.0 cart data structure
+ 					$amount = edd_get_download_final_price( $download_id, $user_info, $amount );
+ 				}
 
 			}
 
-			$maybe_decrease_earnings = apply_filters( 'edd_decrease_earnings_on_undo', true, $payment, $item['id'] );
-			if ( true === $maybe_decrease_earnings ) {
-				// decrease earnings
-				edd_decrease_earnings( $item['id'], $amount );
-			}
+			// decrease earnings
+			edd_decrease_earnings( $download_id, $amount );
 
-			$maybe_decrease_sales = apply_filters( 'edd_decrease_sales_on_undo', true, $payment, $item['id'] );
-			if ( true === $maybe_decrease_sales ) {
-				// decrease purchase count
-				edd_decrease_purchase_count( $item['id'], $item['quantity'] );
-			}
+			// decrease purchase count
+			edd_decrease_purchase_count( $download_id, $item['quantity'] );
 
 		}
 
@@ -413,12 +403,9 @@ function edd_count_payments( $args = array() ) {
 
 
 			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
-			$where .= $wpdb->prepare( "
-				AND m.meta_key = %s
-				AND m.meta_value = %s",
-				$field,
-				$args['s']
-			);
+			$where .= "
+				AND m.meta_key = '{$field}'
+				AND m.meta_value = '{$args['s']}'";
 
 		} elseif ( '#' == substr( $args['s'], 0, 1 ) ) {
 
@@ -429,16 +416,14 @@ function edd_count_payments( $args = array() ) {
 			$join   = "LEFT JOIN $wpdb->postmeta m ON m.meta_key = '_edd_log_payment_id' AND m.post_id = p.ID ";
 			$join  .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
 			$where  = "WHERE p.post_type = 'edd_log' ";
-			$where .= $wpdb->prepare( "AND p.post_parent = %d} ", $search );
+			$where .= "AND p.post_parent = {$search} ";
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
 			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
-			$where .= $wpdb->prepare( "
+			$where .= "
 				AND m.meta_key = '_edd_payment_user_id'
-				AND m.meta_value = %d",
-				$args['s']
-			);
+				AND m.meta_value = '{$args['s']}'";
 
 		} elseif ( 0 === strpos( $args['s'], 'discount:' ) ) {
 
@@ -446,17 +431,12 @@ function edd_count_payments( $args = array() ) {
 			$search = 'discount.*' . $search;
 
 			$join   = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
-			$where .= $wpdb->prepare( "
+			$where .= "
 				AND m.meta_key = '_edd_payment_meta'
-				AND m.meta_value REGEXP %s",
-				$search
-			);
+				AND m.meta_value REGEXP '$search'";
 
 		} else {
-			$search = $wpdb->esc_like( $args['s'] );
-			$search = '%' . $search . '%';
-
-			$where .= $wpdb->prepare( "AND ((p.post_title LIKE %s) OR (p.post_content LIKE %s))", $search, $search );
+			$where .= "AND ((p.post_title LIKE '%{$args['s']}%') OR (p.post_content LIKE '%{$args['s']}%'))";
 		}
 
 	}
@@ -483,7 +463,7 @@ function edd_count_payments( $args = array() ) {
 
 		}
 
-		// Fixes an issue with the payments list table counts when no end date is specified (partly with stats class)
+		// Fixes an issue with the payments list table counts when no end date is specified (partiy with stats class)
 		if ( empty( $args['end-date'] ) ) {
 			$args['end-date'] = $args['start-date'];
 		}
@@ -804,10 +784,10 @@ function edd_get_total_sales() {
  */
 function edd_get_total_earnings() {
 
-	$total = get_option( 'edd_earnings_total', false );
+	$total = get_option( 'edd_earnings_total', 0 );
 
 	// If no total stored in DB, use old method of calculating total earnings
-	if( false === $total ) {
+	if( ! $total ) {
 
 		global $wpdb;
 
@@ -952,52 +932,53 @@ function edd_get_payment_meta_downloads( $payment_id ) {
  */
 function edd_get_payment_meta_cart_details( $payment_id, $include_bundle_files = false ) {
 	$payment      = new EDD_Payment( $payment_id );
+
+	error_log(json_encode($payment));
+
 	$cart_details = $payment->cart_details;
 
-	$payment_currency = $payment->currency;
-
-	if ( ! empty( $cart_details ) && is_array( $cart_details ) ) {
-
-		foreach ( $cart_details as $key => $cart_item ) {
-			$cart_details[ $key ]['currency'] = $payment_currency;
-
-			// Ensure subtotal is set, for pre-1.9 orders
-			if ( ! isset( $cart_item['subtotal'] ) ) {
-				$cart_details[ $key ]['subtotal'] = $cart_item['price'];
-			}
-
-			if ( $include_bundle_files ) {
-
-				if( 'bundle' != edd_get_download_type( $cart_item['id'] ) )
-					continue;
-
-				$products = edd_get_bundled_products( $cart_item['id'] );
-				if ( empty( $products ) )
-					continue;
-
-				foreach ( $products as $product_id ) {
-					$cart_details[]   = array(
-						'id'          => $product_id,
-						'name'        => get_the_title( $product_id ),
-						'item_number' => array(
-							'id'      => $product_id,
-							'options' => array(),
-						),
-						'price'       => 0,
-						'subtotal'    => 0,
-						'quantity'    => 1,
-						'tax'         => 0,
-						'in_bundle'   => 1,
-						'parent'      => array(
-							'id'      => $cart_item['id'],
-							'options' => isset( $cart_item['item_number']['options'] ) ? $cart_item['item_number']['options'] : array()
-						)
-					);
-				}
-			}
-		}
-
-	}
+	//return $cart_details;
+	// if ( ! empty( $cart_details ) && is_array( $cart_details ) ) {
+	//
+	// 	foreach ( $cart_details as $key => $cart_item ) {
+	//
+	// 		// Ensure subtotal is set, for pre-1.9 orders
+	// 		if ( ! isset( $cart_item['subtotal'] ) ) {
+	// 			$cart_details[ $key ]['subtotal'] = $cart_item['price'];
+	// 		}
+	//
+	// 		if ( $include_bundle_files ) {
+	//
+	// 			// if( 'bundle' != edd_get_download_type( $cart_item['id'] ) )
+	// 			// 	continue;
+	//
+	// 			$products = edd_get_bundled_products( $cart_item['id'] );
+	// 			// if ( empty( $products ) )
+	// 			// 	continue;
+	//
+	// 			foreach ( $products as $product_id ) {
+	// 				$cart_details[]   = array(
+	// 					'id'          => $product_id,
+	// 					'name'        => get_the_title( $product_id ),
+	// 					'item_number' => array(
+	// 						'id'      => $product_id,
+	// 						'options' => array(),
+	// 					),
+	// 					'price'       => 0,
+	// 					'subtotal'    => 0,
+	// 					'quantity'    => 1,
+	// 					'tax'         => 0,
+	// 					'in_bundle'   => 1,
+	// 					'parent'      => array(
+	// 						'id'      => $cart_item['id'],
+	// 						'options' => isset( $cart_item['item_number']['options'] ) ? $cart_item['item_number']['options'] : array()
+	// 					)
+	// 				);
+	// 			}
+	// 		}
+	// 	}
+	//
+	// }
 
 	return apply_filters( 'edd_payment_meta_cart_details', $cart_details, $payment_id );
 }

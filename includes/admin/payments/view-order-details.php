@@ -70,7 +70,6 @@ $currency_code  = $payment->currency;
 										<?php do_action( 'edd_view_order_details_totals_before', $payment_id ); ?>
 
 										<div class="edd-admin-box-inside">
-											<p>
 												<span class="label"><?php _e( 'Status:', 'easy-digital-downloads' ); ?></span>&nbsp;
 												<select name="edd-payment-status" class="medium-text">
 													<?php foreach( edd_get_payment_statuses() as $key => $status ) : ?>
@@ -271,16 +270,19 @@ $currency_code  = $payment->currency;
 								<?php if ( is_array( $cart_items ) ) :
 
 									$i = 0;
+
+									// print_r("SHOWING CART ITEMS");
+									// print_r(json_encode($cart_items));
 									foreach ( $cart_items as $key => $cart_item ) : ?>
 									<div class="row">
 										<ul>
 											<?php
-
 											// Item ID is checked if isset due to the near-1.0 cart data
 											$item_id    = isset( $cart_item['id']    )                                  ? $cart_item['id']                                 : $cart_item;
 											$price      = isset( $cart_item['price'] )                                  ? $cart_item['price']                              : false;
 											$item_price = isset( $cart_item['item_price'] )                             ? $cart_item['item_price']                         : $price;
-											$price_id   = isset( $cart_item['item_number']['options']['price_id'] )     ? $cart_item['item_number']['options']['price_id'] : null;
+											$price_id   = isset( $cart_item['item_number']['options']['price'] )     ? $cart_item['item_number']['options']['price'] : null;
+											$name   = isset( $cart_item['item_number']['options']['name'] )     ? $cart_item['item_number']['options']['name'] : null;
 											$quantity   = isset( $cart_item['quantity'] ) && $cart_item['quantity'] > 0 ? $cart_item['quantity']                           : 1;
 
 											if( false === $price ) {
@@ -292,22 +294,22 @@ $currency_code  = $payment->currency;
 
 											<li class="download">
 												<span>
-													<a href="<?php echo admin_url( 'post.php?post=' . $item_id . '&action=edit' ); ?>">
-														<?php echo get_the_title( $item_id );
-
+													<!-- <a href="#"> -->
+														<?php //echo get_the_title( $item_id );
+														//echo admin_url( 'post.php?post=' . $item_id . '&action=edit' );
+														echo $name;
 														if ( isset( $cart_items[ $key ]['item_number'] ) && isset( $cart_items[ $key ]['item_number']['options'] ) ) {
 															$price_options = $cart_items[ $key ]['item_number']['options'];
 
-															if ( edd_has_variable_prices( $item_id ) && isset( $price_id ) ) {
-																echo ' - ' . edd_get_price_option_name( $item_id, $price_id, $payment_id );
+															if ( isset( $price_id ) ) {
+																//echo ' - ' . edd_get_price_option_name( $item_id, $price_id, $payment_id );
 															}
 														}
 														?>
-													</a>
+													<!-- </a> -->
 												</span>
 												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][id]" class="edd-payment-details-download-id" value="<?php echo esc_attr( $item_id ); ?>"/>
 												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][price_id]" class="edd-payment-details-download-price-id" value="<?php echo esc_attr( $price_id ); ?>"/>
-												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][item_price]" class="edd-payment-details-download-item-price" value="<?php echo esc_attr( $item_price ); ?>"/>
 												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][amount]" class="edd-payment-details-download-amount" value="<?php echo esc_attr( $price ); ?>"/>
 												<input type="hidden" name="edd-payment-details-downloads[<?php echo $key; ?>][quantity]" class="edd-payment-details-download-quantity" value="<?php echo esc_attr( $quantity ); ?>"/>
 

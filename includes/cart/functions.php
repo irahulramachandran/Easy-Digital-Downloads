@@ -21,7 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function edd_get_cart_contents() {
 	$cart = EDD()->session->get( 'edd_cart' );
 	$cart = ! empty( $cart ) ? array_values( $cart ) : array();
-
+	// error_log("CART is here");
+	// error_log(json_encode($cart));
 	return apply_filters( 'edd_cart_contents', $cart );
 }
 
@@ -130,23 +131,43 @@ function edd_get_cart_quantity() {
  * @return string Cart key of the new item
  */
 function edd_add_to_cart( $download_id, $options = array() ) {
-	$download = get_post( $download_id );
+	//$download = get_post( $download_id );
+	$download;
 
-	if( 'download' != $download->post_type )
-		return; // Not a download product
+	$rateplans = EDD()->session->get( 'rateplans' );
 
-	if ( ! current_user_can( 'edit_post', $download->ID ) && $download->post_status != 'publish' ) {
-		return; // Do not allow draft/pending to be purchased if can't edit. Fixes #1056
+	foreach ($rateplans as $rateplan) {
+		if($rateplan->roomplanid == $download_id){
+			$download = $rateplan;
+		}
 	}
+
+	error_log(json_encode($download));
+
+	$options['id'] = $download->roomplanid;
+	$options['roomplancode'] = $download->rateplancode;
+	$options['name'] = $download->planname;
+	$options['price'] = $download->price;
+	$options['roomtypeid'] = $download->roomtypeid;
+	$options['roomtypecode'] = $download->roomtypecode;
+	$options['restriction'] = $download->restriction;
+	$options['wordpressid'] = $download->wordpressid;
+	// if( 'download' != $download->post_type ){
+	// 	return; // Not a download product
+	// }
+
+	// if ( ! current_user_can( 'edit_post', $download->ID ) && $download->post_status != 'publish' ) {
+	// 	return; // Do not allow draft/pending to be purchased if can't edit. Fixes #1056
+	// }
+
 
 	do_action( 'edd_pre_add_to_cart', $download_id, $options );
-
 	$cart = apply_filters( 'edd_pre_add_to_cart_contents', edd_get_cart_contents() );
 
-	if ( edd_has_variable_prices( $download_id )  && ! isset( $options['price_id'] ) ) {
-		// Forces to the first price ID if none is specified and download has variable prices
-		$options['price_id'] = '0';
-	}
+	// if ( edd_has_variable_prices( $download_id )  && ! isset( $options['price_id'] ) ) {
+	// 	// Forces to the first price ID if none is specified and download has variable prices
+	// 	$options['price_id'] = '0';
+	// }
 
 	if( isset( $options['quantity'] ) ) {
 		if ( is_array( $options['quantity'] ) ) {
@@ -159,7 +180,6 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		} else {
 
 			$quantity = absint( preg_replace( '/[^0-9\.]/', '', $options['quantity'] ) );
-
 		}
 
 		unset( $options['quantity'] );
@@ -167,36 +187,37 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		$quantity = 1;
 	}
 
+
 	// If the price IDs are a string and is a coma separted list, make it an array (allows custom add to cart URLs)
-	if ( isset( $options['price_id'] ) && ! is_array( $options['price_id'] ) && false !== strpos( $options['price_id'], ',' ) ) {
-		$options['price_id'] = explode( ',', $options['price_id'] );
-	}
+	// if ( isset( $options['price_id'] ) && ! is_array( $options['price_id'] ) && false !== strpos( $options['price_id'], ',' ) ) {
+	// 	$options['price_id'] = explode( ',', $options['price_id'] );
+	// }
 
-	if ( isset( $options['price_id'] ) && is_array( $options['price_id'] ) ) {
-
-		// Process multiple price options at once
-		foreach ( $options['price_id'] as $key => $price ) {
-
-			$items[] = array(
-				'id'           => $download_id,
-				'options'      => array(
-					'price_id' => preg_replace( '/[^0-9\.-]/', '', $price )
-				),
-				'quantity'     => $quantity[ $key ],
-			);
-
-		}
-
-	} else {
+	// if ( isset( $options['price_id'] ) && is_array( $options['price_id'] ) ) {
+	//
+	// 	// Process multiple price options at once
+	// 	foreach ( $options['price_id'] as $key => $price ) {
+	//
+	// 		$items[] = array(
+	// 			'id'           => $download_id,
+	// 			'options'      => array(
+	// 				'price_id' => preg_replace( '/[^0-9\.-]/', '', $price )
+	// 			),
+	// 			'quantity'     => $quantity[ $key ],
+	// 		);
+	//
+	// 	}
+	//
+	// } else {
 
 		// Sanitize price IDs
-		foreach( $options as $key => $option ) {
-
-			if( 'price_id' == $key ) {
-				$options[ $key ] = preg_replace( '/[^0-9\.-]/', '', $option );
-			}
-
-		}
+		// foreach( $options as $key => $option ) {
+		//
+		// 	// if( 'price_id' == $key ) {
+		// 	// 	$options[ $key ] = preg_replace( '/[^0-9\.-]/', '', $option );
+		// 	// }
+		//
+		// }
 
 		// Add a single item
 		$items[] = array(
@@ -204,7 +225,8 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 			'options'  => $options,
 			'quantity' => $quantity
 		);
-	}
+
+	//}
 
 	foreach ( $items as $item ) {
 		$to_add = apply_filters( 'edd_add_to_cart_item', $item );
@@ -226,6 +248,8 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		}
 	}
 
+	//error_log("SAVED TO CART:::::::::::::::::::::::::");
+	error_log(json_encode($cart));
 	EDD()->session->set( 'edd_cart', $cart );
 
 	do_action( 'edd_post_add_to_cart', $download_id, $options );
@@ -444,33 +468,34 @@ function edd_cart_item_price( $item_id = 0, $options = array() ) {
 function edd_get_cart_item_price( $download_id = 0, $options = array() ) {
 
 	$price = 0;
-	$variable_prices = edd_has_variable_prices( $download_id );
+	// $variable_prices = edd_has_variable_prices( $download_id );
+	//
+	// if ( $variable_prices ) {
+	//
+	// 	$prices = edd_get_variable_prices( $download_id );
+	//
+	// 	if ( $prices ) {
+	//
+	// 		if( ! empty( $options ) ) {
+	//
+	// 			$price = isset( $prices[ $options['price_id'] ] ) ? $prices[ $options['price_id'] ]['amount'] : false;
+	//
+	// 		} else {
+	//
+	// 			$price = false;
+	//
+	// 		}
+	//
+	// 	}
+	//
+	// }
+	//
+	// if( ! $variable_prices || false === $price ) {
+	// 	// Get the standard Download price if not using variable prices
+	// 	$price = edd_get_download_price( $download_id );
+	// }
 
-	if ( $variable_prices ) {
-
-		$prices = edd_get_variable_prices( $download_id );
-
-		if ( $prices ) {
-
-			if( ! empty( $options ) ) {
-
-				$price = isset( $prices[ $options['price_id'] ] ) ? $prices[ $options['price_id'] ]['amount'] : false;
-
-			} else {
-
-				$price = false;
-
-			}
-
-		}
-
-	}
-
-	if( ! $variable_prices || false === $price ) {
-		// Get the standard Download price if not using variable prices
-		$price = edd_get_download_price( $download_id );
-	}
-
+	$price = $options['price'];
 	return apply_filters( 'edd_cart_item_price', $price, $download_id, $options );
 }
 
@@ -680,6 +705,7 @@ function edd_get_cart_items_subtotal( $items ) {
 
 	return apply_filters( 'edd_get_cart_items_subtotal', $subtotal );
 }
+
 /**
  * Get Total Cart Amount
  *
@@ -843,7 +869,7 @@ function edd_get_cart_tax() {
 	$items    = edd_get_cart_content_details();
 
 	if( $items ) {
-
+		// error_log("123");
 		$taxes = wp_list_pluck( $items, 'tax' );
 
 		if( is_array( $taxes ) ) {
@@ -853,6 +879,9 @@ function edd_get_cart_tax() {
 	}
 
 	$cart_tax += edd_get_cart_fee_tax();
+
+	// error_log("TEXASSADSA");
+	// error_log($cart_tax);
 
 	return apply_filters( 'edd_get_cart_tax', edd_sanitize_amount( $cart_tax ) );
 }
@@ -868,9 +897,13 @@ function edd_cart_tax( $echo = false ) {
 	$cart_tax = 0;
 
 	if ( edd_is_cart_taxed() ) {
+		error_log("CART TAXED");
 		$cart_tax = edd_get_cart_tax();
 		$cart_tax = edd_currency_filter( edd_format_amount( $cart_tax ) );
 	}
+
+	error_log("CART TAX");
+	error_log($cart_tax);
 
 	$tax = apply_filters( 'edd_cart_tax', $cart_tax );
 
@@ -1029,6 +1062,7 @@ function edd_is_cart_saving_disabled() {
  * @return bool
  */
 function edd_is_cart_saved() {
+	// error_log("edd_is_cart_saved");
 	if( edd_is_cart_saving_disabled() )
 		return false;
 
@@ -1053,12 +1087,65 @@ function edd_is_cart_saved() {
 			return false;
 
 		// Check that the saved cart is not the same as the current cart
-		if ( json_decode( stripslashes( $_COOKIE['edd_saved_cart'] ), true ) === EDD()->session->get( 'edd_cart' ) )
+		if ( maybe_unserialize( stripslashes( $_COOKIE['edd_saved_cart'] ) ) === EDD()->session->get( 'edd_cart' ) )
 			return false;
 
 		return true;
 
 	}
+}
+
+function edd_confirmBooking(){
+	$data = array();
+  //print_r(json_encode($_POST));
+	$data['fname'] = $_POST["firstname"];
+  $data['lname'] = $_POST["lastname"];
+	$data['email'] = $_POST["email"];
+	$data['number'] = $_POST["number"];
+	$data['expiry'] = $_POST["expiry"];
+	$data['cvc'] = $_POST["cvc"];
+	$data['bookingdetails'] = json_encode(edd_get_cart_contents());
+	$data['discountcode'] = json_encode(edd_get_cart_discounts());
+	$data['tax'] = edd_get_cart_tax( false );
+	$data['total'] = edd_cart_subtotal();
+	$data['subtotal'] = edd_get_cart_total();
+
+  // error_log("edd_confirmBooking");
+	// error_log(json_encode($data));
+
+	$url = 'http://localhost:3000/jarvis/booking/save/';
+  $result = post_to_url($url,$data);
+  print_r($result);
+
+	edd_empty_cart();
+
+  exit();
+}
+
+add_action('wp_ajax_edd_confirmBooking', 'edd_confirmBooking');
+add_action('wp_ajax_nopriv_edd_confirmBooking', 'edd_confirmBooking');
+
+function post_to_url($url, $data) {
+   $fields = '';
+   foreach($data as $key => $value) {
+      $fields .= $key . '=' . $value . '&';
+   }
+   rtrim($fields, '&');
+
+   error_log("FIELDS : ".$fields);
+
+   $post = curl_init();
+
+   curl_setopt($post, CURLOPT_URL, $url);
+   curl_setopt($post, CURLOPT_POST, count($data));
+   curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
+   curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
+
+   $result = curl_exec($post);
+  //  error_log("RESULT");
+  //  error_log(json_encode($result));
+   curl_close($post);
+	 return $result;
 }
 
 /**
@@ -1083,12 +1170,14 @@ function edd_save_cart() {
 
 	} else {
 
-		$cart = json_encode( $cart );
+		$cart = serialize( $cart );
 
 		setcookie( 'edd_saved_cart', $cart, time()+3600*24*7, COOKIEPATH, COOKIE_DOMAIN );
 		setcookie( 'edd_cart_token', $token, time()+3600*24*7, COOKIEPATH, COOKIE_DOMAIN );
 
 	}
+
+	//error_log("edd_save_cart");
 
 	$messages = EDD()->session->get( 'edd_cart_messages' );
 
@@ -1158,7 +1247,7 @@ function edd_restore_cart() {
 			return new WP_Error( 'invalid_cart_token', __( 'The cart cannot be restored. Invalid token.', 'easy-digital-downloads' ) );
 		}
 
-		$saved_cart = json_decode( stripslashes( $saved_cart ), true );
+		$saved_cart = maybe_unserialize( stripslashes( $saved_cart ) );
 
 		setcookie( 'edd_saved_cart', '', time()-3600, COOKIEPATH, COOKIE_DOMAIN );
 		setcookie( 'edd_cart_token', '', time()-3600, COOKIEPATH, COOKIE_DOMAIN );

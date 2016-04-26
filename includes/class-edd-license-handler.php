@@ -405,10 +405,6 @@ class EDD_License {
 			return;
 		}
 
-		if( ! current_user_can( 'manage_shop_settings' ) ) {
-			return;
-		}
-
 		$messages = array();
 
 		$license = get_option( $this->item_shortname . '_license_active' );

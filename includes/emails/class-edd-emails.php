@@ -230,7 +230,8 @@ class EDD_Emails {
 		 */
 		do_action( 'edd_email_header', $this );
 
-		if ( has_action( 'edd_email_template_' . $this->get_template() ) ) {
+		if ( has_action( 'edd_email_template_' . $this->get_template() ) )
+		{
 			/**
 			 * Hooks into the template of the email
 			 *
@@ -257,10 +258,13 @@ class EDD_Emails {
 		 * @since 2.1
 		 */
 		do_action( 'edd_email_footer', $this );
-
+		// error_log("------------------------7------------------------");
 		$body    = ob_get_clean();
+		// error_log("------------------------MESSAGE------------------------");
+		// error_log(json_encode($message));
 		$message = str_replace( '{email}', $message, $body );
-
+		// error_log("------------------------8------------------------");
+		// error_log($message);
 		return apply_filters( 'edd_email_message', $message, $this );
 	}
 
@@ -287,16 +291,20 @@ class EDD_Emails {
 		do_action( 'edd_email_send_before', $this );
 
 		$subject = $this->parse_tags( $subject );
+
+		// error_log(":::::::::::::::::::BEFORE PARSE");
+		// error_log($message);
 		$message = $this->parse_tags( $message );
+		// error_log(":::::::::::::::::::AFTER PARSE");
+			// error_log($message);
 
 		$message = $this->build_email( $message );
 
 		$attachments = apply_filters( 'edd_email_attachments', $attachments, $this );
 
-		$sent       = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
-		$log_errors = apply_filters( 'edd_log_email_errors', true, $to, $subject, $message );
+		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $attachments );
 
-		if( ! $sent && true === $log_errors ) {
+		if( ! $sent ) {
 			if ( is_array( $to ) ) {
 				$to = implode( ',', $to );
 			}
@@ -308,7 +316,7 @@ class EDD_Emails {
 				$subject
 			);
 
-			error_log( $log_message );
+			// error_log( $log_message );
 		}
 
 		/**

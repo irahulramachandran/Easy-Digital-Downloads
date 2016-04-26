@@ -80,11 +80,11 @@ function edd_update_payment_details( $data ) {
 				continue;
 			}
 
-			if ( empty( $download['item_price'] ) ) {
-				$download['item_price'] = 0.00;
+			if ( empty( $download['amount'] ) ) {
+				$download['amount'] = 0.00;
 			}
 
-			$item_price  = $download['item_price'];
+			$amount      = $download['amount'];
 			$download_id = absint( $download['id'] );
 			$quantity    = absint( $download['quantity'] ) > 0 ? absint( $download['quantity'] ) : 1;
 			$price_id    = false;
@@ -96,7 +96,7 @@ function edd_update_payment_details( $data ) {
 			// Set some defaults
 			$args = array(
 				'quantity'    => $quantity,
-				'item_price'  => $item_price,
+				'item_price'  => $amount,
 				'price_id'    => $price_id,
 			);
 
@@ -116,9 +116,9 @@ function edd_update_payment_details( $data ) {
 			$price_id = empty( $deleted_download['price_id'] ) ? 0 : (int) $deleted_download['price_id'];
 
 			$args = array(
-				'quantity'   => (int) $deleted_download['quantity'],
-				'price_id'   => (int) $price_id,
-				'item_price' => (float) $deleted_download['amount'],
+				'quantity' => $deleted_download['quantity'],
+				'price_id' => $price_id,
+				'amount'   => $deleted_download['amount'],
 			);
 
 			$payment->remove_download( $deleted_download['id'], $args );

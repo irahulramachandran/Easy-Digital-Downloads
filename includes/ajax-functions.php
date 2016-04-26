@@ -268,7 +268,7 @@ function edd_ajax_apply_discount() {
 		if ( is_user_logged_in() ) {
 			$user = get_current_user_id();
 		} else {
-			parse_str( $_POST['form'], $form );
+			$form = maybe_unserialize( $_POST['form'] );
 			if ( ! empty( $form['edd_email'] ) ) {
 				$user = urldecode( $form['edd_email'] );
 			}
@@ -315,7 +315,7 @@ function edd_ajax_update_cart_item_quantity() {
 
 		$download_id = absint( $_POST['download_id'] );
 		$quantity    = absint( $_POST['quantity'] );
-		$options     = json_decode( stripslashes( $_POST['options'] ), true );
+		$options     = maybe_unserialize( stripslashes( $_POST['options'] ) );
 
 		edd_set_cart_item_quantity( $download_id, absint( $_POST['quantity'] ), $options );
 		$total = edd_get_cart_total();
@@ -493,8 +493,7 @@ function edd_ajax_download_search() {
 	$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
 	$excludes = ( isset( $_GET['current_id'] ) ? (array) $_GET['current_id'] : array() );
 
-	$no_bundles = isset( $_GET['no_bundles'] ) ? filter_var( $_GET['no_bundles'], FILTER_VALIDATE_BOOLEAN ) : false;
-	if( true === $no_bundles ) {
+	if( ! empty( $_GET['no_bundles'] ) ) {
 		$bundles  = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_edd_product_type' AND meta_value = 'bundle';", ARRAY_A );
 		$bundles  = wp_list_pluck( $bundles, 'post_id' );
 		$excludes = array_merge( $excludes, $bundles );
