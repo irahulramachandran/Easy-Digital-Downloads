@@ -211,6 +211,8 @@ function edd_purchase_form_validate_fields() {
 		$valid_data['guest_user_data'] = edd_purchase_form_validate_guest_user();
 	}
 
+
+	error_log("Error from Validate");
 	// Return collected data
 	return $valid_data;
 }
@@ -329,35 +331,35 @@ function edd_purchase_form_required_fields() {
 	$required_fields = array(
 		'edd_email' => array(
 			'error_id' => 'invalid_email',
-			'error_message' => __( 'Please enter a valid email address', 'easy-digital-downloads' )
+			'error_message' => __( '', 'easy-digital-downloads' )
 		),
 		'edd_first' => array(
 			'error_id' => 'invalid_first_name',
-			'error_message' => __( 'Please enter your first name', 'easy-digital-downloads' )
+			'error_message' => __( '', 'easy-digital-downloads' )
 		)
 	);
 
 	// Let payment gateways and other extensions determine if address fields should be required
-	$require_address = apply_filters( 'edd_require_billing_address', edd_use_taxes() && edd_get_cart_total() );
+	//$require_address = apply_filters( 'edd_require_billing_address', edd_use_taxes() && edd_get_cart_total() );
 
-	if ( $require_address ) {
-		$required_fields['card_zip'] = array(
-			'error_id' => 'invalid_zip_code',
-			'error_message' => __( 'Please enter your zip / postal code', 'easy-digital-downloads' )
-		);
-		$required_fields['card_city'] = array(
-			'error_id' => 'invalid_city',
-			'error_message' => __( 'Please enter your billing city', 'easy-digital-downloads' )
-		);
-		$required_fields['billing_country'] = array(
-			'error_id' => 'invalid_country',
-			'error_message' => __( 'Please select your billing country', 'easy-digital-downloads' )
-		);
-		$required_fields['card_state'] = array(
-			'error_id' => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province', 'easy-digital-downloads' )
-		);
-	}
+	//if ( $require_address ) {
+		// $required_fields['card_zip'] = array(
+		// 	'error_id' => 'invalid_zip_code',
+		// 	'error_message' => __( '', 'easy-digital-downloads' )
+		// );
+		// $required_fields['card_city'] = array(
+		// 	'error_id' => 'invalid_city',
+		// 	'error_message' => __( '', 'easy-digital-downloads' )
+		// );
+		// $required_fields['billing_country'] = array(
+		// 	'error_id' => 'invalid_country',
+		// 	'error_message' => __( '', 'easy-digital-downloads' )
+		// );
+		// $required_fields['card_state'] = array(
+		// 	'error_id' => 'invalid_state',
+		// 	'error_message' => __( '', 'easy-digital-downloads' )
+		// );
+	//}
 
 	return apply_filters( 'edd_purchase_form_required_fields', $required_fields );
 }
@@ -773,11 +775,11 @@ function edd_purchase_form_validate_cc() {
 	$card_data = edd_get_purchase_cc_info();
 
 	// Validate the card zip
-	if ( ! empty( $card_data['card_zip'] ) ) {
-		if ( ! edd_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			edd_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'easy-digital-downloads' ) );
-		}
-	}
+	// if ( ! empty( $card_data['card_zip'] ) ) {
+	// 	if ( ! edd_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
+	// 		edd_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid', 'easy-digital-downloads' ) );
+	// 	}
+	// }
 
 	// This should validate card numbers at some point too
 	return $card_data;
@@ -797,12 +799,12 @@ function edd_get_purchase_cc_info() {
 	$cc_info['card_cvc']       = isset( $_POST['card_cvc'] )        ? sanitize_text_field( $_POST['card_cvc'] )        : '';
 	$cc_info['card_exp_month'] = isset( $_POST['card_exp_month'] )  ? sanitize_text_field( $_POST['card_exp_month'] )  : '';
 	$cc_info['card_exp_year']  = isset( $_POST['card_exp_year'] )   ? sanitize_text_field( $_POST['card_exp_year'] )   : '';
-	$cc_info['card_address']   = isset( $_POST['card_address'] )    ? sanitize_text_field( $_POST['card_address'] )    : '';
-	$cc_info['card_address_2'] = isset( $_POST['card_address_2'] )  ? sanitize_text_field( $_POST['card_address_2'] )  : '';
-	$cc_info['card_city']      = isset( $_POST['card_city'] )       ? sanitize_text_field( $_POST['card_city'] )       : '';
-	$cc_info['card_state']     = isset( $_POST['card_state'] )      ? sanitize_text_field( $_POST['card_state'] )      : '';
-	$cc_info['card_country']   = isset( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : '';
-	$cc_info['card_zip']       = isset( $_POST['card_zip'] )        ? sanitize_text_field( $_POST['card_zip'] )        : '';
+	// $cc_info['card_address']   = isset( $_POST['card_address'] )    ? sanitize_text_field( $_POST['card_address'] )    : '';
+	// $cc_info['card_address_2'] = isset( $_POST['card_address_2'] )  ? sanitize_text_field( $_POST['card_address_2'] )  : '';
+	// $cc_info['card_city']      = isset( $_POST['card_city'] )       ? sanitize_text_field( $_POST['card_city'] )       : '';
+	// $cc_info['card_state']     = isset( $_POST['card_state'] )      ? sanitize_text_field( $_POST['card_state'] )      : '';
+	// $cc_info['card_country']   = isset( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : '';
+	// $cc_info['card_zip']       = isset( $_POST['card_zip'] )        ? sanitize_text_field( $_POST['card_zip'] )        : '';
 
 	// Return cc info
 	return $cc_info;

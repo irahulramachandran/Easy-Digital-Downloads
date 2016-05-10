@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function edd_checkout_form() {
 	$payment_mode = edd_get_chosen_gateway();
+	$payment_mode = '';
 	$form_action  = esc_url( edd_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
 
 	ob_start();
@@ -172,63 +173,57 @@ function edd_user_info_fields() {
 
 	$customer = array_map( 'sanitize_text_field', $customer );
 	?>
-	<!-- <fieldset id="edd_checkout_user_info" class="col-xs-6">
-		<h1><?php echo apply_filters( 'edd_checkout_personal_info_text', __( 'Personal Info', 'easy-digital-downloads' ) ); ?></h1>
-		<?php do_action( 'edd_purchase_form_before_email' ); ?>
-		<p id="edd-email-wrap">
-			<label class="edd-label" for="edd-email">
-				<?php _e( 'Email Address', 'easy-digital-downloads' ); ?>
-				<?php if( edd_field_is_required( 'edd_email' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
-				<?php } ?>
-			</label>
-			<span class="edd-description"><?php _e( 'We will send the purchase receipt to this address.', 'easy-digital-downloads' ); ?></span>
-			<input class="edd-input required form-control" type="email" name="edd_email" placeholder="<?php _e( 'Email address', 'easy-digital-downloads' ); ?>" id="edd-email" value="<?php echo esc_attr( $customer['email'] ); ?>"/>
-		</p>
-		<?php do_action( 'edd_purchase_form_after_email' ); ?>
-		<p id="edd-first-name-wrap">
-			<label class="edd-label" for="edd-first">
-				<?php _e( 'First Name', 'easy-digital-downloads' ); ?>
-				<?php if( edd_field_is_required( 'edd_first' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
-				<?php } ?>
-			</label>
-			<span class="edd-description"><?php _e( 'We will use this to personalize your account experience.', 'easy-digital-downloads' ); ?></span>
-			<input class="edd-input required form-control" type="text" name="edd_first" placeholder="<?php _e( 'First name', 'easy-digital-downloads' ); ?>" id="edd-first" value="<?php echo esc_attr( $customer['first_name'] ); ?>"<?php if( edd_field_is_required( 'edd_first' ) ) {  echo ' required '; } ?>/>
-		</p>
-		<p id="edd-last-name-wrap">
-			<label class="edd-label" for="edd-last">
-				<?php _e( 'Last Name', 'easy-digital-downloads' ); ?>
-				<?php if( edd_field_is_required( 'edd_last' ) ) { ?>
-					<span class="edd-required-indicator">*</span>
-				<?php } ?>
-			</label>
-			<span class="edd-description"><?php _e( 'We will use this as well to personalize your account experience.', 'easy-digital-downloads' ); ?></span>
-			<input class="edd-input<?php if( edd_field_is_required( 'edd_last' ) ) { echo ' required'; } ?> form-control" type="text" name="edd_last" id="edd-last" placeholder="<?php _e( 'Last name', 'easy-digital-downloads' ); ?>" value="<?php echo esc_attr( $customer['last_name'] ); ?>"<?php if( edd_field_is_required( 'edd_last' ) ) {  echo ' required '; } ?>/>
-		</p>
-	</fieldset> -->
 	<fieldset  class="col-xs-6 no-padding">
-		<form class="payment-form">
+		<!-- <form class="payment-form" method="POST"> -->
 	    <div class="form-container">
 	        <div class="personal-information">
-	        <h1>Personal Information</h1>
+	        	<h3>Personal Information</h3>
+						<input class="form-control" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name"/>
+		        <input class="form-control" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name"/>
+						<?php do_action( 'edd_purchase_form_before_email' ); ?>
+		        <input class="form-control" type="email" name="edd_email" id="edd_email" autocomplete="on" maxlength="40" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>"/>
+						<?php do_action( 'edd_purchase_form_after_email' ); ?>
+						<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="booker" class="booker"> Booker
+					    </label>
+							<label>
+					      <input type="checkbox" name="info" class="info"> Info
+					    </label>
+					  </div>
+	        </div>
+					<div class="guest-information">
+	        	<h3>Guest Information</h3>
+						<input class="form-control" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="Guest First Name"/>
+		        <input class="form-control" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Guest Last Name"/>
+		        <input class="form-control" type="email" name="edd_guest_email" id="edd_email" autoguest_complete="on" maxlength="40" placeholder="Guest Email" value=""/>
 	        </div>
 					<!-- <div class="card-wrapper"></div> -->
-	        <input class="form-control" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name"/>
-	        <input class="form-control" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name"/>
-					<?php do_action( 'edd_purchase_form_before_email' ); ?>
-	        <input class="form-control" type="email" name="edd_email" id="edd_email" autocomplete="on" maxlength="40" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>"/>
-					<?php do_action( 'edd_purchase_form_after_email' ); ?>
-					<div class="personal-information">
-	        <h1>Payment Information</h1>
+					<div class="payment-information">
+	        	<h3>Payment Information</h3>
+						<input class="form-control edd_number" type="text" name="card_number" maxlength="12" id="card_number" placeholder="Card Number"/><div class="card-type"></div>
+						<input class="form-control edd_expiry" type="text" name="car_expiry" id="car_expiry" placeholder="MM / YY"/>
+						<input class="form-control edd_cvc" type="password" name="card_cvc" maxlength="4" id="edd_cvc" placeholder="CCV"/>
 	        </div>
-	        <input class="form-control" type="text" name="number" maxlength="12" id="edd_number" placeholder="Card Number"/>
-	        <input class="form-control" type="text" name="expiry" id="edd_expiry" placeholder="MM / YY"/>
-	        <input class="form-control" type="text" name="cvc" maxlength="4" id="edd_cvc" placeholder="CCV"/>
+					<div class="additonal-information">
+						<h3>Additional Requests & Information</h3>
+						<textarea	class="form-control" name="add_info" placeholder="Additional Requests & Information"></textarea>
+					</div>
 	        <input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
 	    </div>
-	</form>
+	<!-- </form> -->
 	</fieldset>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".booker").change(function(){
+				$(".guest-information").slideToggle("fast");
+			});
+
+			$(".info").change(function(){
+				$(".additonal-information").slideToggle("fast");
+			});
+		});
+	</script>
 	<?php do_action( 'edd_purchase_form_user_info' ); ?>
 	<?php do_action( 'edd_purchase_form_user_info_fields' ); ?>
 	<?php

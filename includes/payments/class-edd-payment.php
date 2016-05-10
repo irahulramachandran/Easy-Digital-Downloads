@@ -145,8 +145,8 @@ final class EDD_Payment {
 	 * @since  2.5
 	 * @var string
 	 */
-	protected $status      = 'pending';
-	protected $post_status = 'pending'; // Same as $status but here for backwards compat
+	protected $status      = 'pending'; //pending
+	protected $post_status = 'pending'; //pending // Same as $status but here for backwards compat
 
 	/**
 	 * When updating, the old status prior to the change
@@ -858,6 +858,7 @@ final class EDD_Payment {
 
 		error_log(":::10:::");
 		if ( true === $saved ) {
+			//Commented by Rahul
 			$this->setup_payment( $this->ID );
 		}
 

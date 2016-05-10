@@ -171,7 +171,8 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		edd_empty_cart();
 
 		// Redirect to PayPal
-		wp_redirect( $paypal_redirect );
+		edd_send_to_success_page(); // Added by Rahul
+		//wp_redirect( $paypal_redirect );
 		exit;
 	}
 

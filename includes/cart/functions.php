@@ -136,22 +136,29 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 
 	$rateplans = EDD()->session->get( 'rateplans' );
 
+	error_log("rateplans");
+	error_log(json_encode($rateplans));
+
 	foreach ($rateplans as $rateplan) {
-		if($rateplan->roomplanid == $download_id){
+		if($rateplan->id == $download_id){
 			$download = $rateplan;
 		}
 	}
 
 	error_log(json_encode($download));
 
-	$options['id'] = $download->roomplanid;
-	$options['roomplancode'] = $download->rateplancode;
-	$options['name'] = $download->planname;
+	$options['id'] = $download->id;
+	$options['rateplancode'] = $download->rateplancode;
+	$options['name'] = $download->name;
 	$options['price'] = $download->price;
-	$options['roomtypeid'] = $download->roomtypeid;
+	$options['roomtypename'] = $download->roomtypename;
+  $options['roomtypenamedescription'] = $download->roomtypenamedescription;
 	$options['roomtypecode'] = $download->roomtypecode;
-	$options['restriction'] = $download->restriction;
-	$options['wordpressid'] = $download->wordpressid;
+	$options['roomtypename'] = $download->roomtypename;
+	$options['roomtypedescription'] = $download->roomtypenamedescription;
+	// $options['restriction'] = $download->restriction;
+	$options['availablequantity'] = $download->availablequantity;
+	$options['description'] = $download->description;
 	// if( 'download' != $download->post_type ){
 	// 	return; // Not a download product
 	// }
@@ -239,8 +246,9 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		if( edd_item_in_cart( $to_add['id'], $to_add['options'] ) && edd_item_quantities_enabled() ) {
 
 			$key = edd_get_item_position_in_cart( $to_add['id'], $to_add['options'] );
-			$cart[ $key ]['quantity'] += $quantity;
-
+			if($cart[ $key ]['quantity']+$quantity <= $download->availablequantity){
+				$cart[ $key ]['quantity'] += $quantity;
+			}
 		} else {
 
 			$cart[] = $to_add;
@@ -248,7 +256,7 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		}
 	}
 
-	//error_log("SAVED TO CART:::::::::::::::::::::::::");
+	error_log("SAVED TO CART:::::::::::::::::::::::::");
 	error_log(json_encode($cart));
 	EDD()->session->set( 'edd_cart', $cart );
 

@@ -5,6 +5,8 @@ jQuery(document).ready(function ($) {
 	$('.edd-no-js').hide();
 	$('a.edd-add-to-cart').addClass('edd-has-js');
 
+	var creditly = Creditly.initialize('.payment-information .edd_expiry', '.payment-information .edd_number', '.payment-information .edd_cvc', '.payment-information .card-type');
+
 	// Send Remove from Cart requests
 	$('body').on('click.eddRemoveFromCart', '.edd-remove-from-cart', function (event) {
 		var $this  = $(this),
@@ -88,24 +90,27 @@ jQuery(document).ready(function ($) {
 		// Disable button, preventing rapid additions to cart during ajax request
 		$this.prop('disabled', true);
 
-		var $spinner = $this.find('.edd-loading');
-		var container = $this.closest('div');
+		// var $spinner = $this.find('.edd-loading');
+		// var container = $this.closest('div');
+		//
+		// var spinnerWidth  = $spinner.width(),
+		// 	spinnerHeight = $spinner.height();
+		//
+		// // Show the spinner
+		// $this.attr('data-edd-loading', '');
+		//
+		// $spinner.css({
+		// 	'margin-left': spinnerWidth / -2,
+		// 	'margin-top' : spinnerHeight / -2
+		// });
 
-		var spinnerWidth  = $spinner.width(),
-			spinnerHeight = $spinner.height();
-
-		// Show the spinner
-		$this.attr('data-edd-loading', '');
-
-		$spinner.css({
-			'margin-left': spinnerWidth / -2,
-			'margin-top' : spinnerHeight / -2
-		});
+		$("#loading").show();
 
 		var form           = $this.parents('form').last();
 		var download       = $this.data('download-id');
 		var variable_price = $this.data('variable-price');
 		var price_mode     = $this.data('price-mode');
+		var directcheckout = $this.data("directcheckout");
 		var item_price_ids = [];
 		var free_items     = true;
 
@@ -119,7 +124,8 @@ jQuery(document).ready(function ($) {
 			} else {
 				if( ! form.find('.edd_price_option_' + download + ':checked', form).length ) {
 					 // hide the spinner
-					$this.removeAttr( 'data-edd-loading' );
+					 $("#loading").hide();
+					// $this.removeAttr( 'data-edd-loading' );
 					alert( edd_scripts.select_option );
 					return;
 				}
@@ -180,73 +186,81 @@ jQuery(document).ready(function ($) {
 
 					window.location = edd_scripts.checkout_page;
 
+				}
+				else if(directcheckout == '1'){
+					window.location = edd_scripts.checkout_page;
 				} else {
 
-					// Add the new item to the cart widget
-					if ( edd_scripts.taxes_enabled === '1' ) {
-						$('.cart_item.edd_subtotal').show();
-						$('.cart_item.edd_cart_tax').show();
-					}
-
-					$('.cart_item.edd_total').show();
-					$('.cart_item.edd_checkout').show();
-
-					if ($('.cart_item.empty').length) {
-						$(response.cart_item).insertBefore('.edd-cart-meta:first');
-						$('.cart_item.empty').hide();
-					} else {
-						$(response.cart_item).insertBefore('.edd-cart-meta:first');
-					}
-
-					// Update the totals
-					if ( edd_scripts.taxes_enabled === '1' ) {
-						$('.edd-cart-meta.edd_subtotal span').html( response.subtotal );
-						$('.edd-cart-meta.edd_cart_tax span').html( response.tax );
-					}
-
-					$('.edd-cart-meta.edd_total span').html( response.total );
-
-					// Update the cart quantity
-					var items_added = $( '.edd-cart-item-title', response.cart_item ).length;
-
-					$('span.edd-cart-quantity').each(function() {
-						$(this).text(response.cart_quantity);
-						$('body').trigger('edd_quantity_updated', [ response.cart_quantity ]);
-					});
-
-					// Show the "number of items in cart" message
-					if ( $('.edd-cart-number-of-items').css('display') == 'none') {
-						$('.edd-cart-number-of-items').show('slow');
-					}
-
-					if( variable_price == 'no' || price_mode != 'multi' ) {
-						// Switch purchase to checkout if a single price item or variable priced with radio buttons
-						$('a.edd-add-to-cart', container).toggle();
-						$('.edd_go_to_checkout', container).css('display', 'inline-block');
-					}
-
-					if ( price_mode == 'multi' ) {
-						// remove spinner for multi
-						$this.removeAttr( 'data-edd-loading' );
-					}
-
-					// Update all buttons for same download
-					if( $( '.edd_download_purchase_form' ).length && ( variable_price == 'no' || ! form.find('.edd_price_option_' + download).is('input:hidden') ) ) {
-						var parent_form = $('.edd_download_purchase_form *[data-download-id="' + download + '"]').parents('form');
-						$( 'a.edd-add-to-cart', parent_form ).hide();
-						if( price_mode != 'multi' ) {
-							parent_form.find('.edd_download_quantity_wrapper').slideUp();
-						}
-						$( '.edd_go_to_checkout', parent_form ).show().removeAttr( 'data-edd-loading' );
-					}
-
-					if( response != 'incart' ) {
-						// Show the added message
-						$('.edd-cart-added-alert', container).fadeIn();
-						setTimeout(function () {
-							$('.edd-cart-added-alert', container).fadeOut();
-						}, 3000);
-					}
+					// // Add the new item to the cart widget
+					// if ( edd_scripts.taxes_enabled === '1' ) {
+					// 	$('.cart_item.edd_subtotal').show();
+					// 	$('.cart_item.edd_cart_tax').show();
+					// }
+					//
+					// $('.cart_item.edd_total').show();
+					// $('.cart_item.edd_checkout').show();
+					//
+					// if ($('.cart_item.empty').length) {
+					// 	$(response.cart_item).insertBefore('.edd-cart-meta:first');
+					// 	$('.cart_item.empty').hide();
+					// } else {
+					// 	$(response.cart_item).insertBefore('.edd-cart-meta:first');
+					// }
+					//
+					// // Update the totals
+					// if ( edd_scripts.taxes_enabled === '1' ) {
+					// 	$('.edd-cart-meta.edd_subtotal span').html( response.subtotal );
+					// 	$('.edd-cart-meta.edd_cart_tax span').html( response.tax );
+					// }
+					//
+					// $('.edd-cart-meta.edd_total span').html( response.total );
+					//
+					// // Update the cart quantity
+					// var items_added = $( '.edd-cart-item-title', response.cart_item ).length;
+					//
+					// $('span.edd-cart-quantity').each(function() {
+					// 	$(this).text(response.cart_quantity);
+					// 	$('body').trigger('edd_quantity_updated', [ response.cart_quantity ]);
+					// });
+					//
+					// // Show the "number of items in cart" message
+					// if ( $('.edd-cart-number-of-items').css('display') == 'none') {
+					// 	$('.edd-cart-number-of-items').show('slow');
+					// }
+					//
+					// if( variable_price == 'no' || price_mode != 'multi' ) {
+					// 	// Switch purchase to checkout if a single price item or variable priced with radio buttons
+					// 	// $('a.edd-add-to-cart', container).toggle();
+					// 	// $('.edd_go_to_checkout', container).css('display', 'inline-block');
+					// }
+					//
+					//$this.parents("td").attr("colspan","2");
+					// $this.parents("td")
+					//$this.parents("td").next("td").remove();
+					$this.parents("tr").find("a.btn-danger").fadeOut();
+					$this.parent("td").html("<a href='"+edd_scripts.checkout_page+"' class='btn btn-danger'>Checkout</a>");
+					$("#loading").hide();
+					// if ( price_mode == 'multi' ) {
+					// 	// remove spinner for multi
+					// }
+					//
+					// // Update all buttons for same download
+					// if( $( '.edd_download_purchase_form' ).length && ( variable_price == 'no' || ! form.find('.edd_price_option_' + download).is('input:hidden') ) ) {
+					// 	var parent_form = $('.edd_download_purchase_form *[data-download-id="' + download + '"]').parents('form');
+					// 	$( 'a.edd-add-to-cart', parent_form ).hide();
+					// 	if( price_mode != 'multi' ) {
+					// 		parent_form.find('.edd_download_quantity_wrapper').slideUp();
+					// 	}
+					// 	$( '.edd_go_to_checkout', parent_form ).show().removeAttr( 'data-edd-loading' );
+					// }
+					//
+					// if( response != 'incart' ) {
+					// 	// Show the added message
+					// 	// $('.edd-cart-added-alert', container).fadeIn();
+					// 	// setTimeout(function () {
+					// 	// 	$('.edd-cart-added-alert', container).fadeOut();
+					// 	// }, 3000);
+					// }
 
 					// Re-enable the add to cart button
 					$this.prop('disabled', false);
@@ -336,6 +350,56 @@ jQuery(document).ready(function ($) {
 			edd_load_gateway( edd_scripts.default_gateway );
 		}, 200);
 	}
+
+
+	$("#").click(function(e){
+		e.preventDefault();
+		var output = creditly.validate();
+    if (output) {
+      // Your validated credit card output
+      console.log(output);
+    }
+	});
+
+	function valid(){
+		return true;
+	}
+
+	$(document).on('click', '#edd_purchase_form #confirmBooking', function(e) {
+
+		var eddPurchaseform = document.getElementById('edd_purchase_form');
+
+		$("#loading").show();
+		if(!valid())
+		{
+			$("#loading").hide();
+			return false;
+		}
+		// if( typeof eddPurchaseform.checkValidity === "function" && false === eddPurchaseform.checkValidity() ) {
+		// 	return;
+		// }
+
+		e.preventDefault();
+
+		// var complete_purchase_val = $(this).val();
+
+
+		$.post(edd_global_vars.ajaxurl, $('#edd_purchase_form').serialize() + '&action=edd_process_checkout&edd_ajax=true', function(data) {
+			$("#loading").hide();
+			if ( $.trim(data) == 'success' ) {
+				$('.edd_errors').remove();
+				$('.edd-error').hide();
+				$(eddPurchaseform).submit();
+			} else {
+				// $('#edd-purchase-button').val(complete_purchase_val);
+				$('.edd-cart-ajax').remove();
+				$('.edd_errors').remove();
+				$('.edd-error').hide();
+				$('#edd_purchase_submit').before(data);
+			}
+		});
+
+	});
 
 	$(document).on('click', '#edd_purchase_form #edd_purchase_submit input[type=submit]', function(e) {
 
