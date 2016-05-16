@@ -361,10 +361,78 @@ jQuery(document).ready(function ($) {
     }
 	});
 
+	function valid_credit_card(value) {
+  // accept only digits, dashes or spaces
+		if (/[^0-9-\s]+/.test(value)) return false;
+		// The Luhn Algorithm. It's so pretty.
+		var nCheck = 0, nDigit = 0, bEven = false;
+		value = value.replace(/\D/g, "");
+
+		for (var n = value.length - 1; n >= 0; n--) {
+			var cDigit = value.charAt(n),
+				  nDigit = parseInt(cDigit, 10);
+
+			if (bEven) {
+				if ((nDigit *= 2) > 9) nDigit -= 9;
+			}
+
+			nCheck += nDigit;
+			bEven = !bEven;
+		}
+		return (nCheck % 10) == 0;
+	}
+
+	var errors = [];
+
 	function valid(){
+
+		if($("#edd_first").val() != ""){
+			var error = {};
+			error.id = "#edd_first";
+			error.message = "First Name cannot be empty";
+			errors.push(error);
+		}
+		if($("#edd_last").val() != ""){
+			var error = {};
+			error.id = "#edd_last";
+			error.message = "Last Name cannot be empty";
+			errors.push(error);
+		}
+		if($("#edd_email").val() != ""){
+			var error = {};
+			error.id = "#edd_email";
+			error.message = "Email cannot be empty";
+			errors.push(error);
+		}
+		if($("#card_number").val() != ""){
+			var error = {};
+			error.id = "#card_number";
+			error.message = "Credit card number cannot be empty";
+			errors.push(error);
+		}
+		else if(!valid_credit_card($("#card_number").val())){
+			var error = {};
+			error.id = "#card_number";
+			error.message = "Invalid credit card number";
+			errors.push(error);
+		}
+
+		if($("#card_expiry").val() != ""){
+			var error = {};
+			error.id = "#card_expiry";
+			error.message = "Expiry date cannot be empty";
+			errors.push(error);
+		}
+		if($("#card_cvc").val() != ""){
+			var error = {};
+			error.id = "#card_cvc";
+			error.message = "CVV cannot be empty";
+			errors.push(error);
+		}
 		return true;
 	}
 
+	// $("#confirmBooking").unbind("click");
 	$(document).on('click', '#edd_purchase_form #confirmBooking', function(e) {
 
 		var eddPurchaseform = document.getElementById('edd_purchase_form');

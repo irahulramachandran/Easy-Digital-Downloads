@@ -184,6 +184,7 @@ function edd_insert_payment( $payment_data = array() ) {
 	}
 
 	// Return false if no payment was inserted
+	error_log("edd_insert_payment FALSE");
 	return false;
 }
 
@@ -1258,6 +1259,29 @@ function edd_remove_payment_prefix_postfix( $number ) {
 function edd_payment_amount( $payment_id = 0 ) {
 	$amount = edd_get_payment_amount( $payment_id );
 	return edd_currency_filter( edd_format_amount( $amount ), edd_get_payment_currency_code( $payment_id ) );
+}
+
+function edd_booking_startdate($payment_id = 0){
+	$payment = new EDD_Payment( $payment_id );
+	$startdate = new DateTime();
+
+	$cart_details = $payment->cart_details;
+	if ( is_array( $cart_details ) ) {
+		$i = 0;
+		foreach ( $cart_details as $item ) {
+			$fromdatetime = strtotime($item['item_number']['options']['startdate']);
+			if(isset( $item['item_number']['options'])){
+				if($i == 0){
+					$i++;
+					$startdate = $fromdatetime;
+				}
+				if($startdate >= $fromdatetime){
+		      $startdate = $fromdatetime;
+		    }
+			}
+		}
+	}
+	return $startdate;
 }
 /**
  * Get the amount associated with a payment

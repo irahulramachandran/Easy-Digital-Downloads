@@ -178,17 +178,39 @@ function edd_user_info_fields() {
 	    <div class="form-container">
 	        <div class="personal-information">
 	        	<h3>Personal Information</h3>
+						<!-- <label for="card_number" class="edd-label">
+							<?php _e( 'Card Number', 'easy-digital-downloads' ); ?>
+							<span class="edd-required-indicator">*</span>
+							<span class="card-type"></span>
+						</label> -->
 						<input class="form-control" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name"/>
 		        <input class="form-control" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name"/>
 						<?php do_action( 'edd_purchase_form_before_email' ); ?>
 		        <input class="form-control" type="email" name="edd_email" id="edd_email" autocomplete="on" maxlength="40" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>"/>
 						<?php do_action( 'edd_purchase_form_after_email' ); ?>
+						<div class="provideaddintionalinfo">
+							<input class="form-control" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number"/>
+							<select class="form-control" name="edd_country" id="edd_country">
+								<option value="">Select Country</option>
+								<?php
+								$countries = edd_get_country_list();
+								foreach( $countries as $country_code => $country ) {
+								  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
+								}
+								?>
+							</select>
+							<input class="form-control" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State"/>
+							<input class="form-control" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City"/>
+						</div>
 						<div class="checkbox">
 					    <label>
 					      <input type="checkbox" name="booker" class="booker"> Booker
 					    </label>
 							<label>
 					      <input type="checkbox" name="info" class="info"> Info
+					    </label>
+							<label>
+					      <input type="checkbox" name="provideaddinfo" class="provideaddinfo"> Provide Additional Information
 					    </label>
 					  </div>
 	        </div>
@@ -197,13 +219,27 @@ function edd_user_info_fields() {
 						<input class="form-control" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="Guest First Name"/>
 		        <input class="form-control" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Guest Last Name"/>
 		        <input class="form-control" type="email" name="edd_guest_email" id="edd_email" autoguest_complete="on" maxlength="40" placeholder="Guest Email" value=""/>
+						<div class="provideaddintionalinfo">
+							<input class="form-control" type="text" maxlength="10" name="guest_phonenumber" id="guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number"/>
+							<select class="form-control" name="edd_guest_country" id="edd_guest_country">
+								<option value="">Select Guest Country</option>
+								<?php
+								$countries = edd_get_country_list();
+								foreach( $countries as $country_code => $country ) {
+								  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
+								}
+								?>
+							</select>
+							<input class="form-control" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
+							<input class="form-control" type="text" name="guest_CityName" id="guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City"/>
+						</div>
 	        </div>
 					<!-- <div class="card-wrapper"></div> -->
 					<div class="payment-information">
 	        	<h3>Payment Information</h3>
-						<input class="form-control edd_number" type="text" name="card_number" maxlength="12" id="card_number" placeholder="Card Number"/><div class="card-type"></div>
-						<input class="form-control edd_expiry" type="text" name="car_expiry" id="car_expiry" placeholder="MM / YY"/>
-						<input class="form-control edd_cvc" type="password" name="card_cvc" maxlength="4" id="edd_cvc" placeholder="CCV"/>
+						<input class="form-control edd_number"  autocomplete="off" type="text" name="card_number" maxlength="12" id="card_number" placeholder="Card Number"/><div class="card-type"></div>
+						<input class="form-control edd_expiry"  autocomplete="off" type="text" name="card_expiry" id="card_expiry" placeholder="MM / YY"/>
+						<input class="form-control edd_cvc"  autocomplete="off" type="password" name="card_cvc" maxlength="4" id="edd_cvc" placeholder="CCV"/>
 	        </div>
 					<div class="additonal-information">
 						<h3>Additional Requests & Information</h3>
@@ -221,6 +257,9 @@ function edd_user_info_fields() {
 
 			$(".info").change(function(){
 				$(".additonal-information").slideToggle("fast");
+			});
+			$(".provideaddinfo").change(function(){
+				$(".provideaddintionalinfo").slideToggle("fast");
 			});
 		});
 	</script>

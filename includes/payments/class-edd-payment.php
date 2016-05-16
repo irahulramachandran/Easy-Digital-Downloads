@@ -473,7 +473,7 @@ final class EDD_Payment {
 	 * @return int|bool Fale on failure, the payment ID on success.
 	 */
 	private function insert_payment() {
-
+		error_log("insert_payment");
 		// Construct the payment title
 		$payment_title = '';
 

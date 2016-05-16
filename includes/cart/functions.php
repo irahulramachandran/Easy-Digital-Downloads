@@ -145,7 +145,11 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		}
 	}
 
-	error_log(json_encode($download));
+	$fromdatetime = strtotime(EDD()->session->get('startDate'));
+  $todatetime = strtotime(EDD()->session->get('endDate'));
+
+  $datediff = $todatetime - $fromdatetime;
+  $noofdays = floor($datediff/(60*60*24));
 
 	$options['id'] = $download->id;
 	$options['rateplancode'] = $download->rateplancode;
@@ -156,6 +160,10 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 	$options['roomtypecode'] = $download->roomtypecode;
 	$options['roomtypename'] = $download->roomtypename;
 	$options['roomtypedescription'] = $download->roomtypenamedescription;
+	$options['startdate'] = date('Y-m-d', $fromdatetime);
+	$options['enddate'] = date('Y-m-d', $todatetime);;
+	$options['noofdays'] = $noofdays;
+
 	// $options['restriction'] = $download->restriction;
 	$options['availablequantity'] = $download->availablequantity;
 	$options['description'] = $download->description;
@@ -905,13 +913,13 @@ function edd_cart_tax( $echo = false ) {
 	$cart_tax = 0;
 
 	if ( edd_is_cart_taxed() ) {
-		error_log("CART TAXED");
+		// error_log("CART TAXED");
 		$cart_tax = edd_get_cart_tax();
 		$cart_tax = edd_currency_filter( edd_format_amount( $cart_tax ) );
 	}
 
-	error_log("CART TAX");
-	error_log($cart_tax);
+	// error_log("CART TAX");
+	// error_log($cart_tax);
 
 	$tax = apply_filters( 'edd_cart_tax', $cart_tax );
 

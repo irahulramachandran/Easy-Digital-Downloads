@@ -32,8 +32,17 @@ global $post; ?>
 							// $item_title = edd_get_cart_item_name( $item );
 							// print_r(json_encode($item));
 							$item_title = $item['options']['name'];
-							$restriction = $item['options']['restriction'];
-							echo '<span class="edd_checkout_cart_item_title">' . esc_html( $item_title ) . '</span></br><span class="condtion">'.esc_html($restriction).'</span>';
+							// $quantity = edd_get_cart_item_quantity( $item['id'], $item['options'] );
+							$fromdatetime = strtotime($item['options']['startdate']);
+							$todatetime = strtotime($item['options']['enddate']);
+							$noofdays = $item['options']['noofdays'];
+							$fromdatetime = date('Y-m-d', $fromdatetime);
+							$todatetime = date('Y-m-d', $todatetime);
+							$nights = "Nights";
+							if($noofdays == 1){
+								$nights = "Night";
+							}
+							echo '<span class="edd_checkout_cart_item_title">' . esc_html( $item_title ) . '</span></br><span class="condtion"><span class="quantitynumber">'.$noofdays.'</span> '.$nights.', arriving <span class="arrivingDate">'.$fromdatetime.'</span>, departing <span class="departingDate">'.$todatetime.'</span></span>';
 							do_action( 'edd_checkout_cart_item_title_after', $item );
 						?>
 					</td>

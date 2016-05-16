@@ -50,7 +50,6 @@ function edd_process_paypal_purchase( $purchase_data ) {
 
 	// Record the pending payment
 	$payment = edd_insert_payment( $payment_data );
-
 	// Check payment
 	if ( ! $payment ) {
 		// Record the error
@@ -169,7 +168,6 @@ function edd_process_paypal_purchase( $purchase_data ) {
 
 		// Get rid of cart contents
 		edd_empty_cart();
-
 		// Redirect to PayPal
 		edd_send_to_success_page(); // Added by Rahul
 		//wp_redirect( $paypal_redirect );

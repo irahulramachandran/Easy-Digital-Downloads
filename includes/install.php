@@ -98,11 +98,13 @@ function edd_run_install() {
 			)
 		);
 
+		$hotelName = esc_html( stripslashes( $settings["snc_hotelname"] ) );
+
 		// Purchase Confirmation (Success) Page
 		$success = wp_insert_post(
 			array(
 				'post_title'     => __( 'Purchase Confirmation', 'easy-digital-downloads' ),
-				'post_content'   => __( 'Thank you for your purchase! [edd_receipt]', 'easy-digital-downloads' ),
+				'post_content'   => __( '<div class="container">Thank you for your booking with '.$hotelName.' We are looking forward to welcome you on ! [edd_receipt] </div>', 'easy-digital-downloads' ),
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_parent'    => $checkout,
@@ -146,7 +148,7 @@ function edd_run_install() {
 	}
 
 	// Populate some default values
-	foreach( edd_get_registered_settings() as $tab => $sections ) {	
+	foreach( edd_get_registered_settings() as $tab => $sections ) {
 		foreach( $sections as $section => $settings) {
 
 			// Check for backwards compatibility

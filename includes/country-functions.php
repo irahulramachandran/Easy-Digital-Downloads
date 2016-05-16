@@ -138,7 +138,7 @@ function edd_get_shop_states( $country = null ) {
  */
 function edd_get_country_list() {
 	$countries = array(
-		''   => '',
+		// ''   => '',
 		'US' => 'United States',
 		'CA' => 'Canada',
 		'GB' => 'United Kingdom',

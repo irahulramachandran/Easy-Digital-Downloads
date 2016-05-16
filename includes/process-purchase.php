@@ -11,7 +11,6 @@
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * Process Purchase Form
  *
@@ -22,9 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
  */
 function edd_process_purchase_form() {
-
 	do_action( 'edd_pre_process_purchase' );
-
 	// Make sure the cart isn't empty
 	if ( ! edd_get_cart_contents() && ! edd_cart_has_fees() ) {
 		$valid_data = false;
@@ -58,6 +55,10 @@ function edd_process_purchase_form() {
 
 	if ( $is_ajax ) {
 		echo 'success';
+		// $r = new stdClass();
+		// $r->Status = 'success';
+		// $r->SuccessURL = edd_get_success_page_uri();
+		// print_r(json_encode($r));
 		edd_die();
 	}
 

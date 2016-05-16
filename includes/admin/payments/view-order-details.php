@@ -264,7 +264,7 @@ $currency_code  = $payment->currency;
 							<?php $column_count = edd_item_quantities_enabled() ? 'columns-4' : 'columns-3'; ?>
 							<div id="edd-purchased-files" class="postbox <?php echo $column_count; ?>">
 								<h3 class="hndle">
-									<span><?php printf( __( 'Purchased %s', 'easy-digital-downloads' ), edd_get_label_plural() ); ?></span>
+									<span><?php printf( __( 'Reservation Details', 'easy-digital-downloads' ), edd_get_label_plural() ); ?></span>
 								</h3>
 
 								<?php if ( is_array( $cart_items ) ) :
@@ -284,6 +284,16 @@ $currency_code  = $payment->currency;
 											$price_id   = isset( $cart_item['item_number']['options']['price'] )     ? $cart_item['item_number']['options']['price'] : null;
 											$name   = isset( $cart_item['item_number']['options']['name'] )     ? $cart_item['item_number']['options']['name'] : null;
 											$quantity   = isset( $cart_item['quantity'] ) && $cart_item['quantity'] > 0 ? $cart_item['quantity']                           : 1;
+											$startdate   = $cart_item['item_number']['options']['startdate'];
+											$enddate   = $cart_item['item_number']['options']['enddate'];
+											$noofdays   = $cart_item['item_number']['options']['noofdays'];
+
+											if($noofdays == '1'){
+												$noofdays = "1 Night";
+											}
+											else{
+												$noofdays = $noofdays." Nights";
+											}
 
 											if( false === $price ) {
 
@@ -326,7 +336,18 @@ $currency_code  = $payment->currency;
 												<?php if ( edd_item_quantities_enabled() ) : ?>
 												<?php echo __( 'Total:', 'easy-digital-downloads' ) . '&nbsp;'; ?>
 												<?php endif; ?>
-												<span class="price-text"><?php echo edd_currency_filter( edd_format_amount( $price ), $currency_code ); ?></span>
+												<span class="price-text"><?php echo edd_currency_filter( edd_format_amount( $item_price ), $currency_code ); ?></span><?php //$price ?>
+											</li>
+
+											<li class="quantity">
+												<span class="item-price"><?php echo $startdate;?></span>
+											</li>
+											<li class="quantity">
+												<span class="item-price"><?php echo $enddate;?></span>
+											</li>
+
+											<li class="nights">
+												<span class="item-price"><?php echo $noofdays; ?></span>
 											</li>
 
 											<li class="actions">
@@ -341,7 +362,7 @@ $currency_code  = $payment->currency;
 									<?php
 									$i++;
 									endforeach; ?>
-									<div class="inside">
+									<!-- <div class="inside">
 										<ul>
 											<li class="download">
 												<?php echo EDD()->html->product_dropdown( array(
@@ -394,7 +415,7 @@ $currency_code  = $payment->currency;
 
 							<div id="edd-customer-details" class="postbox">
 								<h3 class="hndle">
-									<span><?php _e( 'Customer Details', 'easy-digital-downloads' ); ?></span>
+									<span><?php _e( 'Guest Details', 'easy-digital-downloads' ); ?></span>
 								</h3>
 								<div class="inside edd-clearfix">
 
@@ -410,10 +431,10 @@ $currency_code  = $payment->currency;
 										<div class="column">
 											<?php if( ! empty( $customer->id ) ) : ?>
 												<?php $customer_url = admin_url( 'edit.php?post_type=download&page=edd-customers&view=overview&id=' . $customer->id ); ?>
-												<a href="<?php echo $customer_url; ?>" title="<?php _e( 'View Customer Details', 'easy-digital-downloads' ); ?>"><?php _e( 'View Customer Details', 'easy-digital-downloads' ); ?></a>
+												<a href="<?php echo $customer_url; ?>" title="<?php _e( 'View Guest Details', 'easy-digital-downloads' ); ?>"><?php _e( 'View Guest Details', 'easy-digital-downloads' ); ?></a>
 												&nbsp;|&nbsp;
 											<?php endif; ?>
-											<a href="#new" class="edd-payment-new-customer" title="<?php _e( 'New Customer', 'easy-digital-downloads' ); ?>"><?php _e( 'New Customer', 'easy-digital-downloads' ); ?></a>
+											<a href="#new" class="edd-payment-new-customer" title="<?php _e( 'New Guest', 'easy-digital-downloads' ); ?>"><?php _e( 'New Guest', 'easy-digital-downloads' ); ?></a>
 										</div>
 									</div>
 
