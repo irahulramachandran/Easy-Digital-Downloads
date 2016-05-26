@@ -43,7 +43,7 @@ $startdate = edd_booking_startdate($payment->ID);
 		<?php endif; ?>
 		<tr>
 			<td class="edd_receipt_payment_status"><strong><?php _e( 'Payment Status', 'easy-digital-downloads' ); ?>:</strong></td>
-			<td class="edd_receipt_payment_status <?php echo strtolower( $status ); ?>">  <?php echo $status; ?></td>
+			<td class="edd_receipt_payment_status <?php echo strtolower( $status ); ?>">Pending</td>
 		</tr>
 
 		<?php if ( filter_var( $edd_receipt_args['payment_key'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
@@ -113,7 +113,7 @@ $startdate = edd_booking_startdate($payment->ID);
 
 		<?php endif; ?> -->
 
-		<?php do_action( 'edd_payment_receipt_after', $payment, $edd_receipt_args ); ?>
+		<!-- <?php do_action( 'edd_payment_receipt_after', $payment, $edd_receipt_args ); ?> -->
 	</tbody>
 </table>
 <?php do_action( 'edd_payment_receipt_after_table', $payment, $edd_receipt_args ); ?>
@@ -219,7 +219,7 @@ $startdate = edd_booking_startdate($payment->ID);
 								endforeach;
 
 							else :
-								echo '<li>' . apply_filters( 'edd_receipt_no_files_found_text', __( 'No downloadable files found.', 'easy-digital-downloads' ), $item['id'] ) . '</li>';
+								// echo '<li>' . apply_filters( 'edd_receipt_no_files_found_text', __( 'No downloadable files found.', 'easy-digital-downloads' ), $item['id'] ) . '</li>';
 							endif; ?>
 						</ul>
 						<?php endif; ?>
@@ -268,8 +268,8 @@ $startdate = edd_booking_startdate($payment->ID);
 	</br>
 	</br>
 	<a href="#" id="btnPrint" class="btn btn-danger">Print</a>
-	<!-- <a href="#" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
-	<a href="#" id="btnEmail" class="btn btn-danger">Email</a> -->
+	<a target="_blank" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
+	<!-- <a href="#" id="btnEmail" class="btn btn-danger">Email</a> -->
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){

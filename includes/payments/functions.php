@@ -177,6 +177,8 @@ function edd_insert_payment( $payment_data = array() ) {
 
 	$payment->save();
 
+	add_post_meta($payment->ID, 'reservation_id',$ReservationID);
+
 	do_action( 'edd_insert_payment', $payment->ID, $payment_data );
 
 	if ( ! empty( $payment->ID ) ) {

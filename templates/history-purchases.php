@@ -11,13 +11,13 @@ if ( is_user_logged_in() ):
 	$purchases = edd_get_users_purchases( get_current_user_id(), 20, true, 'any' );
 	if ( $purchases ) :
 		do_action( 'edd_before_purchase_history' ); ?>
-		<table id="edd_user_history">
+		<table id="edd_user_history" class="table table-bordered table-hover">
 			<thead>
 				<tr class="edd_purchase_row">
 					<?php do_action('edd_purchase_history_header_before'); ?>
-					<th class="edd_purchase_id"><?php _e('ID','easy-digital-downloads' ); ?></th>
-					<th class="edd_purchase_date"><?php _e('Date','easy-digital-downloads' ); ?></th>
-					<th class="edd_purchase_amount"><?php _e('Amount','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_id"><?php _e('Reservation ID','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_date"><?php _e('Booking Date','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_amount"><?php _e('Total Amount','easy-digital-downloads' ); ?></th>
 					<th class="edd_purchase_details"><?php _e('Details','easy-digital-downloads' ); ?></th>
 					<?php do_action('edd_purchase_history_header_after'); ?>
 				</tr>
@@ -36,14 +36,14 @@ if ( is_user_logged_in() ):
 						<span class="edd_purchase_status <?php echo $post->post_status; ?>"><?php echo edd_get_payment_status( $post, true ); ?></span>
 						<a href="<?php echo esc_url( add_query_arg( 'payment_key', edd_get_payment_key( $post->ID ), edd_get_success_page_uri() ) ); ?>">&raquo;</a>
 						<?php else: ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', edd_get_payment_key( $post->ID ), edd_get_success_page_uri() ) ); ?>"><?php _e( 'View Details and Downloads', 'easy-digital-downloads' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', edd_get_payment_key( $post->ID ), edd_get_success_page_uri() ) ); ?>"><?php _e( 'View Details', 'easy-digital-downloads' ); ?></a>
 						<?php endif; ?>
 					</td>
 					<?php do_action( 'edd_purchase_history_row_end', $post->ID, $purchase_data ); ?>
 				</tr>
 			<?php endforeach; ?>
 		</table>
-		<div id="edd_purchase_history_pagination" class="edd_pagination navigation">
+		<div id="edd_purchase_history_pagination" class="edd_pagination">
 			<?php
 			$big = 999999;
 			echo paginate_links( array(

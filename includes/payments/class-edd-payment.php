@@ -574,7 +574,8 @@ final class EDD_Payment {
 			$this->update_meta( '_edd_payment_meta', $this->payment_meta );
 			$this->new          = true;
 		}
-
+		edd_update_payment_status( $payment_id, 'publish' );
+		
 		return $this->ID;
 
 	}
