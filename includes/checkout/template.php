@@ -204,13 +204,13 @@ function edd_user_info_fields() {
 						</div>
 						<div class="checkbox">
 					    <label>
-					      <input type="checkbox" name="booker" class="booker"> Booker
+					      <input type="checkbox" name="booker" class="booker"> <span>Booker</span>
 					    </label>
 							<label>
-					      <input type="checkbox" name="info" class="info"> Info
+					      <input type="checkbox" name="info" class="info"> <span>Info</span>
 					    </label>
 							<label>
-					      <input type="checkbox" name="provideaddinfo" class="provideaddinfo"> Provide Additional Information
+					      <input type="checkbox" name="provideaddinfo" class="provideaddinfo"> <span>Provide Additional Information</span>
 					    </label>
 					  </div>
 	        </div>

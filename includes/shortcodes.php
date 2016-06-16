@@ -637,6 +637,8 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 		'payment_id'      => true
 	), $atts, 'edd_receipt' );
 
+	error_log("payment_id:::::::::::::::::::::::::::::::::::::");
+
 	$session = edd_get_purchase_session();
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
@@ -652,6 +654,8 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 	}
 
 	$payment_id    = edd_get_purchase_id_by_key( $payment_key );
+
+
 	$user_can_view = edd_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
@@ -681,15 +685,15 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 	 */
 
 
-	if ( ! apply_filters( 'edd_user_can_view_receipt', $user_can_view, $edd_receipt_args ) ) {
-		return '<p class="edd-alert edd-alert-error">' . $edd_receipt_args['error'] . '</p>';
-	}
+	// if ( ! apply_filters( 'edd_user_can_view_receipt', $user_can_view, $edd_receipt_args ) ) {
+	// 	return '<p class="edd-alert edd-alert-error">' . $edd_receipt_args['error'] . '</p>';
+	// }
 
 	ob_start();
 
-	edd_get_template_part( 'shortcode', 'receipt' );
-
-	$display = ob_get_clean();
+	//$display = ob_get_clean();
+	$display = edd_get_template_part( 'shortcode', 'receipt' );
+	error_log("payment_id:::::::::::::::::::::::::::::::::::::");
 
 	return $display;
 }

@@ -5,7 +5,6 @@
 global $edd_receipt_args;
 
 $payment   = get_post( $edd_receipt_args['id'] );
-
 if( empty( $payment ) ) : ?>
 
 	<div class="edd_errors edd-alert edd-alert-error">
@@ -25,6 +24,7 @@ $settings = get_option( "snc_theme_settings" );
 $hotelCode = esc_html( stripslashes( $settings["snc_hotelid"] ) );
 $hotelName = esc_html( stripslashes( $settings["snc_hotelname"] ) );
 $startdate = edd_booking_startdate($payment->ID);
+
 ?>
 <div id="dvContents" class="font-display">
 <div class="margin-t20 font-display">
@@ -38,7 +38,8 @@ $startdate = edd_booking_startdate($payment->ID);
 		<?php if ( filter_var( $edd_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 		<tr>
 			<th class="edd_receipt_payment_status"><strong><?php _e( 'Resrvation ID', 'easy-digital-downloads' ); ?>:</strong></th>
-			<th class="edd_receipt_payment_status"><?php echo edd_get_payment_number( $payment->ID ); ?></th>
+			<th class="edd_receipt_payment_status"><?php echo edd_get_reservation( $payment->ID ); ?></th>
+			<?php //echo edd_get_payment_number( $payment->ID ); ?>
 		</tr>
 		<?php endif; ?>
 		<tr>

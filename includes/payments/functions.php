@@ -176,7 +176,7 @@ function edd_insert_payment( $payment_data = array() ) {
 	delete_transient( 'edd_user_' . $payment_data['user_info']['id'] . '_purchases' );
 
 	$payment->save();
-
+	$ReservationID = EDD()->session->get( 'ReservationID');
 	add_post_meta($payment->ID, 'reservation_id',$ReservationID);
 
 	do_action( 'edd_insert_payment', $payment->ID, $payment_data );
@@ -189,6 +189,12 @@ function edd_insert_payment( $payment_data = array() ) {
 	error_log("edd_insert_payment FALSE");
 	return false;
 }
+
+function edd_get_reservation( $payment_id ) {
+  $reservation_id=get_post_meta($payment_id, 'reservation_id' );
+	return $reservation_id[0];
+}
+
 
 /**
  * Updates a payment status.
