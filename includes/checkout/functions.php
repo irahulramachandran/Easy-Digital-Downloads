@@ -67,6 +67,13 @@ function edd_get_success_page_uri() {
 	return apply_filters( 'edd_get_success_page_uri', get_permalink( $page_id ) );
 }
 
+function edd_get_modification_page_uri(){
+	$page_id = edd_get_option( 'modify_page', 0 );
+	$page_id = absint( $page_id );
+
+	return apply_filters( 'edd_get_modification_page_uri', get_permalink( $page_id ) );
+}
+
 /**
  * Determines if we're currently on the Success page.
  *

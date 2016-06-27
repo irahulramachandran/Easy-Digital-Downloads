@@ -200,6 +200,42 @@ function edd_ajax_add_to_cart() {
 
 			}
 
+			$download_id = $_POST['download_id'];
+
+			$rateplans = EDD()->session->get( 'rateplans' );
+
+			error_log("rateplans");
+			error_log(json_encode($rateplans));
+
+			foreach ($rateplans as $rateplan) {
+				if($rateplan->id == $download_id){
+					$download = $rateplan;
+				}
+			}
+
+			$fromdatetime = strtotime(EDD()->session->get('startDate'));
+		  $todatetime = strtotime(EDD()->session->get('endDate'));
+
+		  $datediff = $todatetime - $fromdatetime;
+		  $noofdays = floor($datediff/(60*60*24));
+
+			$options['id'] = $download->id;
+			$options['rateplancode'] = $download->rateplancode;
+			$options['name'] = $download->name;
+			$options['price'] = $download->price;
+			$options['roomtypename'] = $download->roomtypename;
+		  $options['roomtypenamedescription'] = $download->roomtypenamedescription;
+			$options['roomtypecode'] = $download->roomtypecode;
+			$options['roomtypename'] = $download->roomtypename;
+			$options['roomtypedescription'] = $download->roomtypenamedescription;
+			$options['startdate'] = date('Y-m-d', $fromdatetime);
+			$options['enddate'] = date('Y-m-d', $todatetime);;
+			$options['noofdays'] = $noofdays;
+
+			// $options['restriction'] = $download->restriction;
+			$options['availablequantity'] = $download->availablequantity;
+			$options['description'] = $download->description;
+
 			$key = edd_add_to_cart( $_POST['download_id'], $options );
 
 			$item = array(
@@ -210,6 +246,7 @@ function edd_ajax_add_to_cart() {
 			$item   = apply_filters( 'edd_ajax_pre_cart_item_template', $item );
 			$items .= html_entity_decode( edd_get_cart_item_template( $key, $item, true ), ENT_COMPAT, 'UTF-8' );
 
+			error_log($items);
 		}
 
 		$return = array(
@@ -313,9 +350,12 @@ add_action( 'wp_ajax_nopriv_edd_apply_discount', 'edd_ajax_apply_discount' );
 function edd_ajax_update_cart_item_quantity() {
 	if ( ! empty( $_POST['quantity'] ) && ! empty( $_POST['download_id'] ) ) {
 
-		$download_id = absint( $_POST['download_id'] );
+
+		$download_id = $_POST['download_id'];
 		$quantity    = absint( $_POST['quantity'] );
 		$options     = maybe_unserialize( stripslashes( $_POST['options'] ) );
+
+
 
 		edd_set_cart_item_quantity( $download_id, absint( $_POST['quantity'] ), $options );
 		$total = edd_get_cart_total();

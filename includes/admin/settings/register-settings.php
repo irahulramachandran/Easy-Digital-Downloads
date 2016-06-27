@@ -255,6 +255,15 @@ function edd_get_registered_settings() {
 						'chosen'      => true,
 						'placeholder' => __( 'Select a page', 'easy-digital-downloads' ),
 					),
+					'modify_page' => array(
+						'id'          => 'modify_page',
+						'name'        => __( 'Modify Reservation Page', 'easy-digital-downloads' ),
+						'desc'        => __( 'This is the page buyers can use to modify their purchases. The [edd_modify] short code should be on this page.', 'easy-digital-downloads' ),
+						'type'        => 'select',
+						'options'     => edd_get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'easy-digital-downloads' ),
+					),
 					'failure_page' => array(
 						'id'          => 'failure_page',
 						'name'        => __( 'Failed Transaction Page', 'easy-digital-downloads' ),

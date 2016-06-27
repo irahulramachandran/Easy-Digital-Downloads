@@ -169,7 +169,7 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		// Get rid of cart contents
 		edd_empty_cart();
 		// Redirect to PayPal
-		edd_send_to_success_page(); // Added by Rahul
+		edd_send_to_success_page("?payment_key=".$purchase_data['purchase_key']); // Added by Rahul
 		//wp_redirect( $paypal_redirect );
 		exit;
 	}

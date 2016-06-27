@@ -31,11 +31,11 @@ function edd_checkout_cart() {
 	}
 
 	do_action( 'edd_before_checkout_cart' );
-	echo '<form id="edd_checkout_cart_form" method="post">';
+	echo '<div id="edd_checkout_cart_form">';
 		echo '<div id="edd_checkout_cart_wrap">';
 			edd_get_template_part( 'checkout_cart' );
 		echo '</div>';
-	echo '</form>';
+	echo '</div>';
 	do_action( 'edd_after_checkout_cart' );
 }
 
@@ -77,13 +77,17 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$id = is_array( $item ) ? $item['id'] : $item;
 
 	$remove_url = edd_remove_item_url( $cart_key );
-	$title      = get_the_title( $id );
 	$options    = !empty( $item['options'] ) ? $item['options'] : array();
+
+	$title  = $options['roomtypename'];
+	$rateplantitle = $options['name'];
+	$startdate = date("d M Y", strtotime($options['startdate']));
+	$enddate = date("d M Y", strtotime($options['enddate']));
 	$quantity   = edd_get_cart_item_quantity( $id, $options );
 	$price      = edd_get_cart_item_price( $id, $options );
 
 	if ( ! empty( $options ) ) {
-		$title .= ( edd_has_variable_prices( $item['id'] ) ) ? ' <span class="edd-cart-item-separator">-</span> ' . edd_get_price_name( $id, $item['options'] ) : edd_get_price_name( $id, $item['options'] );
+		//$title .= ( edd_has_variable_prices( $item['id'] ) ) ? ' <span class="edd-cart-item-separator">-</span> ' . edd_get_price_name( $id, $item['options'] ) : edd_get_price_name( $id, $item['options'] );
 	}
 
 	ob_start();
@@ -93,6 +97,9 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$item = ob_get_clean();
 
 	$item = str_replace( '{item_title}', $title, $item );
+	$item = str_replace('{rateplan_item_title}', $rateplantitle, $item);
+	$item = str_replace('{checkin_date}', $startdate, $item);
+	$item = str_replace('{checkout_date}', $enddate, $item);
 	$item = str_replace( '{item_amount}', edd_currency_filter( edd_format_amount( $price ) ), $item );
 	$item = str_replace( '{cart_item_id}', absint( $cart_key ), $item );
 	$item = str_replace( '{item_id}', absint( $id ), $item );

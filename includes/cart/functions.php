@@ -94,7 +94,8 @@ function edd_get_cart_content_details() {
 		}
 
 	}
-
+	error_log("DETAILS1:::DETAILS1");
+	error_log(json_encode($details));
 	return $details;
 }
 
@@ -134,39 +135,39 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 	//$download = get_post( $download_id );
 	$download;
 
-	$rateplans = EDD()->session->get( 'rateplans' );
-
-	error_log("rateplans");
-	error_log(json_encode($rateplans));
-
-	foreach ($rateplans as $rateplan) {
-		if($rateplan->id == $download_id){
-			$download = $rateplan;
-		}
-	}
-
-	$fromdatetime = strtotime(EDD()->session->get('startDate'));
-  $todatetime = strtotime(EDD()->session->get('endDate'));
-
-  $datediff = $todatetime - $fromdatetime;
-  $noofdays = floor($datediff/(60*60*24));
-
-	$options['id'] = $download->id;
-	$options['rateplancode'] = $download->rateplancode;
-	$options['name'] = $download->name;
-	$options['price'] = $download->price;
-	$options['roomtypename'] = $download->roomtypename;
-  $options['roomtypenamedescription'] = $download->roomtypenamedescription;
-	$options['roomtypecode'] = $download->roomtypecode;
-	$options['roomtypename'] = $download->roomtypename;
-	$options['roomtypedescription'] = $download->roomtypenamedescription;
-	$options['startdate'] = date('Y-m-d', $fromdatetime);
-	$options['enddate'] = date('Y-m-d', $todatetime);;
-	$options['noofdays'] = $noofdays;
-
-	// $options['restriction'] = $download->restriction;
-	$options['availablequantity'] = $download->availablequantity;
-	$options['description'] = $download->description;
+	// $rateplans = EDD()->session->get( 'rateplans' );
+	//
+	// error_log("rateplans");
+	// error_log(json_encode($rateplans));
+	//
+	// foreach ($rateplans as $rateplan) {
+	// 	if($rateplan->id == $download_id){
+	// 		$download = $rateplan;
+	// 	}
+	// }
+	//
+	// $fromdatetime = strtotime(EDD()->session->get('startDate'));
+  // $todatetime = strtotime(EDD()->session->get('endDate'));
+	//
+  // $datediff = $todatetime - $fromdatetime;
+  // $noofdays = floor($datediff/(60*60*24));
+	//
+	// $options['id'] = $download->id;
+	// $options['rateplancode'] = $download->rateplancode;
+	// $options['name'] = $download->name;
+	// $options['price'] = $download->price;
+	// $options['roomtypename'] = $download->roomtypename;
+  // $options['roomtypenamedescription'] = $download->roomtypenamedescription;
+	// $options['roomtypecode'] = $download->roomtypecode;
+	// $options['roomtypename'] = $download->roomtypename;
+	// $options['roomtypedescription'] = $download->roomtypenamedescription;
+	// $options['startdate'] = date('Y-m-d', $fromdatetime);
+	// $options['enddate'] = date('Y-m-d', $todatetime);;
+	// $options['noofdays'] = $noofdays;
+	//
+	// // $options['restriction'] = $download->restriction;
+	// $options['availablequantity'] = $download->availablequantity;
+	// $options['description'] = $download->description;
 	// if( 'download' != $download->post_type ){
 	// 	return; // Not a download product
 	// }
@@ -264,7 +265,6 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		}
 	}
 
-	error_log("SAVED TO CART:::::::::::::::::::::::::");
 	error_log(json_encode($cart));
 	EDD()->session->set( 'edd_cart', $cart );
 
@@ -398,6 +398,10 @@ function edd_set_cart_item_quantity( $download_id = 0, $quantity = 1, $options =
 	}
 
 	$cart[ $key ]['quantity'] = $quantity;
+
+	error_log("CART AFTER UPDATE");
+	error_log(json_encode($cart));
+
 	EDD()->session->set( 'edd_cart', $cart );
 	return $cart;
 
@@ -706,6 +710,9 @@ function edd_get_cart_items_subtotal( $items ) {
 	if( is_array( $items ) && ! empty( $items ) ) {
 
 		$prices = wp_list_pluck( $items, 'subtotal' );
+
+		error_log("PRICES:::PRICES");
+		error_log(json_encode($prices));
 
 		if( is_array( $prices ) ) {
 			$subtotal = array_sum( $prices );
@@ -1349,4 +1356,24 @@ add_action( 'edd_weekly_scheduled_events', 'edd_delete_saved_carts' );
  */
 function edd_generate_cart_token() {
 	return apply_filters( 'edd_generate_cart_token', md5( mt_rand() . time() ) );
+}
+
+
+function edd_modifybooking_email_tag() {
+	edd_add_email_tag( 'modifybooking', __( 'Creates a link to a modify reservation', 'eddpdfi' ), 'edd_modifybooking_email_template_tags' );
+}
+add_action( 'edd_add_email_tags', 'edd_modifybooking_email_tag' );
+
+/**
+ * Email Template Tags
+ *
+ * Additional template tags for the Purchase Receipt.
+ *
+ * @since       1.0
+ * @uses        edd_pdf_invoices()->get_pdf_invoice_url()
+ * @return      string Invoice Link.
+*/
+
+function edd_modifybooking_email_template_tags( $payment_id ) {
+	return '<a href="'.esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $payment_id ), 'post_id' => $payment_id, 'reservation_id' => base64_encode(edd_get_reservation($payment_id))), edd_get_modification_page_uri() ) ).'">Modify Reservation</a>';
 }

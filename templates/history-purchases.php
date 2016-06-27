@@ -19,6 +19,8 @@ if ( is_user_logged_in() ):
 					<th class="edd_purchase_date"><?php _e('Booking Date','easy-digital-downloads' ); ?></th>
 					<th class="edd_purchase_amount"><?php _e('Total Amount','easy-digital-downloads' ); ?></th>
 					<th class="edd_purchase_details"><?php _e('Details','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_details"><?php _e('Modify','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_details"><?php _e('Cancel','easy-digital-downloads' ); ?></th>
 					<?php do_action('edd_purchase_history_header_after'); ?>
 				</tr>
 			</thead>
@@ -32,11 +34,22 @@ if ( is_user_logged_in() ):
 						<span class="edd_purchase_amount"><?php echo edd_currency_filter( edd_format_amount( edd_get_payment_amount( $post->ID ) ) ); ?></span>
 					</td>
 					<td class="edd_purchase_details">
-						<?php if( $post->post_status != 'publish' ) : ?>
-						<span class="edd_purchase_status <?php echo $post->post_status; ?>"><?php echo edd_get_payment_status( $post, true ); ?></span>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', edd_get_payment_key( $post->ID ), edd_get_success_page_uri() ) ); ?>">&raquo;</a>
+						<?php if( $post->post_status == 'cancelled' ) : ?>
+							<span><?php _e( 'Cancelled', 'easy-digital-downloads' ); ?></span>
+					<?php elseif( $post->post_status != 'publish') :?>
+							<span class="edd_purchase_status <?php echo $post->post_status; ?>"><?php echo edd_get_payment_status( $post, true ); ?></span>
 						<?php else: ?>
 						<a href="<?php echo esc_url( add_query_arg( 'payment_key', edd_get_payment_key( $post->ID ), edd_get_success_page_uri() ) ); ?>"><?php _e( 'View Details', 'easy-digital-downloads' ); ?></a>
+						<?php endif; ?>
+					</td>
+					<td class="edd_purchase_details">
+						<?php if( $post->post_status == 'publish' ) : ?>
+						<a href="<?php echo esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $post->ID ), 'post_id' => $post->ID, 'reservation_id' => base64_encode(edd_get_reservation($post->ID))), edd_get_modification_page_uri() ) ); ?>"><?php _e( 'Modify', 'easy-digital-downloads' ); ?></a>
+						<?php endif; ?>
+					</td>
+					<td class="edd_purchase_details">
+						<?php if( $post->post_status == 'publish' ) : ?>
+						<a href="#" id="cancel-reservation" data-payment-key="<?php echo edd_get_payment_key( $post->ID ); ?>" data-postid="<?php echo $post->ID; ?>" data-reservationid="<?php echo edd_get_reservation($post->ID); ?>"><?php _e( 'Cancel', 'easy-digital-downloads' ); ?></a>
 						<?php endif; ?>
 					</td>
 					<?php do_action( 'edd_purchase_history_row_end', $post->ID, $purchase_data ); ?>
@@ -60,3 +73,8 @@ if ( is_user_logged_in() ):
 		<p class="edd-no-purchases"><?php _e('You have not made any purchases','easy-digital-downloads' ); ?></p>
 	<?php endif;
 endif;
+?>
+<?php
+  $dir = plugins_url();
+?>
+<script type="text/javascript" src="<?php echo $dir?>/IBE/assets/js/modifyreservation.js"></script>

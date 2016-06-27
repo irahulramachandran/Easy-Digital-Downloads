@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
 	$('.edd-no-js').hide();
 	$('a.edd-add-to-cart').addClass('edd-has-js');
 
-	var creditly = Creditly.initialize('.payment-information .edd_expiry', '.payment-information .edd_number', '.payment-information .edd_cvc', '.payment-information .card-type');
+	// var creditly = Creditly.initialize('.payment-information .edd_expiry', '.payment-information .edd_number', '.payment-information .edd_cvc', '.payment-information .card-type');
 
 	// Send Remove from Cart requests
 	$('body').on('click.eddRemoveFromCart', '.edd-remove-from-cart', function (event) {
@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
 					}
 
 					// Remove the selected cart item
-					$('.edd-cart').find("[data-cart-item='" + item + "']").parent().remove();
+					$('.edd-cart').find("[data-cart-item='" + item + "']").parents(".edd-cart-item").remove();
 
 					//Reset the data-cart-item attributes to match their new values in the EDD session cart array
 					var cart_item_counter = 0;
@@ -63,7 +63,7 @@ jQuery(document).ready(function ($) {
 
 					if( response.cart_quantity == 0 ) {
 						$('.cart_item.edd_subtotal,.edd-cart-number-of-items,.cart_item.edd_checkout,.cart_item.edd_cart_tax,.cart_item.edd_total').hide();
-						$('.edd-cart').append('<li class="cart_item empty">' + edd_scripts.empty_cart_message + '</li>');
+						$('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
 					}
 
 					$('body').trigger('edd_cart_item_removed', [ response ]);
@@ -111,6 +111,7 @@ jQuery(document).ready(function ($) {
 		var variable_price = $this.data('variable-price');
 		var price_mode     = $this.data('price-mode');
 		var directcheckout = $this.data("directcheckout");
+		var ratesperdate = $this.data('ratesperdate');
 		var item_price_ids = [];
 		var free_items     = true;
 
@@ -167,6 +168,7 @@ jQuery(document).ready(function ($) {
 			action: action,
 			download_id: download,
 			price_ids : item_price_ids,
+			ratesperdate: ratesperdate,
 			post_data: $(form).serialize()
 		};
 
@@ -192,41 +194,41 @@ jQuery(document).ready(function ($) {
 				} else {
 
 					// // Add the new item to the cart widget
-					// if ( edd_scripts.taxes_enabled === '1' ) {
-					// 	$('.cart_item.edd_subtotal').show();
-					// 	$('.cart_item.edd_cart_tax').show();
-					// }
-					//
-					// $('.cart_item.edd_total').show();
-					// $('.cart_item.edd_checkout').show();
-					//
-					// if ($('.cart_item.empty').length) {
-					// 	$(response.cart_item).insertBefore('.edd-cart-meta:first');
-					// 	$('.cart_item.empty').hide();
-					// } else {
-					// 	$(response.cart_item).insertBefore('.edd-cart-meta:first');
-					// }
-					//
-					// // Update the totals
-					// if ( edd_scripts.taxes_enabled === '1' ) {
-					// 	$('.edd-cart-meta.edd_subtotal span').html( response.subtotal );
-					// 	$('.edd-cart-meta.edd_cart_tax span').html( response.tax );
-					// }
-					//
-					// $('.edd-cart-meta.edd_total span').html( response.total );
-					//
-					// // Update the cart quantity
-					// var items_added = $( '.edd-cart-item-title', response.cart_item ).length;
-					//
-					// $('span.edd-cart-quantity').each(function() {
-					// 	$(this).text(response.cart_quantity);
-					// 	$('body').trigger('edd_quantity_updated', [ response.cart_quantity ]);
-					// });
+					if ( edd_scripts.taxes_enabled === '1' ) {
+						$('.cart_item.edd_subtotal').show();
+						$('.cart_item.edd_cart_tax').show();
+					}
+
+					$('.cart_item.edd_total').show();
+					$('.cart_item.edd_checkout').show();
+
+					if ($('.cart_item.empty').length) {
+						$(response.cart_item).insertBefore('.edd-cart-meta:first');
+						$('.cart_item.empty').hide();
+					} else {
+						$(response.cart_item).insertBefore('.edd-cart-meta:first');
+					}
+
+					// Update the totals
+					if ( edd_scripts.taxes_enabled === '1' ) {
+						// $('.edd-cart-meta.edd_subtotal span').html( response.subtotal );
+						$('.edd-cart-meta.edd_cart_tax span').html( response.tax );
+					}
+
+					$('.edd-cart-meta.edd_total span').html( response.total );
+
+					// Update the cart quantity
+					var items_added = $( '.edd-cart-item-title', response.cart_item ).length;
+
+					$('span.edd-cart-quantity').each(function() {
+						$(this).text(response.cart_quantity);
+						$('body').trigger('edd_quantity_updated', [ response.cart_quantity ]);
+					});
 					//
 					// // Show the "number of items in cart" message
-					// if ( $('.edd-cart-number-of-items').css('display') == 'none') {
-					// 	$('.edd-cart-number-of-items').show('slow');
-					// }
+					if ( $('.edd-cart-number-of-items').css('display') == 'none') {
+						$('.edd-cart-number-of-items').show('slow');
+					}
 					//
 					// if( variable_price == 'no' || price_mode != 'multi' ) {
 					// 	// Switch purchase to checkout if a single price item or variable priced with radio buttons
@@ -234,26 +236,26 @@ jQuery(document).ready(function ($) {
 					// 	// $('.edd_go_to_checkout', container).css('display', 'inline-block');
 					// }
 					//
-					//$this.parents("td").attr("colspan","2");
-					// $this.parents("td")
-					//$this.parents("td").next("td").remove();
+					$this.parents("td").attr("colspan","2");
+					$this.parents("td")
+					$this.parents("td").next("td").remove();
 					$this.parents("tr").find("a.btn-danger").fadeOut();
-					$this.parent("td").html("<a href='"+edd_scripts.checkout_page+"' class='btn btn-danger'>Checkout</a>");
+					$this.parent("td").html("<a href='"+edd_scripts.checkout_page+"' class='btn btn-danger btn-sm btn-checkout'>Checkout</a>");
 					$("#loading").hide();
 					// if ( price_mode == 'multi' ) {
 					// 	// remove spinner for multi
 					// }
 					//
 					// // Update all buttons for same download
-					// if( $( '.edd_download_purchase_form' ).length && ( variable_price == 'no' || ! form.find('.edd_price_option_' + download).is('input:hidden') ) ) {
-					// 	var parent_form = $('.edd_download_purchase_form *[data-download-id="' + download + '"]').parents('form');
-					// 	$( 'a.edd-add-to-cart', parent_form ).hide();
-					// 	if( price_mode != 'multi' ) {
-					// 		parent_form.find('.edd_download_quantity_wrapper').slideUp();
-					// 	}
-					// 	$( '.edd_go_to_checkout', parent_form ).show().removeAttr( 'data-edd-loading' );
-					// }
-					//
+					if( $( '.edd_download_purchase_form' ).length && ( variable_price == 'no' || ! form.find('.edd_price_option_' + download).is('input:hidden') ) ) {
+						var parent_form = $('.edd_download_purchase_form *[data-download-id="' + download + '"]').parents('form');
+						$( 'a.edd-add-to-cart', parent_form ).hide();
+						if( price_mode != 'multi' ) {
+							parent_form.find('.edd_download_quantity_wrapper').slideUp();
+						}
+						$( '.edd_go_to_checkout', parent_form ).show().removeAttr( 'data-edd-loading' );
+					}
+
 					// if( response != 'incart' ) {
 					// 	// Show the added message
 					// 	// $('.edd-cart-added-alert', container).fadeIn();
@@ -354,57 +356,120 @@ jQuery(document).ready(function ($) {
 
 	$("#").click(function(e){
 		e.preventDefault();
-		var output = creditly.validate();
-    if (output) {
-      // Your validated credit card output
-      console.log(output);
-    }
+		// var output = creditly.validate();
+    // if (output) {
+    //   // Your validated credit card output
+    //   console.log(output);
+    // }
 	});
 
 	function valid_credit_card(value) {
-  // accept only digits, dashes or spaces
-		if (/[^0-9-\s]+/.test(value)) return false;
-		// The Luhn Algorithm. It's so pretty.
-		var nCheck = 0, nDigit = 0, bEven = false;
-		value = value.replace(/\D/g, "");
-
-		for (var n = value.length - 1; n >= 0; n--) {
-			var cDigit = value.charAt(n),
-				  nDigit = parseInt(cDigit, 10);
-
-			if (bEven) {
-				if ((nDigit *= 2) > 9) nDigit -= 9;
+		if($("#card_number").hasClass("valid")){
+			if($("#card_number").hasClass('amex')){
+				$("#card_type").val("AX");
+				return true;
 			}
-
-			nCheck += nDigit;
-			bEven = !bEven;
+			else if($("#card_number").hasClass('diners_club_carte_blanche')){
+				$("#card_type").val("CB");
+				return true;
+			}
+			else if($("#card_number").hasClass('diners_club_international')){
+				$("#card_type").val("DN");
+				return true;
+			}
+			else if($("#card_number").hasClass('discover')){
+				$("#card_type").val("DS");
+				return true;
+			}
+			else if($("#card_number").hasClass('mastercard')){
+				$("#card_type").val("MC");
+				return true;
+			}
+			else if($("#card_number").hasClass('visa')){
+				$("#card_type").val("VI");
+				return true;
+			}
+			else if($("#card_number").hasClass('visa_electron')){
+				$("#card_type").val("VE");
+				return true;
+			}
+			else if($("#card_number").hasClass('jcb')){
+				$("#card_type").val("JC");
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
-		return (nCheck % 10) == 0;
+		else{
+			return false;
+		}
 	}
 
 	var errors = [];
 
 	function valid(){
-
-		if($("#edd_first").val() != ""){
+		errors = [];
+		if($("#edd_first").val() == ""){
 			var error = {};
 			error.id = "#edd_first";
 			error.message = "First Name cannot be empty";
 			errors.push(error);
 		}
-		if($("#edd_last").val() != ""){
+		if($("#edd_last").val() == ""){
 			var error = {};
 			error.id = "#edd_last";
 			error.message = "Last Name cannot be empty";
 			errors.push(error);
 		}
-		if($("#edd_email").val() != ""){
+		if($("#edd_email").val() == ""){
 			var error = {};
 			error.id = "#edd_email";
 			error.message = "Email cannot be empty";
 			errors.push(error);
 		}
-		if($("#card_number").val() != ""){
+		if($("#edd_phonenumber").val() == ""){
+			var error = {};
+			error.id = "#edd_phonenumber";
+			error.message = "Phonenumber cannot be empty";
+			errors.push(error);
+		}
+
+		if($('.booker').prop('checked')) {
+			if($("#edd_guest_first").val() == ""){
+				var error = {};
+				error.id = "#edd_guest_first";
+				error.message = "Guest First Name cannot be empty";
+				errors.push(error);
+			}
+			if($("#edd_guest_last").val() == ""){
+				var error = {};
+				error.id = "#edd_guest_last";
+				error.message = "Guest Last Name cannot be empty";
+				errors.push(error);
+			}
+			if($("#edd_guest_email").val() == ""){
+				var error = {};
+				error.id = "#edd_guest_email";
+				error.message = "Guest Email cannot be empty";
+				errors.push(error);
+			}
+			if($("#edd_guest_phonenumber").val() == ""){
+				var error = {};
+				error.id = "#edd_guest_phonenumber";
+				error.message = "Guest Phonenumber cannot be empty";
+				errors.push(error);
+			}
+		}
+
+		if($("#card_name").val() == ""){
+			var error = {};
+			error.id = "#card_name";
+			error.message = "Card name cannot be empty";
+			errors.push(error);
+		}
+
+		if($("#card_number").val() == ""){
 			var error = {};
 			error.id = "#card_number";
 			error.message = "Credit card number cannot be empty";
@@ -417,17 +482,47 @@ jQuery(document).ready(function ($) {
 			errors.push(error);
 		}
 
-		if($("#card_expiry").val() != ""){
+		if($("#card_expiry").val() == ""){
 			var error = {};
 			error.id = "#card_expiry";
 			error.message = "Expiry date cannot be empty";
 			errors.push(error);
 		}
-		if($("#card_cvc").val() != ""){
+		else if($.trim($("#card_expiry").val()).length == 5){
+			var valString = $("#card_expiry").val();
+			var mnthAndYear = valString.split('/');
+			if(Number(mnthAndYear[0]) > 12){
+				var error = {};
+				error.id = "#card_expiry";
+				error.message = "Invalid month in expiry date";
+				errors.push(error);
+			}
+
+			var d = new Date();
+			var n = d.getFullYear();
+			var currentYear = n.toString().substring(2);
+
+			if(Number(mnthAndYear[1]) < Number(currentYear)){
+				var error = {};
+				error.id = "#card_expiry";
+				error.message = "Invalid year in expiry date";
+				errors.push(error);
+			}
+		}
+		if($("#edd_cvc").val() == ""){
 			var error = {};
-			error.id = "#card_cvc";
+			error.id = "#edd_cvc";
 			error.message = "CVV cannot be empty";
 			errors.push(error);
+		}
+		if(errors.length>0){
+			var errorsString="";
+			for (var i = 0; i < errors.length; i++) {
+				errorsString += errors[i].message+"</br>";
+			}
+			$(".alert-checkout-error").remove();
+			$(".purchase-details-title").after("<div class='alert alert-danger alert-dismissible alert-checkout-error' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Error!</strong></br>"+errorsString+"</div>");
+			return false;
 		}
 		return true;
 	}
@@ -457,6 +552,8 @@ jQuery(document).ready(function ($) {
 			if ( $.trim(data) == 'success' ) {
 				$('.edd_errors').remove();
 				$('.edd-error').hide();
+				localStorage.removeItem('pageno');
+				localStorage.removeItem('add_info');
 				$(eddPurchaseform).submit();
 			} else {
 				// $('#edd-purchase-button').val(complete_purchase_val);
@@ -513,9 +610,83 @@ function edd_load_gateway( payment_mode ) {
 	jQuery.post(edd_scripts.ajaxurl + '?payment-mode=' + payment_mode, { action: 'edd_load_gateway', edd_payment_mode: payment_mode },
 		function(response){
 			$("#loading").hide();
-
-			jQuery('#edd_purchase_form_wrap').html(response);
+			jQuery('.personal-payment-information').html(response);
+			if(location.pathname.indexOf('checkout')>0)
+		  {
+		    var pageno = localStorage.getItem('pageno');
+				var addInfo = localStorage.getItem('add_info');
+				if(isUserLoggedIn != "1"){
+					pageno = 1;
+					localStorage.setItem('pageno',1);
+				}
+				if(addInfo !=""){
+					$('.add_info').val(addInfo);
+				}
+		    if(pageno != undefined && pageno == 2){
+		      $("#edd_checkout_cart_form").hide();
+		      $("#edd_checkout_form_wrap").show();
+		      localStorage.setItem('pageno',2);
+		    }
+		    else{
+		      $("#edd_checkout_cart_form").show();
+		      $("#edd_checkout_form_wrap").hide();
+		      localStorage.setItem('pageno',1);
+		    }
+		  }
+			else if(location.pathname.indexOf('checkout') == -1){
+				localStorage.setItem('pageno',1);
+			}
 			jQuery('.edd-no-js').hide();
+			jQuery(".btn-backbtn").click(function(e){
+		    e.preventDefault();
+				jQuery("#edd_checkout_cart_form").show();
+				jQuery("#edd_checkout_form_wrap").hide();
+		    localStorage.setItem('pageno',1);
+		    return false;
+		  });
+
+			if(jQuery(".edd-points-redeem-points-wrap").size() > 0)
+			{
+				var htmlItm = jQuery(".edd-points-checkout-message").html();
+				htmlItm += "</br>"+jQuery(".edd-points-redeem-message").html();
+				jQuery(".edd-points-redeem-message").html(htmlItm);
+				jQuery(".edd-points-checkout-message").remove();
+			}
+
+			if(jQuery('.edd-points-remove-disocunt-message').size() > 0)
+			{
+				var htmlItm = "";
+				jQuery.each(jQuery('.edd-points-checkout-message'), function(index,item){
+					htmlItm += jQuery(this).html()+"</br>";
+					jQuery(this).hide();
+				});
+			jQuery('.edd-points-checkout-message').last().html(htmlItm);
+			jQuery('.edd-points-checkout-message').last().show().css({"width":"100%","margin":"0px 0px 10px 5px !important"});
+				//jQuery('.edd-points-checkout-message').not(":last-child").remove();
+			}
+
+			$("#card_expiry").mask("00/0000");
+
+			$('#card_number').validateCreditCard(function(result) {
+					console.log(result);
+          if(result.card_type == null)
+          {
+              $('#card_number').removeClass().addClass("form-control");
+          }
+          else
+          {
+              $('#card_number').addClass(result.card_type.name);
+          }
+
+          if(!result.valid)
+          {
+              $('#card_number').removeClass("valid");
+          }
+          else
+          {
+              $('#card_number').addClass("valid");
+          }
+      });
 		}
 	);
 

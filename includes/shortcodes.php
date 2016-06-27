@@ -153,7 +153,7 @@ add_shortcode( 'download_checkout', 'edd_checkout_form_shortcode' );
  * @return string
  */
 function edd_cart_shortcode( $atts, $content = null ) {
-	return edd_shopping_cart();
+	echo edd_shopping_cart();
 }
 add_shortcode( 'download_cart', 'edd_cart_shortcode' );
 
@@ -653,25 +653,28 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 		return '<p class="edd-alert edd-alert-error">' . $edd_receipt_args['error'] . '</p>';
 	}
 
+	error_log($payment_key);
+
 	$payment_id    = edd_get_purchase_id_by_key( $payment_key );
+	$edd_receipt_args['id'] = $payment_id;
+	error_log($payment_id);
 
-
-	$user_can_view = edd_can_view_receipt( $payment_key );
-
-	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt
-	if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! edd_is_guest_payment( $payment_id ) ) {
-		global $edd_login_redirect;
-		$edd_login_redirect = edd_get_current_page_url();
-
-		ob_start();
-
-		echo '<p class="edd-alert edd-alert-warn">' . __( 'You must be logged in to view this payment receipt.', 'easy-digital-downloads' ) . '</p>';
-		edd_get_template_part( 'shortcode', 'login' );
-
-		$login_form = ob_get_clean();
-
-		return $login_form;
-	}
+	// $user_can_view = edd_can_view_receipt( $payment_key );
+	//
+	// // Key was provided, but user is logged out. Offer them the ability to login and view the receipt
+	// if ( ! $user_can_view && ! empty( $payment_key ) && ! is_user_logged_in() && ! edd_is_guest_payment( $payment_id ) ) {
+	// 	global $edd_login_redirect;
+	// 	$edd_login_redirect = edd_get_current_page_url();
+	//
+	// 	ob_start();
+	//
+	// 	echo '<p class="edd-alert edd-alert-warn">' . __( 'You must be logged in to view this payment receipt.', 'easy-digital-downloads' ) . '</p>';
+	// 	edd_get_template_part( 'shortcode', 'login' );
+	//
+	// 	$login_form = ob_get_clean();
+	//
+	// 	return $login_form;
+	// }
 
 	/*
 	 * Check if the user has permission to view the receipt
