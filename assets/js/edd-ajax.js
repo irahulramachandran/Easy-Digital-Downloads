@@ -410,6 +410,8 @@ jQuery(document).ready(function ($) {
 
 	function valid(){
 		errors = [];
+
+           
 		if($("#edd_first").val() == ""){
 			var error = {};
 			error.id = "#edd_first";
@@ -428,12 +430,47 @@ jQuery(document).ready(function ($) {
 			error.message = "Email cannot be empty";
 			errors.push(error);
 		}
-		if($("#edd_phonenumber").val() == ""){
-			var error = {};
-			error.id = "#edd_phonenumber";
-			error.message = "Phonenumber cannot be empty";
-			errors.push(error);
-		}
+	
+                
+                
+                      
+                var mob = /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/;
+        if ($("#edd_phonenumber").val()!= "" && mob.test($('#edd_phonenumber').val()) == false) {
+  
+            var error = {};
+            error.id = "#edd_phonenumber";
+            error.message = "Phone Number is invalid";
+            errors.push(error);
+        }
+        
+                 var Firstname = /^[a-z]+$/i;
+        if ($("#edd_first").val()!= "" && Firstname.test($('#edd_first').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_first";
+            error.message = "First name is not valid. Only characters  are  acceptable.";
+            errors.push(error);
+        }
+        
+               var Lastname = /^[a-z]+$/i;
+        if ($("#edd_last").val()!= "" && Lastname.test($('#edd_last').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_last";
+            error.message = "Lastname is not valid. Only characters  are  acceptable.";
+            errors.push(error);
+        }
+        
+                var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if ($("#edd_email").val()!= "" && Email.test($('#edd_email').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_email";
+            error.message = "Email is not valid.";
+            errors.push(error);
+        }
+        
+        
 
 		if($('.booker').prop('checked')) {
 			if($("#edd_guest_first").val() == ""){
@@ -454,12 +491,45 @@ jQuery(document).ready(function ($) {
 				error.message = "Guest Email cannot be empty";
 				errors.push(error);
 			}
-			if($("#edd_guest_phonenumber").val() == ""){
-				var error = {};
-				error.id = "#edd_guest_phonenumber";
-				error.message = "Guest Phonenumber cannot be empty";
-				errors.push(error);
-			}
+			
+                         
+                 var EDDFirstname = /^[a-z]+$/i;
+        if ($("#edd_guest_first").val()!= "" && EDDFirstname.test($('#edd_guest_first').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_guest_first";
+            error.message = "Guest First name is not valid. Only characters  are  acceptable.";
+            errors.push(error);
+        }
+        
+        
+                  var EDDLastname = /^[a-z]+$/i;
+        if ($("#edd_guest_last").val()!= "" && EDDLastname.test($('#edd_guest_last').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_guest_last";
+            error.message = "Guest Lastname is not valid. Only characters  are  acceptable.";
+            errors.push(error);
+        }
+        
+               var EDDEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if ($("#edd_guest_email").val()!= "" && EDDEmail.test($('#edd_guest_email').val()) == false) {
+          
+            var error = {};
+            error.id = "#edd_email";
+            error.message = "Guest Email is not valid.";
+            errors.push(error);
+        }
+                        
+                var EDDmob = /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/;
+        if ($("#edd_guest_phonenumber").val()!= "" && EDDmob.test($('#edd_guest_phonenumber').val()) == false) {
+  
+            var error = {};
+            error.id = "#edd_guest_phonenumber";
+            error.message = "Guest Phone Number is invalid";
+            errors.push(error);
+        }
+        
 		}
 
 		if($("#card_name").val() == ""){
