@@ -167,6 +167,13 @@ function edd_process_paypal_purchase( $purchase_data ) {
 		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
 
 		// Get rid of cart contents
+		error_log("PAYMENTID:::::::::::::");
+		error_log(json_encode($payment));
+
+		error_log("SENDING EMAIL To the user");
+		edd_email_purchase_receipt_for_user( $payment );
+		error_log("SEND EMAIL To the user");
+
 		edd_empty_cart();
 		// Redirect to PayPal
 		edd_send_to_success_page("?payment_key=".$purchase_data['purchase_key']); // Added by Rahul

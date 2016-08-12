@@ -475,6 +475,12 @@ function edd_get_registered_settings() {
 						'desc' => __( 'Upload or choose a logo to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'easy-digital-downloads' ),
 						'type' => 'upload',
 					),
+					'email_header' => array(
+						'id'   => 'email_header',
+						'name' => __( 'Header Image', 'easy-digital-downloads' ),
+						'desc' => __( 'Upload or choose a header image to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'easy-digital-downloads' ),
+						'type' => 'upload',
+					),
 					'email_settings' => array(
 						'id'   => 'email_settings',
 						'name' => '',

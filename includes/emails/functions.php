@@ -60,6 +60,86 @@ function edd_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 	}
 }
 
+function edd_email_purchase_receipt_for_user( $payment_id, $admin_notice = true ) {
+
+	$payment_data = edd_get_payment_meta( $payment_id );
+
+	$from_name    = edd_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name    = apply_filters( 'edd_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	$from_email   = edd_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email   = apply_filters( 'edd_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	$to_email     = edd_get_payment_guest_email( $payment_id );
+
+	error_log("TOEMAIL:".$to_email);
+
+	$subject      = edd_get_option( 'purchase_subject', __( 'Purchase Receipt', 'easy-digital-downloads' ) );
+	$subject      = apply_filters( 'edd_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject      = edd_do_email_tags( $subject, $payment_id );
+
+	$heading      = edd_get_option( 'purchase_heading', __( 'Purchase Receipt', 'easy-digital-downloads' ) );
+	$heading      = apply_filters( 'edd_purchase_heading', $heading, $payment_id, $payment_data );
+
+	$attachments  = apply_filters( 'edd_receipt_attachments', array(), $payment_id, $payment_data );
+	$message      = edd_do_email_tags( edd_get_email_body_content( $payment_id, $payment_data ), $payment_id );
+
+	$emails = EDD()->emails;
+
+	$emails->__set( 'from_name', $from_name );
+	$emails->__set( 'from_email', $from_email );
+	$emails->__set( 'heading', $heading );
+
+
+	$headers = apply_filters( 'edd_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
+	$emails->__set( 'headers', $headers );
+
+	$emails->send( $to_email, $subject, $message, $attachments );
+
+	if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
+		do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
+	}
+}
+
+function edd_email_purchase_receipt_to_hotel( $payment_id, $email, $admin_notice = true ) {
+
+	$payment_data = edd_get_payment_meta( $payment_id );
+
+	$from_name    = edd_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name    = apply_filters( 'edd_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	$from_email   = edd_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email   = apply_filters( 'edd_purchase_from_address', $from_email, $payment_id, $payment_data );
+
+	$to_email     = $email; //edd_get_payment_guest_email( $payment_id );
+
+	error_log("TOEMAIL:".$email);
+
+	$subject      = edd_get_option( 'purchase_subject', __( 'Purchase Receipt', 'easy-digital-downloads' ) );
+	$subject      = apply_filters( 'edd_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
+	$subject      = edd_do_email_tags( $subject, $payment_id );
+
+	$heading      = edd_get_option( 'purchase_heading', __( 'Purchase Receipt', 'easy-digital-downloads' ) );
+	$heading      = apply_filters( 'edd_purchase_heading', $heading, $payment_id, $payment_data );
+
+	$attachments  = apply_filters( 'edd_receipt_attachments', array(), $payment_id, $payment_data );
+	$message      = edd_do_email_tags( edd_get_email_body_content( $payment_id, $payment_data ), $payment_id );
+
+	$emails = EDD()->emails;
+
+	$emails->__set( 'from_name', $from_name );
+	$emails->__set( 'from_email', $from_email );
+	$emails->__set( 'heading', $heading );
+
+
+	$headers = apply_filters( 'edd_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
+	$emails->__set( 'headers', $headers );
+
+	$emails->send( $to_email, $subject, $message, $attachments );
+
+	return true;
+}
+
 /**
  * Email the download link(s) and payment confirmation to the admin accounts for testing.
  *

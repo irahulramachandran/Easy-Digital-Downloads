@@ -94,8 +94,8 @@ function edd_get_cart_content_details() {
 		}
 
 	}
-	error_log("DETAILS1:::DETAILS1");
-	error_log(json_encode($details));
+	// error_log("DETAILS1:::DETAILS1");
+	//error_log(json_encode($details));
 	return $details;
 }
 
@@ -711,8 +711,8 @@ function edd_get_cart_items_subtotal( $items ) {
 
 		$prices = wp_list_pluck( $items, 'subtotal' );
 
-		error_log("PRICES:::PRICES");
-		error_log(json_encode($prices));
+		//error_log("PRICES:::PRICES");
+		//error_log(json_encode($prices));
 
 		if( is_array( $prices ) ) {
 			$subtotal = array_sum( $prices );
@@ -1155,7 +1155,7 @@ function post_to_url($url, $data) {
    }
    rtrim($fields, '&');
 
-   error_log("FIELDS : ".$fields);
+   //error_log("FIELDS : ".$fields);
 
    $post = curl_init();
 

@@ -383,7 +383,7 @@ function edd_email_tag_download_list( $payment_id ) {
 	// error_log(json_encode($payment));
 
 	$payment_data  = $payment->get_meta();
-	$download_list = '<ul>';
+	$download_list = '<ul style="list-style-type:none;">';
 	$cart_items    = $payment->cart_details;
 	$email         = $payment->email;
 
@@ -399,13 +399,16 @@ function edd_email_tag_download_list( $payment_id ) {
 			}
 
 			if ( edd_item_quantities_enabled() ) {
-				$quantity = $item['quantity'];
+				$quantity = $item['item_number']['quantity'];
 			}
 
-			$price = $item["price"];
-			if ( $show_names ) {
+			error_log("GENERATING ITEMS FOR EMAIL");
+			error_log(json_encode($item));
 
-				$title = '<strong>' . $item['name'] . '</strong>';
+			$price = $item["price"];
+			// if ( $show_names ) {
+
+				$title = '<strong>' . $item['item_number']['options']['roomtypename'].' - '.$item['item_number']['options']['name'] . '</strong>';
 
 				if ( ! empty( $quantity ) && $quantity > 1 ) {
 					$title .= "&nbsp;&ndash;&nbsp;" . __( 'Quantity', 'easy-digital-downloads' ) . ': ' . $quantity;
@@ -415,12 +418,12 @@ function edd_email_tag_download_list( $payment_id ) {
 					$title .= "&nbsp;&ndash;&nbsp;" . __( 'SKU', 'easy-digital-downloads' ) . ': ' . $sku;
 				}
 
-				if ( $price_id !== null ) {
-					$title .= "&nbsp;&ndash;&nbsp;" . $item["name"];
-				}
+				// if ( $price_id !== null ) {
+				// 	$title .= "&nbsp;&ndash;&nbsp;" . $item["name"];
+				// }
 
 				$download_list .= '<li>' . apply_filters( 'edd_email_receipt_download_title', $title, $item, $price_id, $payment_id ) . '<br/>';
-			}
+			//}
 
 			// $files = edd_get_download_files( $item['id'], $price_id );
 			//

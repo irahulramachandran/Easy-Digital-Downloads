@@ -189,8 +189,8 @@ function edd_user_info_fields() {
 							<span class="edd-required-indicator">*</span>
 							<span class="card-type"></span>
 						</label> -->
-                                                
-                                                <input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
+
+						<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
 		        <input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
 						<?php do_action( 'edd_purchase_form_before_email' ); ?>
 		        <input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
@@ -218,12 +218,11 @@ function edd_user_info_fields() {
 					<div class="guest-information pull-left">
 	        	<h2 class="checkout-wizard-title margin-top-0 margin-bottom-10">Guest Information</h2>
 						<div class='col-xs-12 no-padding'>
-                                               
+
 							<input class="form-control edd_col_3" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['guest_first_name'] ); ?>" placeholder="Guest First Name" maxlength="50"/>
-                                                
 			        <input class="form-control edd_col_3" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['guest_last_name'] ); ?>" placeholder="Guest Last Name" maxlength="50"/>
-			        <input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="30"/>
-							<input class="form-control edd_col_3" type="text" maxlength="10" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
+			        <input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
+							<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
 						</div>
 						<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
 						<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>

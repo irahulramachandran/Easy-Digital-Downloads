@@ -15,6 +15,9 @@ if (empty($payment)) :
     <?php
     return;
 endif;
+// error_log("SENDING EMAIL To the user");
+// edd_email_purchase_receipt_for_user( $payment->ID );
+// error_log("SEND EMAIL To the user");
 
 $meta = edd_get_payment_meta($payment->ID);
 $cart = edd_get_payment_meta_cart_details($payment->ID, true);
@@ -207,14 +210,13 @@ $startdate = edd_booking_startdate($payment->ID);
         <div class="col-xs-12 col-md-7" >
         </div>
         <div class="col-xs-12 col-md-5 text-right">
-          <div class="textcolorredlarge pull-right"><strong><?php echo edd_currency_filter(edd_format_amount(edd_payment_amount($payment->ID))); ?></strong></div><strong class="pull-right"><p>Total to be paid at hotel:</p></strong>
+          <div class="textcolorredlarge pull-right"><strong><?php echo edd_payment_amount($payment->ID); ?></strong></div><strong class="pull-right"><p>Total to be paid at hotel:</p></strong>
         </div>
     </div>
     </div>
     <div class="printbtn" >
         <a href="#" id="btnPrint" class="btn btn-danger" >Print</a>
-        <a target="_blank" href="<?php //echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) );     ?>" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
-        <!-- <a href="#" id="btnEmail" class="btn btn-danger">Email</a> -->
+        <a target="_blank" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
     </div>
 
 
@@ -275,10 +277,10 @@ $startdate = edd_booking_startdate($payment->ID);
 
     <?php endif; ?>
                         </div>
-                         
+
                         <div class="col-md-3">
-                                   <div class="Payment-Status"> 
-                            
+                                   <div class="Payment-Status">
+
                             <table>
                                 <tr>
                                     <td>
@@ -294,37 +296,37 @@ $startdate = edd_booking_startdate($payment->ID);
                                     </td>
                                 </tr>
                             </table>
-                           
+
 
 <!--                            <div class="col-md-1">
 
-                                
+
                             </div>-->
 
 
                         </div>
                         </div>
-               
 
 
-                        <div class="col-md-12">  
+
+                        <div class="col-md-12">
                             <hr>
                         </div>
 
 
-                        <div class="col-md-12"> 
+                        <div class="col-md-12">
                             <p><strong>Booking Confirmation</strong></p>
-                        </div>     <div class="col-md-12"> 
+                        </div>     <div class="col-md-12">
                             <div class="confirmatn-pagetextcolor">
                                 <p>Please print this aknowledement and present it to the property reception on arrival.A receipt will be emailed to you at the address entered during the booking process</p>
                             </div>
 
                         </div>
-                        <div class="col-md-12">  
+                        <div class="col-md-12">
                             <hr>
                         </div>
 
-                        <div class="col-md-12"> 
+                        <div class="col-md-12">
                             <p><strong>Contact Details</strong></p>
                         </div>
 
@@ -332,7 +334,7 @@ $startdate = edd_booking_startdate($payment->ID);
                         <table>
                             <tr>
                                 <td>   <div class="col-md-4"> <div class="textcolorred"><p>Address</p></div></div>
-                                    
+
                                 </td>
                                  <td>
                                       <div class="col-md-4">  <div class="textcolorred"><p>Telephone<p></div></div>
@@ -340,7 +342,7 @@ $startdate = edd_booking_startdate($payment->ID);
                                 <td>
                                        <div class="col-md-4"><div class="textcolorred"><p>Email</p></div></div>
                                 </td>
-                                
+
                             </tr>
                                <tr>
                                 <td>
@@ -352,17 +354,17 @@ $startdate = edd_booking_startdate($payment->ID);
                                 <td>
                                     <div class="col-md-4"> <div class="confirmatn-pagetextcolor"><p>Hellow@kiridara.com</p></div></div>
                                 </td>
-                                
+
                             </tr>
                             </table>
 
 
 
-                
 
 
 
-                        <div class="col-md-12">  
+
+                        <div class="col-md-12">
                             <hr>
                         </div>
 
@@ -370,26 +372,26 @@ $startdate = edd_booking_startdate($payment->ID);
 
                         <div class="col-md-12">     <p><strong>Booking summary</strong></p></div>
 
-  <div class="col-md-12"> 
+  <div class="col-md-12">
                           <table class="bookingsummary" >
                             <tr>
                                 <td>  <div class="col-md-4"><div class="textcolorred"><p><?php _e('Name', 'easy-digital-downloads'); ?></p></div></div></td>
                                   <td> <div class="col-md-2"><div class="textcolorred"><p><?php _e('Arrival Date', 'easy-digital-downloads'); ?></p></div></div></td>
                                     <td> <div class="col-md-2"><div class="textcolorred"><p><?php _e('Departure Date', 'easy-digital-downloads'); ?></p></div></div></td>
                                       <td> <div class="col-md-2"><div class="textcolorred"><p><?php _e('Nights', 'easy-digital-downloads'); ?></p></div></div></td>
-                                        <td>  <div class="col-md-2"><div class="textcolorred"><p><?php _e('Product Total', 'easy-digital-downloads'); ?></p></div></div></td>
+                                        <td>  <div class="col-md-2"><div class="textcolorred"><p><?php _e('Total', 'easy-digital-downloads'); ?></p></div></div></td>
                             </tr>
-                     
-
-                      
-                       
-                       
-                       
-                      
 
 
 
-                   
+
+
+
+
+
+
+
+
 
     <?php do_action('edd_payment_receipt_after_table', $payment, $edd_receipt_args); ?>
 
@@ -423,7 +425,7 @@ $startdate = edd_booking_startdate($payment->ID);
                     ?>
 
                                             <div class="edd_purchase_receipt_product_name">
-                                                <div class="confirmatn-pagetextcolor"> <p><?php echo esc_html($item_title); ?></p></div> 
+                                                <div class="confirmatn-pagetextcolor"> <p><?php echo esc_html($item_title); ?></p></div>
                     <?php if (!is_null($price_id)) : ?>
 
 
@@ -495,12 +497,12 @@ $startdate = edd_booking_startdate($payment->ID);
 <!--                                        </div>-->
 <td>
 <!--                                        <div class="col-md-2">-->
-                                            <div class="confirmatn-pagetextcolor"> <p><?php echo $fromdatetime; ?></p></div> 
+                                            <div class="confirmatn-pagetextcolor"> <p><?php echo $fromdatetime; ?></p></div>
 <!--                                        </div>-->
 </td>
 <td>
 <!--                                        <div class="col-md-2">-->
-                                            <div class="confirmatn-pagetextcolor"> <p><?php echo $todatetime; ?></p></div> 
+                                            <div class="confirmatn-pagetextcolor"> <p><?php echo $todatetime; ?></p></div>
 <!--                                        </div>-->
 </td>
 <td>
@@ -517,7 +519,7 @@ $startdate = edd_booking_startdate($payment->ID);
                                         <td>
                                         <div class="col-md-2">
                                         <?php if (empty($item['in_bundle'])) : // Only show price when product is not part of a bundle  ?>
-                                                <div class="confirmatn-pagetextcolor"><p> <?php echo edd_currency_filter(edd_format_amount($item['price'])); ?> </p></div> 
+                                                <div class="confirmatn-pagetextcolor"><p> <?php echo edd_currency_filter(edd_format_amount($item['price'])); ?> </p></div>
                                             <?php endif; ?>
 <!--                                        </div>-->
                                         </td>
@@ -542,24 +544,24 @@ $startdate = edd_booking_startdate($payment->ID);
                         </table>
 </div>
 
-                    <div class="col-md-12">  
+                    <div class="col-md-12">
 
-                    </div>                          
-                    <div class="col-md-12">  
+                    </div>
+                    <div class="col-md-12">
                         <hr>
                     </div>
 
- <div class="col-md-12">  
+ <div class="col-md-12">
 
-                    </div> 
-                                          
+                    </div>
+
                     <div class="col-md-8" >
                         &nbsp;
-                    </div>  
+                    </div>
                     <div class="col-md-3" >  <strong><p>Total to be paid at hotel:</p></strong>
 
-                    </div>   
-                    <div class="col-md-1" >  
+                    </div>
+                    <div class="col-md-1" >
 
                         <div class="textcolorredlarge">  <strong><?php echo edd_payment_amount($payment->ID); ?></strong></div>
 

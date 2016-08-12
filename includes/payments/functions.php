@@ -177,7 +177,10 @@ function edd_insert_payment( $payment_data = array() ) {
 
 	$payment->save();
 	$ReservationID = EDD()->session->get( 'ReservationID');
+	$eddguestemail = EDD()->session->get( 'edd_guest_email');
 	add_post_meta($payment->ID, 'reservation_id',$ReservationID);
+	add_post_meta($payment->ID, 'edd_guest_email',$eddguestemail);
+
 
 	do_action( 'edd_insert_payment', $payment->ID, $payment_data );
 
@@ -186,7 +189,6 @@ function edd_insert_payment( $payment_data = array() ) {
 	}
 
 	// Return false if no payment was inserted
-	error_log("edd_insert_payment FALSE");
 	return false;
 }
 
@@ -1002,6 +1004,10 @@ function edd_get_payment_meta_cart_details( $payment_id, $include_bundle_files =
 function edd_get_payment_user_email( $payment_id ) {
 	$payment = new EDD_Payment( $payment_id );
 	return $payment->email;
+}
+
+function edd_get_payment_guest_email( $payment_id ) {
+	return get_post_meta($payment_id,'edd_guest_email',true);
 }
 
 /**

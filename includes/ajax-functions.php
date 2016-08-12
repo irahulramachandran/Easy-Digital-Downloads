@@ -223,6 +223,7 @@ function edd_ajax_add_to_cart() {
 			$options['rateplancode'] = $download->rateplancode;
 			$options['name'] = $download->name;
 			$options['price'] = $download->price;
+			$options['rates'] = $download->rates;
 			$options['roomtypename'] = $download->roomtypename;
 		  $options['roomtypenamedescription'] = $download->roomtypenamedescription;
 			$options['roomtypecode'] = $download->roomtypecode;
