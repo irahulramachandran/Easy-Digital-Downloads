@@ -34,7 +34,7 @@ function edd_checkout_form() {
 			edd_checkout_cart();
 ?>
 			<div id="edd_checkout_form_wrap" class="edd_clearfix">
-				<h2 class='checkout-wizard-title purchase-details-title margin-bottom-20'>Purchase Details</h2>
+			<!--	<h2 class='checkout-wizard-title purchase-details-title margin-bottom-20'>Purchase Details</h2>-->
 				<?php do_action( 'edd_before_purchase_form' ); ?>
 				<form id="edd_purchase_form" class="edd_form" action="<?php echo $form_action; ?>" method="POST">
 					<?php
@@ -179,7 +179,61 @@ function edd_user_info_fields() {
 
 	$customer = array_map( 'sanitize_text_field', $customer );
 	?>
-	<fieldset  class="col-xs-12 no-padding">
+	
+	<div class="row">
+		<div class="row text-center">
+			<div class="choice_mob">
+				<div class="col-xs-12 hidden-sm hidden-md hidden-lg no-padding">
+					<h2>I AM BOOKING FOR</h2>
+								
+						<div class="checkbox">
+							<div class="label">
+							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
+							</div>
+							<div class="label">
+							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<fieldset  class="col-xs-12 no-padding margin-top-20">
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+				<div class="hidden-xs col-sm-12 col-md-12">
+					<h2>I AM BOOKING FOR</h2>
+					
+						<div class="checkbox">
+							<div class="label">
+							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
+							</div>
+							<div class="label">
+							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
+							</div>
+						</div>
+					
+				</div>
+				<div class="row">
+						
+					<div class="col-xs-12 margin-top-20">
+						<div class="col-xs-12">Book Faster, Log in</div>
+						<div class="col-xs-3 col-sm-3">
+							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/facebook.png" width="100%"/>
+						</div>
+						<div class="col-xs-3 col-sm-3">
+							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/googleplus.png" width="100%"/>
+						</div>
+						<div class="col-xs-3 col-sm-3">
+							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/linkedin.png" width="100%"/>
+						</div>
+						<div class="col-xs-3 col-sm-3">
+							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/snhlogin.png" width="100%"/>
+						</div>
+						<div class="col-xs-12">
+							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/separator_checkout.png" class="img_res"/>
+						</div>
+					</div>
+				</div>
+				
 		<!-- <h2 class="checkout-wizard-title">Personal Information</h2> -->
 		<!-- <form class="payment-form" method="POST"> -->
 	    <div class="form-container">
@@ -189,133 +243,212 @@ function edd_user_info_fields() {
 							<span class="edd-required-indicator">*</span>
 							<span class="card-type"></span>
 						</label> -->
-
-						<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
-		        <input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
-						<?php do_action( 'edd_purchase_form_before_email' ); ?>
-		        <input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
-						<?php do_action( 'edd_purchase_form_after_email' ); ?>
-
-							<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
-							<input class="form-control edd_col_4" type="text" name="edd_address" id="edd_address" value="<?php echo esc_attr( $customer['address'] ); ?>" placeholder="Address" maxlength="300"/>
-							<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
-							<select class="form-control edd_col_4" name="edd_country" id="edd_country">
-								<option value="">Select Country</option>
-								<?php
-								$countries = edd_get_country_list();
-								foreach( $countries as $country_code => $country ) {
-								  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
-								}
-								?>
-							</select>
-							<!-- <input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State"/> -->
-						<div class="checkbox margin-5 pull-left">
-					    <label>
-					      <input type="checkbox" name="booker" class="booker"> <span>Booker</span>
-					    </label>
-					  </div>
-	        </div>
-					<div class="guest-information pull-left">
-	        	<h2 class="checkout-wizard-title margin-top-0 margin-bottom-10">Guest Information</h2>
-						<div class='col-xs-12 no-padding'>
-
-							<input class="form-control edd_col_3" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['guest_first_name'] ); ?>" placeholder="Guest First Name" maxlength="50"/>
-			        <input class="form-control edd_col_3" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['guest_last_name'] ); ?>" placeholder="Guest Last Name" maxlength="50"/>
-			        <input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
-							<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
+						<div class="col-xs-12  no-padding">
+							<div class="col-xs-12 col-sm-6">
+								<div class="margin-top-10">
+									First Name
+									<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
+								</div>
+								<div class="margin-top-10">
+									Last Name
+									<input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="margin-top-10">
+									<?php do_action( 'edd_purchase_form_before_email' ); ?>
+									Email*
+									<input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
+									<?php do_action( 'edd_purchase_form_after_email' ); ?>
+									</div>
+									<div class="margin-top-10">
+									Phone
+									<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
+								</div>
+							</div>
+						</div>	
+						<div class="additonal-information col-xs-12 no-padding">
+							<div class="col-xs-12 col-sm-6 ">
+								<div class="margin-top-10">
+									Address
+									<input class="form-control edd_col_4" type="text" name="edd_address" id="edd_address" value="<?php echo esc_attr( $customer['address'] ); ?>" placeholder="Address" maxlength="300"/>
+								</div>
+								<div class="margin-top-10">
+									State
+									<input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State" maxlength="300"/>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6 ">
+								<div class="margin-top-10">
+									City
+									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+								</div>
+								<div class="margin-top-10">
+									Country
+									<select class="form-control edd_col_4" name="edd_country" id="edd_country">
+										<option value="">Select Country</option>
+										<?php
+										$countries = edd_get_country_list();
+										foreach( $countries as $country_code => $country ) {
+										  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
+										}
+										?>
+									</select>
+								</div>
+								
+							</div>
+						</div>	
+						<div class="col-xs-12">
+							<div class="margin-top-10">
+								<label>	
+								  <input type="checkbox" name="addInfo" class="addInfo"> <span class="addInfo_ckbox">I WANT TO PROVIDE ADDITIONAL INFORMATION</span>
+								</label>
+								<label>
+								  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">REGISTER TO EARN 744 $ILVER DOLLARS</span>
+								</label>
+							</div>
 						</div>
-						<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
-						<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>
-						<select class="form-control edd_col_4" name="edd_guest_country" id="edd_guest_country">
-							<option value="">Select Guest Country</option>
-							<?php
-							$countries = edd_get_country_list();
-							foreach( $countries as $country_code => $country ) {
-							  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
-							}
-							?>
-						</select>
-						<!-- <input class="form-control edd_col_4" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/> -->
+							
+							<!-- <input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State"/> -->
+						
 	        </div>
+			
+					<div class="guest-information col-xs-12 no-padding">
+						<div class="col-xs-12 margin-top-10">
+							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Guest Information</h4>
+						</div>
+						<div class="col-xs-12 col-sm-6 ">
+							<div class="margin-top-10">
+								First Name
+								<input class="form-control edd_col_3" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['guest_first_name'] ); ?>" placeholder="Guest First Name" maxlength="50"/>
+							</div>
+							<div class="margin-top-10">
+								Last Name
+								<input class="form-control edd_col_3" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['guest_last_name'] ); ?>" placeholder="Guest Last Name" maxlength="50"/>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 ">
+							
+							<div class="margin-top-10">
+								Email
+								<input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
+							</div>
+							<div class="margin-top-10">
+								Phone
+								<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
+							</div>
+						</div>
+					</div>
+					<div class="additonal-information col-xs-12 no-padding">
+						<div class="col-xs-12 col-sm-6 ">
+							<div class="margin-top-10">
+								Address
+								<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
+							</div>
+							<div class="margin-top-10">
+								State
+								<input class="form-control edd_col_4" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/> 
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="margin-top-10">
+								City
+								<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>
+							</div>
+							<div class="margin-top-10">
+								Country
+								<select class="form-control edd_col_4" name="edd_guest_country" id="edd_guest_country">
+									<option value="">Select Guest Country</option>
+									<?php
+									$countries = edd_get_country_list();
+									foreach( $countries as $country_code => $country ) {
+									  echo '<option value="' . esc_attr( $country_code ) . '">' . $country . '</option>';
+									}
+									?>
+								</select>
+							</div>
+						</div>
+					</div>		
+						
+				<div class="col-xs-12  no-padding">	
 					<div class="payment-information">
-						<h2 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Information</h2>
-	        	<h4 class='card-details-title'>Card details</h4>
-						<div class="col-xs-12 col-md-9 no-padding">
-							<div class='col-xs-12 col-md-6'>
-								Name on the card:
+						<div class="col-xs-12 margin-top-10">
+							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be chared. It serves as guarantee only.)</span></h4>
+						</div>
+							<div class="col-xs-12 col-md-6 margin-top-10">
+								Name on the card*
 								<input class="form-control edd_card_name"  autocomplete="off" type="text" name="card_name" id="card_name" />
 							</div>
-							<div class='col-xs-12 col-md-6'>
-								Expires:
-								<input class="form-control edd_expiry" placeholder='__/____'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
-							</div>
-							<div class='col-xs-12 col-md-6'>
-								Card Number:
+							<div class="col-xs-12 col-md-6 margin-top-10">
+								Card Number*
 								<input class="form-control edd_number ccFormatMonitor"  autocomplete="off" type="text" name="card_number" id="card_number"/>
 								<input type='hidden' name='card_type' id="card_type"/>
 							</div>
-							<div class='col-xs-12 col-md-6'>
+							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
+								<div class="col-xs-12">
+								Expiry Date*
+								</div>
+								<div class="col-xs-6">
+									<input class="form-control edd_expiry" placeholder='__'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
+								</div>
+								<div class="col-xs-6">
+									<input class="form-control edd_expiry" placeholder='____'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
+								</div>
+							</div>
+							
+							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
+								<div class="col-xs-12">
 								CVV
-								<input class="form-control edd_cvc"  autocomplete="off" type="password" name="card_cvc" maxlength="4" id="edd_cvc" />
+								</div>
+								<div class="col-xs-7">
+									<input class="form-control edd_cvc"  autocomplete="off" type="password" name="card_cvc" maxlength="4" id="edd_cvc" />
+								</div>
+								<div class="col-xs-5">
+									<img src="<?php echo get_stylesheet_directory_uri()?>/imgs/cardcvv.png"/>
+								</div>
 							</div>
+						<div class="col-xs-12 margin-top-10">
+							<label>
+							  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">I have read and agreed to the terms & conditions governing this booking.</span>
+							</label>
 						</div>
-						<div class="col-xs-12 col-md-3">
-							<div class="table-footer col-xs-12 you-pay-wrapper no-padding">
-								<div class="col-xs-12 no-padding edd_cart_footer_row edd_cart_subtotal_row no-border"<?php if ( ! edd_is_cart_taxed() ) echo ' style=""'; ?>>
-									<?php do_action( 'edd_checkout_table_subtotal_first' ); ?>
-									<div class="header-column you-pay-row col-xs-12 no-padding pull-right edd_cart_subtotal">
-										<?php _e( 'Total', 'easy-digital-downloads' ); ?>:&nbsp;<span class="edd_cart_subtotal_amount pull-right"><?php echo edd_cart_subtotal(); ?></span>
-									</div>
-									<?php do_action( 'edd_checkout_table_subtotal_last' ); ?>
-								</div>
-
-								<div class="col-xs-12 no-padding edd_cart_footer_row edd_cart_discount_row" <?php if( ! edd_cart_has_discounts() )  echo ' style="display:none;"'; ?>>
-									<?php do_action( 'edd_checkout_table_discount_first' ); ?>
-									<div class="header-column you-pay-row col-xs-12 no-padding pull-right edd_cart_discount">
-										<?php edd_cart_discounts_html(); ?>
-									</div>
-									<?php do_action( 'edd_checkout_table_discount_last' ); ?>
-								</div>
-
-								<?php if( edd_use_taxes() ) : ?>
-									<div class="col-xs-12 no-padding edd_cart_footer_row edd_cart_tax_row"<?php if( ! edd_is_cart_taxed() ) echo ' style="display:none;"'; ?>>
-										<?php do_action( 'edd_checkout_table_tax_first' ); ?>
-										<div class="header-column you-pay-row col-xs-12 no-padding pull-right edd_cart_tax">
-											<?php _e( 'Tax', 'easy-digital-downloads' ); ?>:&nbsp;<span class="edd_cart_tax_amount  pull-right" data-tax="<?php echo edd_get_cart_tax( false ); ?>"><?php echo esc_html( edd_cart_tax() ); ?></span>
-										</div>
-										<?php do_action( 'edd_checkout_table_tax_last' ); ?>
-									</div>
-
-								<?php endif; ?>
-
-								<div class="col-xs-12 no-padding edd_cart_footer_row">
-									<?php do_action( 'edd_checkout_table_footer_first' ); ?>
-										<div class="header-column you-pay-row col-xs-12 no-padding pull-right edd_cart_total">
-												<?php _e( 'You Pay', 'easy-digital-downloads' ); ?>: <span class="edd_cart_amount  pull-right" data-subtotal="<?php echo edd_get_cart_total(); ?>" data-total="<?php echo edd_get_cart_total(); ?>"><?php edd_cart_total(); ?></span>
-										</div>
-								</div>
-								<?php do_action( 'edd_checkout_table_footer_last' ); ?>
-							</div>
+						<div class='hidden-xs col-sm-12 footer-button'>
+							<!--<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>-->
+							<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
 						</div>
-	        </div>
-	    </div>
+					</div>
+				</div>
 	<!-- </form> -->
 	</fieldset>
-	<div class='col-xs-12 footer-button'>
-		<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>
-		<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
+				<div class="row">
+					<div class="col-xs-12 hidden-sm hidden-md hidden-lg footer-button no-padding">
+						<!--<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>-->
+						<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
+	
+
+			</div>
 	</div>
+	
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$(".booker").change(function(){
-				$(".guest-information").slideToggle("fast");
-			});
-
-			$(".info").change(function(){
+			$(".additonal-information").hide();
+			$('.guest-information').hide();
+			$(".addInfo").change(function(){
 				$(".additonal-information").slideToggle("fast");
+			});
+			$('input[name="booker"]').bind('change',function(e){
+				e.preventDefault();
+				var showOrHide = ($(this).val() == 1) ? true : false;
+				$('.guest-information').toggle(showOrHide);
 			});
 		});
 	</script>
+	
 	<?php do_action( 'edd_purchase_form_user_info' ); ?>
 	<?php do_action( 'edd_purchase_form_user_info_fields' ); ?>
 	<?php
@@ -334,7 +467,7 @@ function edd_get_cc_form() {
 
 	<?php do_action( 'edd_before_cc_fields' ); ?>
 
-	<fieldset id="edd_cc_fields" class="edd-do-validate">
+	<!--<fieldset id="edd_cc_fields" class="edd-do-validate">
 		<span><legend><?php _e( 'Credit Card Info', 'easy-digital-downloads' ); ?></legend></span>
 		<?php if( is_ssl() ) : ?>
 			<div id="edd_secure_site_wrapper">
@@ -384,7 +517,7 @@ function edd_get_cc_form() {
 		</p>
 		<?php do_action( 'edd_after_cc_expiration' ); ?>
 
-	</fieldset>
+	</fieldset>-->
 	<?php
 	do_action( 'edd_after_cc_fields' );
 
@@ -1032,3 +1165,5 @@ add_filter( 'the_content', 'edd_filter_success_page_content', 99999 );
 function edd_receipt_show_download_files( $item_id, $receipt_args, $item = array() ) {
 	return apply_filters( 'edd_receipt_show_download_files', true, $item_id, $receipt_args, $item );
 }
+
+

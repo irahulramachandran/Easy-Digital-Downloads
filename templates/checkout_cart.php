@@ -4,7 +4,8 @@
  */
 
 global $post; ?>
-<div class="col-xs-12 no-padding">
+
+<!--<div class="col-xs-12 no-padding">
 	<div class="table-header col-xs-12 no-padding hidden-xs hidden-sm">
 		<div class="header-column col-xs-12 col-md-6 no-padding">
 			Rate Plans
@@ -17,7 +18,7 @@ global $post; ?>
 		</div>
 		<!-- <div class="header-column col-xs-12 col-md-3 no-padding">
 			Sub Total
-		</div> -->
+		</div> 
 	</div>
 	<div class="table-body col-xs-12 no-padding">
 		<?php $cart_items = edd_get_cart_contents(); ?>
@@ -108,9 +109,9 @@ global $post; ?>
 			<a href="#" class="btn btn-danger btn-md btn-proceed margin-top-10-mobile">Proceed</a>
 		</div>
 	</div>
-</div>
+</div>-->
 <table id="edd_checkout_cart" <?php if ( ! edd_is_ajax_disabled() ) { echo 'class="table hidden-xs hidden-sm hidden-md hidden-lg ajaxed"'; } ?>>
-	<!-- <thead>
+	 <thead>
 		<tr class="edd_cart_header_row">
 			<?php do_action( 'edd_checkout_table_header_first' ); ?>
 			<th class="edd_cart_item_name"><?php _e( 'Rate Plans', 'easy-digital-downloads' ); ?></th>
@@ -118,7 +119,7 @@ global $post; ?>
 			<th class="edd_cart_actions"><?php _e( 'Quantity', 'easy-digital-downloads' ); ?></th>
 			<?php do_action( 'edd_checkout_table_header_last' ); ?>
 		</tr>
-	</thead> -->
+	</thead>
 	<tbody>
 		<?php $cart_items = edd_get_cart_contents(); ?>
 		<?php do_action( 'edd_cart_items_before' ); ?>
@@ -249,3 +250,6 @@ global $post; ?>
 		</tr>
 	</tfoot>
 </table>
+
+
+
