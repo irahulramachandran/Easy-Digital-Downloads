@@ -847,6 +847,8 @@ function edd_get_cart_fee_tax() {
 		}
 	}
 
+	error_log("TAX".$tax);
+
 	return apply_filters( 'edd_get_cart_fee_tax', $tax );
 }
 
@@ -903,8 +905,8 @@ function edd_get_cart_tax() {
 
 	$cart_tax += edd_get_cart_fee_tax();
 
-	// error_log("TEXASSADSA");
-	// error_log($cart_tax);
+	error_log("TEXASSADSA");
+	error_log($cart_tax);
 
 	return apply_filters( 'edd_get_cart_tax', edd_sanitize_amount( $cart_tax ) );
 }

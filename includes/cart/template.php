@@ -80,14 +80,103 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$options    = !empty( $item['options'] ) ? $item['options'] : array();
 
 	$title  = $options['roomtypename'];
+	$downid  = $options['id'];
 	$rateplantitle = $options['name'];
-	$startdate = date("d M Y", strtotime($options['startdate']));
-	$enddate = date("d M Y", strtotime($options['enddate']));
+	$imgurl = $options['imgurl'];
+	$roomprice = $options['roomprice'];
+
+	$inclusion = $options['inclusion'];
+	$adultoccupancy = $options['adultoccupancy'];
+	$download_id = $options['id'];
+	$childoccupancy = $options['childoccupancy'];
+	$availablequantity = $options['availablequantity'];
+	$occupany = "";
+	$occupany = "<div class='icon ico-iconguest-icon pull-left'></div>";
+	if($adultoccupancy == 1){
+		$occupany .= "<span class='pull-left margin-left-5'>1 Adult </span>";
+	}
+	else{
+		$occupany .= "<span class='pull-left margin-left-5'>".$adultoccupancy." Adults </span>";
+	}
+	if($childoccupancy != 0){
+		if($childoccupancy == 1){
+			$occupany .= "<span class='pull-left'>".$childoccupancy." Child</span>";
+		}
+		else{
+			$occupany .= "<span class='pull-left'>".$childoccupancy." Children</span>";
+		}
+	}
+
+	if($inclusion != null){
+		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
+		foreach ($inclusion as $key => $value) {
+			$term_meta = get_option( "taxonomy_".$value->term_id );
+			$inclusionsText .= "<li style='color:".$term_meta['color'].";'>".$value->name."</li>";
+		}
+
+		$inclusionsText .="</ul>";
+	}
+	else{
+		$inclusionsText = "";
+	}
+
+	$quanity = "<select data-download-id='".$downid."' class='quanity edd-quanity pull-right'>";
+	for ($i=1; $i <= intval($availablequantity); $i++) {
+			if($i == 1){
+				$quanity .= "<option value='".$i."'>".$i." Room</option>";
+			}else{
+				$quanity .= "<option value='".$i."'>".$i." Rooms</option>";
+		}
+	}
+
+	$quanity .="</select>";
+
+	$startdate = "";
+	$startdateNumber = date("d", strtotime($options['startdate']));
+	$startday = date("D", strtotime($options['startdate']));
+	$startmnth = date("M", strtotime($options['startdate']));
+
+	$startdate = "<div class='col-xs-6 date'>".$startdateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding'>".$startday."</div><div class='col-xs-12 no-padding'>".$startmnth."</div></div>";
+
+	$enddate = "";
+	$enddateNumber = date("d", strtotime($options['enddate']));
+	$endday = date("D", strtotime($options['enddate']));
+	$endmnth = date("M", strtotime($options['enddate']));
+
+	$enddate = "<div class='col-xs-6 date'>".$enddateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding'>".$endday."</div><div class='col-xs-12 no-padding'>".$endmnth."</div></div>";
+
 	$quantity   = edd_get_cart_item_quantity( $id, $options );
 	$price      = edd_get_cart_item_price( $id, $options );
 
 	if ( ! empty( $options ) ) {
 		//$title .= ( edd_has_variable_prices( $item['id'] ) ) ? ' <span class="edd-cart-item-separator">-</span> ' . edd_get_price_name( $id, $item['options'] ) : edd_get_price_name( $id, $item['options'] );
+	}
+
+	$fromdatetime = strtotime($options['startdate']);
+  $todatetime = strtotime($options['enddate']);
+
+	$datediff = $todatetime - $fromdatetime;
+  $noofdays = floor($datediff/(60*60*24));
+
+	if($noofdays == 1){
+		$noofdays = "<div class='text-center'>1 Night</div>";
+	}else{
+		$noofdays = "<div class='text-center noofdays'>".$noofdays." Nights</div>";
+	}
+
+	$addons = $options['addons'];
+
+	$addonTotal =0;
+	$addonHTML = "";
+
+	if(sizeof($addons) > 0 && !empty($addons[0])){
+		foreach ($addons as $key => $value) {
+			$addontitle = $value->title;
+			$id = $value->id;
+			$addonprice = $value->price;
+			$addonTotal+=$addonprice;
+			$addonHTML .= "<div class='col-xs-6 no-padding'>".$value->title."</div><div class='col-xs-6 no-padding'><span class='pull-right'>".edd_currency_filter( edd_format_amount( $value->price ) )."</span></div>";
+		}
 	}
 
 	ob_start();
@@ -97,12 +186,20 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$item = ob_get_clean();
 
 	$item = str_replace( '{item_title}', $title, $item );
+	$item = str_replace('{item_img}', wpthumb( $imgurl, 'width=335&height=223&crop=1' ), $item);
+	$item = str_replace('{inclusion}', $inclusionsText, $item);
+	$item = str_replace('{download_id}', $download_id, $item);
 	$item = str_replace('{rateplan_item_title}', $rateplantitle, $item);
 	$item = str_replace('{checkin_date}', $startdate, $item);
+	$item = str_replace('{no_of_night}', $noofdays, $item);
 	$item = str_replace('{checkout_date}', $enddate, $item);
-	$item = str_replace( '{item_amount}', edd_currency_filter( edd_format_amount( $price ) ), $item );
+	$item = str_replace( '{item_amount}', edd_currency_filter( edd_format_amount( $roomprice ) ), $item );
+	$item = str_replace( '{room_quanity}', $quanity, $item );
+	$item = str_replace( '{addons}', $addonHTML, $item );
+	$item = str_replace( '{addon_total}', $addontotalHTML, $item );
 	$item = str_replace( '{cart_item_id}', absint( $cart_key ), $item );
 	$item = str_replace( '{item_id}', absint( $id ), $item );
+	$item = str_replace( '{occupany}', $occupany, $item );
 	$item = str_replace( '{item_quantity}', absint( $quantity ), $item );
 	$item = str_replace( '{remove_url}', $remove_url, $item );
   	$subtotal = '';
