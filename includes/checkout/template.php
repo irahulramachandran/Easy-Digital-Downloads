@@ -419,18 +419,22 @@ function edd_user_info_fields() {
 					</div>
 				</div>
 	<!-- </form> -->
-	</fieldset>
-				<div class="row">
+	
+				
+		</div>
+			</div>
+			<div class="row">
 					<div class="col-xs-12 hidden-sm hidden-md hidden-lg footer-button no-padding">
 						<!--<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>-->
 						<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
 					</div>
 				</div>
-			</div>
 			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
 	
 
 			</div>
+		
+		</fieldset>
 	</div>
 	
 	
