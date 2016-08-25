@@ -6,6 +6,28 @@ jQuery(document).ready(function ($) {
 	$('a.edd-add-to-cart').addClass('edd-has-js');
 
 	// var creditly = Creditly.initialize('.payment-information .edd_expiry', '.payment-information .edd_number', '.payment-information .edd_cvc', '.payment-information .card-type');
+	$(".mini-cart-wrapper .reservation-summary-header").click(function(){
+		$(this).next(".edd-cart").slideToggle();
+		if($(window).width() < 768){
+			var height = $(window).height();
+			$(".edd-cart").css("max-height",(height-44-42)+"px");
+			$(".edd-cart").css("height",(height-44-42)+"px !important");
+		}
+		if($(this).find(".glyphicon").hasClass("glyphicon-menu-down")){
+			$(this).find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+		}
+		else{
+			$(this).find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+		}
+	});
+
+	$(".btn-addanotherroom").click(function(e){
+		e.stopPropagation();
+		$(".mini-cart-wrapper .reservation-summary-header").click();
+		return false;
+	});
+
+	_bindQuantityChangeEvent();
 
 	// Send Remove from Cart requests
 	$('body').on('click.eddRemoveFromCart', '.edd-remove-from-cart', function (event) {
@@ -64,8 +86,15 @@ jQuery(document).ready(function ($) {
 					if( response.cart_quantity == 0 ) {
 						$('.cart_item.edd_subtotal,.edd-cart-number-of-items,.cart_item.edd_checkout,.cart_item.edd_cart_tax,.cart_item.edd_total').hide();
 						$('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
+						$(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
+						$(".mini-cart-wrapper .edd-cart").fadeOut("fast");
 					}
-
+					else{
+						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
+						$(".mini-cart-wrapper .reservation-summary-header .total-price").html( response.total );
+						$(".mini-cart-wrapper .reservation-summary-header").fadeIn("fast");
+					}
+					_bindQuantityChangeEvent();
 					$('body').trigger('edd_cart_item_removed', [ response ]);
 				}
 			}
@@ -112,6 +141,14 @@ jQuery(document).ready(function ($) {
 		var price_mode     = $this.data('price-mode');
 		var directcheckout = $this.data("directcheckout");
 		var ratesperdate = $this.data('ratesperdate');
+		var selectedAddons = $this.parents(".table-body-row").find(".addons-dropdown").val();
+		if(selectedAddons != undefined){
+			selectedAddons = selectedAddons.join();
+		}
+		else{
+			selectedAddons = "";
+		}
+
 		var item_price_ids = [];
 		var free_items     = true;
 
@@ -169,6 +206,7 @@ jQuery(document).ready(function ($) {
 			download_id: download,
 			price_ids : item_price_ids,
 			ratesperdate: ratesperdate,
+			selectedAddons: selectedAddons,
 			post_data: $(form).serialize()
 		};
 
@@ -216,6 +254,22 @@ jQuery(document).ready(function ($) {
 					}
 
 					$('.edd-cart-meta.edd_total span').html( response.total );
+					if(response.cart_quantity != "0"){
+						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
+						$(".mini-cart-wrapper .reservation-summary-header .total-price").html( response.total );
+						$(".mini-cart-wrapper .reservation-summary-header").fadeIn("fast");
+						$('.addons-dropdown').val(undefined);
+						$(".multiselect-container input[type='checkbox']").removeAttr("checked");
+						$(".multiselect-selected-text").text("Select Addons");
+						$('.addons-dropdown').change();
+						$(dropdown).parents(".col-xs-12").parents(".col-xs-12").find(".totalprice").html(jsonData[i].rate);
+						$(".edd-add-to-cart[data-download-id='"+download+"']").attr("value");
+					}
+					else{
+						$(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
+						$(".mini-cart-wrapper .edd-cart").fadeOut("fast");
+					}
+
 
 					// Update the cart quantity
 					var items_added = $( '.edd-cart-item-title', response.cart_item ).length;
@@ -228,6 +282,7 @@ jQuery(document).ready(function ($) {
 					// // Show the "number of items in cart" message
 					if ( $('.edd-cart-number-of-items').css('display') == 'none') {
 						$('.edd-cart-number-of-items').show('slow');
+
 					}
 					//
 					// if( variable_price == 'no' || price_mode != 'multi' ) {
@@ -256,6 +311,7 @@ jQuery(document).ready(function ($) {
 						$( '.edd_go_to_checkout', parent_form ).show().removeAttr( 'data-edd-loading' );
 					}
 
+					_bindQuantityChangeEvent();
 					// if( response != 'incart' ) {
 					// 	// Show the added message
 					// 	// $('.edd-cart-added-alert', container).fadeIn();
@@ -268,6 +324,7 @@ jQuery(document).ready(function ($) {
 					$this.prop('disabled', false);
 
 					$('body').trigger('edd_cart_item_added', [ response ]);
+					_deselectAddonDropDown();
 
 				}
 			}
@@ -278,7 +335,6 @@ jQuery(document).ready(function ($) {
 		}).done(function (response) {
 
 		});
-
 		return false;
 	});
 
@@ -411,7 +467,7 @@ jQuery(document).ready(function ($) {
 	function valid(){
 		errors = [];
 
-           
+
 		if($("#edd_first").val() == ""){
 			var error = {};
 			error.id = "#edd_first";
@@ -430,47 +486,47 @@ jQuery(document).ready(function ($) {
 			error.message = "Email cannot be empty";
 			errors.push(error);
 		}
-	
-                
-                
-                      
+
+
+
+
                 var mob = /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/;
         if ($("#edd_phonenumber").val()!= "" && mob.test($('#edd_phonenumber').val()) == false) {
-  
+
             var error = {};
             error.id = "#edd_phonenumber";
             error.message = "Phone Number is invalid";
             errors.push(error);
         }
-        
+
                  var Firstname = /^[a-z]+$/i;
         if ($("#edd_first").val()!= "" && Firstname.test($('#edd_first').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_first";
             error.message = "First name is not valid. Only characters  are  acceptable.";
             errors.push(error);
         }
-        
+
                var Lastname = /^[a-z]+$/i;
         if ($("#edd_last").val()!= "" && Lastname.test($('#edd_last').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_last";
             error.message = "Lastname is not valid. Only characters  are  acceptable.";
             errors.push(error);
         }
-        
+
                 var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if ($("#edd_email").val()!= "" && Email.test($('#edd_email').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_email";
             error.message = "Email is not valid.";
             errors.push(error);
         }
-        
-        
+
+
 
 		if($('.booker').prop('checked')) {
 			if($("#edd_guest_first").val() == ""){
@@ -491,45 +547,45 @@ jQuery(document).ready(function ($) {
 				error.message = "Guest Email cannot be empty";
 				errors.push(error);
 			}
-			
-                         
+
+
                  var EDDFirstname = /^[a-z]+$/i;
         if ($("#edd_guest_first").val()!= "" && EDDFirstname.test($('#edd_guest_first').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_guest_first";
             error.message = "Guest First name is not valid. Only characters  are  acceptable.";
             errors.push(error);
         }
-        
-        
+
+
                   var EDDLastname = /^[a-z]+$/i;
         if ($("#edd_guest_last").val()!= "" && EDDLastname.test($('#edd_guest_last').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_guest_last";
             error.message = "Guest Lastname is not valid. Only characters  are  acceptable.";
             errors.push(error);
         }
-        
+
                var EDDEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if ($("#edd_guest_email").val()!= "" && EDDEmail.test($('#edd_guest_email').val()) == false) {
-          
+
             var error = {};
             error.id = "#edd_email";
             error.message = "Guest Email is not valid.";
             errors.push(error);
         }
-                        
+
                 var EDDmob = /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/;
         if ($("#edd_guest_phonenumber").val()!= "" && EDDmob.test($('#edd_guest_phonenumber').val()) == false) {
-  
+
             var error = {};
             error.id = "#edd_guest_phonenumber";
             error.message = "Guest Phone Number is invalid";
             errors.push(error);
         }
-        
+
 		}
 
 		if($("#card_name").val() == ""){
@@ -670,6 +726,60 @@ jQuery(document).ready(function ($) {
 
 });
 
+function _bindQuantityChangeEvent(){
+	$(".edd-quanity").unbind("change");
+	$(".edd-quanity").change(function(){
+		var newQuanity = $(this).val();
+		var download_id = $(this).attr("data-download-id");
+
+		var postData = {
+			action: 'edd_update_quantity',
+			quantity: newQuanity,
+			download_id: download_id
+			//options: options
+		};
+
+		//edd_discount_loader.show();
+		$.ajax({
+			type: "POST",
+			data: postData,
+			dataType: "json",
+			url: ajaxUrl,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function (response) {
+
+				$('.edd_cart_subtotal_amount').each(function() {
+					$(this).text(response.subtotal);
+				});
+
+				$('.edd_cart_tax_amount').each(function() {
+					// alert(response.taxes);
+					$(this).text(response.taxes);
+				});
+
+				$('.edd_cart_amount').each(function() {
+					$(this).text(response.total);
+					$body.trigger('edd_quantity_updated', [ response ]);
+				});
+
+				$('.cart_item.edd_cart_tax span').html( response.taxes );
+
+				$('.cart_item.edd_total span').html( response.total );
+				$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.quantity );
+				$(".mini-cart-wrapper .reservation-summary-header .total-price").html( response.total );
+			}
+		}).fail(function (data) {
+			if ( window.console && window.console.log ) {
+				console.log( data );
+			}
+		});
+
+		return false;
+	});
+}
+
 function edd_load_gateway( payment_mode ) {
 
 	// Show the ajax loader
@@ -681,31 +791,31 @@ function edd_load_gateway( payment_mode ) {
 		function(response){
 			$("#loading").hide();
 			jQuery('.personal-payment-information').html(response);
-			if(location.pathname.indexOf('checkout')>0)
-		  {
-		    var pageno = localStorage.getItem('pageno');
-				var addInfo = localStorage.getItem('add_info');
-				if(isUserLoggedIn != "1"){
-					pageno = 1;
-					localStorage.setItem('pageno',1);
-				}
-				if(addInfo !=""){
-					$('.add_info').val(addInfo);
-				}
-		    if(pageno != undefined && pageno == 2){
-		      $("#edd_checkout_cart_form").hide();
-		      $("#edd_checkout_form_wrap").show();
-		      localStorage.setItem('pageno',2);
-		    }
-		    else{
-		      $("#edd_checkout_cart_form").show();
-		      $("#edd_checkout_form_wrap").hide();
-		      localStorage.setItem('pageno',1);
-		    }
-		  }
-			else if(location.pathname.indexOf('checkout') == -1){
-				localStorage.setItem('pageno',1);
-			}
+			// if(location.pathname.indexOf('checkout')>0)
+		  // {
+		  //   var pageno = localStorage.getItem('pageno');
+			// 	var addInfo = localStorage.getItem('add_info');
+			// 	if(isUserLoggedIn != "1"){
+			// 		pageno = 1;
+			// 		localStorage.setItem('pageno',1);
+			// 	}
+			// 	if(addInfo !=""){
+			// 		$('.add_info').val(addInfo);
+			// 	}
+		  //   if(pageno != undefined && pageno == 2){
+		  //     $("#edd_checkout_cart_form").hide();
+		  //     // $("#edd_checkout_form_wrap").show();
+		  //     localStorage.setItem('pageno',2);
+		  //   }
+		  //   else{
+		  //     $("#edd_checkout_cart_form").show();
+		  //     // $("#edd_checkout_form_wrap").hide();
+		  //     localStorage.setItem('pageno',1);
+		  //   }
+		  // }
+			// else if(location.pathname.indexOf('checkout') == -1){
+			// 	localStorage.setItem('pageno',1);
+			// }
 			jQuery('.edd-no-js').hide();
 			jQuery(".btn-backbtn").click(function(e){
 		    e.preventDefault();

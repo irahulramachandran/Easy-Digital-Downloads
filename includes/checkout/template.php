@@ -179,13 +179,13 @@ function edd_user_info_fields() {
 
 	$customer = array_map( 'sanitize_text_field', $customer );
 	?>
-	
+
 	<div class="row">
 		<div class="row text-center">
 			<div class="choice_mob">
 				<div class="col-xs-12 hidden-sm hidden-md hidden-lg no-padding">
 					<h2>I AM BOOKING FOR</h2>
-								
+
 						<div class="checkbox">
 							<div class="label">
 							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
@@ -201,7 +201,7 @@ function edd_user_info_fields() {
 			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 				<div class="hidden-xs col-sm-12 col-md-12">
 					<h2>I AM BOOKING FOR</h2>
-					
+
 						<div class="checkbox">
 							<div class="label">
 							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
@@ -210,10 +210,10 @@ function edd_user_info_fields() {
 							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
 							</div>
 						</div>
-					
+
 				</div>
 				<div class="row">
-						
+
 					<div class="col-xs-12 margin-top-20">
 						<div class="col-xs-12">Book Faster, Log in</div>
 						<div class="col-xs-3 col-sm-3">
@@ -233,7 +233,7 @@ function edd_user_info_fields() {
 						</div>
 					</div>
 				</div>
-				
+
 		<!-- <h2 class="checkout-wizard-title">Personal Information</h2> -->
 		<!-- <form class="payment-form" method="POST"> -->
 	    <div class="form-container">
@@ -266,7 +266,7 @@ function edd_user_info_fields() {
 									<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
 								</div>
 							</div>
-						</div>	
+						</div>
 						<div class="additonal-information col-xs-12 no-padding">
 							<div class="col-xs-12 col-sm-6 ">
 								<div class="margin-top-10">
@@ -295,12 +295,12 @@ function edd_user_info_fields() {
 										?>
 									</select>
 								</div>
-								
+
 							</div>
-						</div>	
+						</div>
 						<div class="col-xs-12">
 							<div class="margin-top-10">
-								<label>	
+								<label>
 								  <input type="checkbox" name="addInfo" class="addInfo"> <span class="addInfo_ckbox">I WANT TO PROVIDE ADDITIONAL INFORMATION</span>
 								</label>
 								<label>
@@ -308,11 +308,11 @@ function edd_user_info_fields() {
 								</label>
 							</div>
 						</div>
-							
+
 							<!-- <input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State"/> -->
-						
+
 	        </div>
-			
+
 					<div class="guest-information col-xs-12 no-padding">
 						<div class="col-xs-12 margin-top-10">
 							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Guest Information</h4>
@@ -328,7 +328,7 @@ function edd_user_info_fields() {
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 ">
-							
+
 							<div class="margin-top-10">
 								Email
 								<input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
@@ -347,7 +347,7 @@ function edd_user_info_fields() {
 							</div>
 							<div class="margin-top-10">
 								State
-								<input class="form-control edd_col_4" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/> 
+								<input class="form-control edd_col_4" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
@@ -368,9 +368,9 @@ function edd_user_info_fields() {
 								</select>
 							</div>
 						</div>
-					</div>		
-						
-				<div class="col-xs-12  no-padding">	
+					</div>
+
+				<div class="col-xs-12  no-padding">
 					<div class="payment-information">
 						<div class="col-xs-12 margin-top-10">
 							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be chared. It serves as guarantee only.)</span></h4>
@@ -395,7 +395,7 @@ function edd_user_info_fields() {
 									<input class="form-control edd_expiry" placeholder='____'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
 								</div>
 							</div>
-							
+
 							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
 								<div class="col-xs-12">
 								CVV
@@ -430,14 +430,15 @@ function edd_user_info_fields() {
 					</div>
 				</div>
 			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
-	
-
+				<div class='mini-cart-wrapper position-releative'>
+					<?php do_shortcode('[download_cart]'); ?>
+				</div>
 			</div>
 		
 		</fieldset>
 	</div>
-	
-	
+
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".additonal-information").hide();
@@ -452,7 +453,7 @@ function edd_user_info_fields() {
 			});
 		});
 	</script>
-	
+
 	<?php do_action( 'edd_purchase_form_user_info' ); ?>
 	<?php do_action( 'edd_purchase_form_user_info_fields' ); ?>
 	<?php
@@ -1169,5 +1170,3 @@ add_filter( 'the_content', 'edd_filter_success_page_content', 99999 );
 function edd_receipt_show_download_files( $item_id, $receipt_args, $item = array() ) {
 	return apply_filters( 'edd_receipt_show_download_files', true, $item_id, $receipt_args, $item );
 }
-
-

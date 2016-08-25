@@ -213,17 +213,69 @@ function edd_ajax_add_to_cart() {
 				}
 			}
 
+			$price = $download->price;
+			$roomprice = $price;
+			$selectedAddons = $_POST['selectedAddons'];
+			$selectedValues = explode(',',$selectedAddons);
+			$addons = array();
+			$addontotal = 0;
+
 			$fromdatetime = strtotime(EDD()->session->get('startDate'));
 		  $todatetime = strtotime(EDD()->session->get('endDate'));
 
 		  $datediff = $todatetime - $fromdatetime;
 		  $noofdays = floor($datediff/(60*60*24));
 
+			error_log("SAMPLE ADDONS");
+			error_log(json_encode($selectedValues));
+			if(sizeof($selectedValues) > 0 && !empty($selectedValues[0])){
+				foreach ($selectedValues as $key => $value) {
+					$option = explode('~',$value);
+					$id = $option[0];
+					$addOneObj = new Addon;
+					$addonItem = $addOneObj->get($id);
+
+					$amount = 0;
+
+					if($addonItem->datewise == "daily"){
+						$amount = floatval($addonItem->price*$noofdays);
+					}
+					else{
+						$amount = $addonItem->price;
+					}
+
+					$adultoccupancy = intval(EDD()->session->get('occupancy'));
+					$childoccupancy = intval(EDD()->session->get('childoccupancy'));
+
+					if($addonItem->occupancywise == "occupancy"){
+						$occupancy = $adultoccupancy+$childoccupancy;
+						$amount = floatval($amount*$occupancy);
+					}
+
+					error_log("ADDON TOTAL".$amount);
+					error_log(json_encode($addonItem));
+
+					$addonItem->price = $amount;
+					$addonamount = $addonItem->price;
+					$addontotal += $addonamount;
+					$price += $addonamount;
+					array_push($addons, $addonItem);
+				}
+			}
+
 			$options['id'] = $download->id;
 			$options['rateplancode'] = $download->rateplancode;
 			$options['name'] = $download->name;
-			$options['price'] = $download->price;
+			$options['roomprice'] = $roomprice;
+			$options['price'] = $price;
 			$options['rates'] = $download->rates;
+			$options['addons'] = $addons;
+			$options['addontotal'] = $addontotal;
+			$options['imgurl'] = $download->imgurl;
+			$options['inclusion'] = $download->inclusion;
+			$options['adultoccupancy'] = $download->adultoccupancy;
+			$options['childoccupancy'] = $download->childoccupancy;
+			$options['availablequantity'] = $download->availablequantity;
 			$options['roomtypename'] = $download->roomtypename;
 		  $options['roomtypenamedescription'] = $download->roomtypenamedescription;
 			$options['roomtypecode'] = $download->roomtypecode;
