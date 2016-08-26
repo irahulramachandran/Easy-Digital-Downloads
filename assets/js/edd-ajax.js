@@ -28,7 +28,9 @@ jQuery(document).ready(function ($) {
 	});
 
 	_bindQuantityChangeEvent();
-
+	
+	
+	
 	// Send Remove from Cart requests
 	$('body').on('click.eddRemoveFromCart', '.edd-remove-from-cart', function (event) {
 		var $this  = $(this),
@@ -108,7 +110,14 @@ jQuery(document).ready(function ($) {
 
 		return false;
 	});
-
+	
+	//Rate button
+	$(".book-from-rate").click(function(){
+        //alert('first');
+		$(this).parents(".roomrow").find('.table-body-row:first .table-body-column a.edd-add-to-cart:last').click();
+		//});
+    });
+	
 	// Send Add to Cart request
 	$('body').on('click.eddAddToCart', '.edd-add-to-cart', function (e) {
 

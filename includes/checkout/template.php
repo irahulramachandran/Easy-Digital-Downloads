@@ -439,20 +439,7 @@ function edd_user_info_fields() {
 	</div>
 
 
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$(".additonal-information").hide();
-			$('.guest-information').hide();
-			$(".addInfo").change(function(){
-				$(".additonal-information").slideToggle("fast");
-			});
-			$('input[name="booker"]').bind('change',function(e){
-				e.preventDefault();
-				var showOrHide = ($(this).val() == 1) ? true : false;
-				$('.guest-information').toggle(showOrHide);
-			});
-		});
-	</script>
+	
 
 	<?php do_action( 'edd_purchase_form_user_info' ); ?>
 	<?php do_action( 'edd_purchase_form_user_info_fields' ); ?>
