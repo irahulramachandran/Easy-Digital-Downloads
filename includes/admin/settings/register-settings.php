@@ -264,6 +264,15 @@ function edd_get_registered_settings() {
 						'chosen'      => true,
 						'placeholder' => __( 'Select a page', 'easy-digital-downloads' ),
 					),
+					'termsncondition_page' => array(
+						'id'          => 'termsncondition_page',
+						'name'        => __( 'Terms and Condition Page', 'easy-digital-downloads' ),
+						'desc'        => __( 'This is the page buyers can see the terms and conditions.', 'easy-digital-downloads' ),
+						'type'        => 'select',
+						'options'     => edd_get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'easy-digital-downloads' ),
+					),
 					'failure_page' => array(
 						'id'          => 'failure_page',
 						'name'        => __( 'Failed Transaction Page', 'easy-digital-downloads' ),
@@ -887,6 +896,57 @@ function edd_get_registered_settings() {
 						'type' => 'rich_editor',
 					),
 				),
+				'property_policy'     => array(
+					'policy_settings' => array(
+						'id'   => 'policy_settings',
+						'name' => '<h3>' . __( 'Policy Settings', 'easy-digital-downloads' ) . '</h3>',
+						'type' => 'header',
+					),
+					'show_policy' => array(
+						'id'   => 'show_policy',
+						'name' => __( 'Show Policy', 'easy-digital-downloads' ),
+						'desc' => __( 'Check this to show policy on the checkout page.', 'easy-digital-downloads' ),
+						'type' => 'checkbox',
+					),
+					'policy_title' => array(
+						'id'   => 'policy_title',
+						'name' => __( 'Policy Title', 'easy-digital-downloads' ),
+						'desc' => __( 'Label shown above the policy as title.', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'policy_text' => array(
+						'id'   => 'policy_text',
+						'name' => __( 'Policy Text', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter the property policy here.', 'easy-digital-downloads' ),
+						'type' => 'rich_editor',
+					),
+				),
+				'ibe'     => array(
+					'ibe_settings' => array(
+						'id'   => 'ibe_settings',
+						'name' => '<h3>' . __( 'IBE Setting', 'easy-digital-downloads' ) . '</h3>',
+						'type' => 'header',
+					),
+					'booking_for_self_message' => array(
+						'id'   => 'booking_for_self_message',
+						'name' => __( 'Success message for self booking', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter the success message for self booking. </br> {name} = Name </br> {email} = Email</br> {dates} = Booking Dates', 'easy-digital-downloads' ),
+						'type' => 'rich_editor',
+					),
+					'booking_for_guest_message' => array(
+						'id'   => 'booking_for_guest_message',
+						'name' => __( 'Success message for guest booking', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter the success message for guest booking. </br> {name} = Name </br> {email} = Email </br> {guestname} = Guest Name </br> {dates} = Booking Dates', 'easy-digital-downloads' ),
+						'type' => 'rich_editor',
+					),
+					'parking_instruction' => array(
+						'id'   => 'parking_instructions',
+						'name' => __( 'Parking Instructions', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Parking Instructions.', 'easy-digital-downloads' ),
+						'type' => 'rich_editor',
+					),
+				),
 			)
 		)
 	);
@@ -1159,6 +1219,8 @@ function edd_get_registered_settings_sections() {
 			'file_downloads'     => __( 'File Downloads', 'easy-digital-downloads' ),
 			'accounting'         => __( 'Accounting Settings', 'easy-digital-downloads' ),
 			'site_terms'         => __( 'Terms of Agreement', 'easy-digital-downloads' ),
+			'ibe'         => __( 'IBE', 'easy-digital-downloads' ),
+			'property_policy'         => __( 'Policy', 'easy-digital-downloads' ),
 		) ),
 	);
 

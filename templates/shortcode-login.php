@@ -8,8 +8,7 @@ if ( ! is_user_logged_in() ) :
 	// Show any error messages after form submission
 	edd_print_errors(); ?>
 	<form id="edd_login_form" class="edd_form" action="" method="post">
-		<fieldset>
-			<span><legend><?php _e( 'Log into Your Account', 'easy-digital-downloads' ); ?></legend></span>
+		<div>
 			<?php do_action( 'edd_login_fields_before' ); ?>
 			<p>
 				<label for="edd_user_login"><?php _e( 'Username', 'easy-digital-downloads' ); ?></label>
@@ -24,17 +23,16 @@ if ( ! is_user_logged_in() ) :
 				<input type="hidden" name="edd_redirect" value="<?php echo esc_url( $edd_login_redirect ); ?>"/>
 				<input type="hidden" name="edd_login_nonce" value="<?php echo wp_create_nonce( 'edd-login-nonce' ); ?>"/>
 				<input type="hidden" name="edd_action" value="user_login"/>
-				<input id="edd_login_submit" type="submit" class="edd_submit btn btn-danger" value="<?php _e( 'Log In', 'easy-digital-downloads' ); ?>"/>
+				<input id="edd_login_submit" type="submit" class="edd_submit btn btn-danger pull-right" value="<?php _e( 'Log In', 'easy-digital-downloads' ); ?>"/>
 				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php _e( 'Lost Password', 'easy-digital-downloads' ); ?>">
 					<?php _e( 'Lost Password?', 'easy-digital-downloads' ); ?>
 				</a>
 			</p>
-			<p class="edd-lost-password">
+			<p class="edd-lost-password hide">
 				<label><?php _e( '', 'easy-digital-downloads' ); ?></label>
-
 			</p>
-			<?php do_action( 'edd_login_fields_after' ); ?>
-		</fieldset>
+			<?php //do_action( 'edd_login_fields_after' ); ?>
+		</div>
 	</form>
 <?php else : ?>
 	<p class="edd-logged-in"><?php _e( 'You are already logged in', 'easy-digital-downloads' ); ?></p>

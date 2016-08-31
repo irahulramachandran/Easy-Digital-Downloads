@@ -340,6 +340,30 @@ function edd_display_cart_messages() {
 }
 add_action( 'edd_before_checkout_cart', 'edd_display_cart_messages' );
 
+function edd_get_cart_room_total(){
+	$cart_items    = edd_get_cart_contents();
+	$roomtotal = 0;
+	foreach ($cart_items as $key => $item) {
+		$id = is_array( $item ) ? $item['id'] : $item;
+		$options    = !empty( $item['options'] ) ? $item['options'] : array();
+		$roomtotal = floatval($roomtotal+floatval($options['roomprice']));
+	}
+	return $roomtotal;
+}
+
+function edd_get_cart_addon_total(){
+	$cart_items    = edd_get_cart_contents();
+	$addontotal = 0;
+	foreach ($cart_items as $key => $item) {
+		$id = is_array( $item ) ? $item['id'] : $item;
+		$options    = !empty( $item['options'] ) ? $item['options'] : array();
+		foreach ($options['addons'] as $key => $addon) {
+			$addontotal = floatval($addontotal+floatval($addon->price));
+		}
+	}
+	return $addontotal;
+}
+
 /**
  * Show Added To Cart Messages
  *

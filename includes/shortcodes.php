@@ -174,7 +174,7 @@ function edd_login_form_shortcode( $atts, $content = null ) {
 			'redirect' => '',
 		), $atts, 'edd_login' )
 	);
-	return edd_login_form( $redirect );
+	echo edd_login_form( $redirect );
 }
 add_shortcode( 'edd_login', 'edd_login_form_shortcode' );
 
@@ -696,11 +696,36 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 
 	//$display = ob_get_clean();
 	$display = edd_get_template_part( 'shortcode', 'receipt' );
-	error_log("payment_id:::::::::::::::::::::::::::::::::::::");
 
 	return $display;
 }
 add_shortcode( 'edd_receipt', 'edd_receipt_shortcode' );
+
+
+function get_booking_message($bookingmessage, $payment){
+	$user = edd_get_payment_meta_user_info($payment->ID);
+	$useremail = edd_get_payment_user_email($payment->ID);
+	$guestemail = edd_get_payment_guest_email($payment->ID);
+	$name = $user['first_name']." ".$user['last_name'];
+	$cart = edd_get_payment_meta_cart_details($payment->ID, true);
+
+	$startdate = $cart[0]['item_number']['options']['startdate'];
+	$enddate = $cart[0]['item_number']['options']['enddate'];
+	$date = "";
+	if($startdate == $enddate){
+		$date = date('m d', strtotime($startdate));
+	}
+	else{
+		$startdate = date('F d', strtotime($startdate));
+		$enddate = date('F d', strtotime($enddate));
+		$date = $startdate." to ".$enddate;
+	}
+
+	$bookingmessage = str_replace("{name}",$name,$bookingmessage);
+	$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span> (<a href='#' class='modifyemail' data-email='".$useremail."'>click here</a> if you want to change the e-mail address)",$bookingmessage);
+	$bookingmessage = str_replace("{dates}",$date,$bookingmessage);
+	return $bookingmessage;
+}
 
 /**
  * Profile Editor Shortcode

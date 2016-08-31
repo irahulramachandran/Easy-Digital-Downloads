@@ -28,8 +28,350 @@ $settings = get_option("snc_theme_settings");
 $hotelCode = esc_html(stripslashes($settings["snc_hotelid"]));
 $hotelName = esc_html(stripslashes($settings["snc_hotelname"]));
 $startdate = edd_booking_startdate($payment->ID);
+$count = sizeof($cart);
+$useremail = edd_get_payment_user_email($payment->ID);
+$guestemail = edd_get_payment_guest_email($payment->ID);
+$name = $user['first_name']." ".$user['last_name'];
+
+$bookingtext  = "";
+
+$bookingmessage = "";
+
+if(!empty($guestemail)){
+  if($useremail != $guestemail){
+    $bookingmessage = edd_get_option( 'booking_for_guest_message', '' );
+  }
+  else{
+    $bookingmessage = edd_get_option( 'booking_for_self_message', '' );
+  }
+}
+else{
+  $bookingmessage = edd_get_option( 'booking_for_self_message', '' );
+}
+
+//print_r(json_encode($meta));
+
+$bookingmessage = get_booking_message($bookingmessage,$payment);
+
+$imageURL = $cart[0]['item_number']['options']['imgurl'];
 ?>
-<div class="col-xs-12 no-padding" id="dvContents">
+<div class="container-fluid no-padding" id="dvContents">
+  <div class="hero" style="background-image:url(<?php echo $imageURL;?>)">
+		<div class="overlay">
+		</div>
+    <div class="container">
+      <h2 class="pageheader">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
+    </div>
+	</div>
+  <div class="container main-container margin-top-30">
+    <div class="row">
+			<div class="col-xs-12 padding-bottom-15 confirmation-header margin-bottom-10 ">
+				<div class="pull-right confirmation-actions-container">
+					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
+					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
+					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
+				</div>
+			</div>
+			<div class="col-xs-12 margin-bottom-15 confirmation-content">
+				<p class="pull-left margin-bottom-15"><?php echo $bookingmessage; ?></p>
+			</div>
+		</div>
+    <div class="row">
+				<div class="col-xs-12 confirmation-summary">
+					<h6 class="font-bold margin-bottom-5 margin-top-0">Booking Summary</h6>
+          <?php
+          $i = 0;
+            if ($cart) : ?>
+              <?php foreach ($cart as $key => $item) : ?>
+                  <?php
+                  //print_r(json_encode($item));
+                  $item_title = $item['item_number']['options']['roomtypename'];
+                  $rateplan_title = $item['item_number']['options']['name'];
+                  $fromdatetime = strtotime($item['item_number']['options']['startdate']);
+                  $todatetime = strtotime($item['item_number']['options']['enddate']);
+                  $imgurl = $item['item_number']['options']['imgurl'];
+                  $noofdays = $item['item_number']['options']['noofdays'];
+                  $roomprice = $item['item_number']['options']['roomprice'];
+                  $price = $item['item_number']['options']['price'];
+                  $addonTotal = $item['item_number']['options']['addontotal'];
+                  $fromdatetime = date('d M Y', $fromdatetime);
+                  $todatetime = date('d M Y', $todatetime);
+                  ?>
+                  <div class="roomitem margin-top-10 pull-left col-xs-12 no-padding"> <!-- Loop Starts -->
+          					<div class="col-xs-12 col-md-7 no-padding room-image-container">
+          						<div class="room-image" style="background-image:url(<?php echo $imgurl;?>)">
+          						</div>
+          					</div>
+          					<div class="col-xs-12 col-md-5 room-details-container">
+          						<div class="row no-margin">
+          							<div class="room-name-plan-duration">
+          								<div class="pull-left">
+          									<h2 class="room-name"><?php echo $item_title; ?></h2>
+          									<h5 class="margin-bottom-0 room-plan"><?php echo $rateplan_title; ?></h5>
+          								</div>
+          								<div class="pull-right border-left-light">
+          									<div class="duration-icon"></div>
+                            <?php
+                            if($noofdays == 1){
+                              ?>
+                              <p>1 Night</p>
+                              <?php
+                            }
+                            else{
+                              ?>
+                              <p><?php echo $noofdays;?> Nights</p>
+                              <?php
+                            }
+                            ?>
+          								</div>
+          							</div>
+          						</div>
+          						<div class="row no-margin margin-top-50 arrvial-departure-container">
+          							<div class="pull-left arrival">
+          								<div class="pull-left">
+          									<span class="font-bold">Arrival Date</span>
+          									<p class="arrival-date"><?php echo $fromdatetime; ?></p>
+          								</div>
+          								<!-- <div class="pull-right icon-thunder-rain arrival-weather-icon"></div> -->
+          							</div>
+          							<div class="pull-right departure">
+          								<div class="pull-left">
+          									<span class="font-bold">Departure Date</span>
+          									<p class="arrival-date"><?php echo $todatetime; ?></p>
+          								</div>
+          								<!-- <div class="pull-right icon-sunny arrival-weather-icon"></div> -->
+          							</div>
+          						</div>
+                      <?php if($addonTotal > 0){
+                        $className = "";
+                      }else{
+                        $className = "border-bottom-light";
+                      }
+                        ?>
+
+          						<div class="row no-margin margin-top-30 padding-bottom-10 room-total <?php echo $className; ?>">
+          							<span class="pull-left font-bold">Room Total</span>
+          							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($roomprice)); ?></span>
+          						</div>
+                      <?php if($addonTotal > 0){
+                        ?>
+                        <div class="row no-margin margin-top-30 padding-bottom-10 border-bottom-light room-total">
+            							<span class="pull-left font-bold">Addon Total</span>
+            							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($addonTotal)); ?></span>
+            						</div>
+                        <?php
+                        }
+                      ?>
+                      <?php
+                      $i++;
+                      if($i == $count){
+                        ?>
+                        <div class="row no-margin margin-top-10">
+            							<span class="pull-left font-bold">Total to be paid at hotel</span>
+            							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($price)); ?></span>
+            						</div>
+            						<div class="row margin-top-10 confirmation-action-mobile-container">
+            							<a href="#" class="col-xs-8 no-padding btn-primary download-btn-mobile">DOWNLOAD</a>
+            							<a href="#" class="col-xs-4 no-padding btn-secondary share-btn-mobile">SHARE</a>
+            						</div>
+                        <?php
+                      }
+                      ?>
+          					</div>
+        				  </div> <!-- Loop End -->
+                <?php endforeach; ?>
+            <?php endif; ?>
+				</div>
+			</div>
+      <div class="row margin-top-15">
+				<div class="col-xs-12 enhance-stay-outer-container">
+					<h6 class="font-bold margin-bottom-15">Enhance Your Stay</h6>
+					<div class="pull-left enhance-stay-inner-container">
+						<div class="fake-left"></div>
+            <div class="pull-left enhance-stay-container">
+
+            <?php
+            $args = array(
+              'posts_per_page'   => -1,
+              'orderby'          => 'date',
+              'order'            => 'DESC',
+              'post_type'        => 'snhotel_addons',
+              'post_status'      => 'publish',
+              );
+              $addonsFromDB = get_posts( $args );
+              foreach ( $addonsFromDB as $post ) : setup_postdata( $post );
+                if (has_post_thumbnail($post->ID)) {
+                    $image = wp_get_attachment_url(get_post_thumbnail_id($post->ID)); //the_post_thumbnail_url();//wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'archive-post-thumbnail');
+                    $imagePath = $image;
+                }
+            ?>
+
+							<div class="pull-left no-padding enhance-stay" style="background-image:url(<?php echo $imagePath; ?>)">
+								<div class="gradient-overlay">
+									<p class="pull-right price">From <span class="text-bold"><?php echo edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))); ?></span></p>
+									<p class="pull-left title margin-bottom-0"><?php echo $post->post_title; ?></p>
+								</div>
+							</div>
+              <?php endforeach;
+              wp_reset_postdata();?>
+            </div>
+            <div class="fake-right"></div>
+					</div>
+				</div>
+			</div>
+      <div class="row margin-top-15">
+				<div class="col-xs-12 things-to-do-outer-container">
+					<h6 class="font-bold margin-bottom-15">Top four things to do in Brisbane</h6>
+					<div class="pull-left things-to-do-inner-container">
+					<div class="fake-left"></div>
+						<div class="pull-left things-to-do-container">
+                <?php
+                $args = array(
+                  'posts_per_page'   => -1,
+                  'orderby'          => 'date',
+                  'order'            => 'DESC',
+                  'post_type'        => 'snhotel_thingstodo',
+                  'post_status'      => 'publish',
+                  );
+                  $addonsFromDB = get_posts( $args );
+                  foreach ( $addonsFromDB as $post ) : setup_postdata( $post );
+                    if (has_post_thumbnail($post->ID)) {
+                        $image = wp_get_attachment_url(get_post_thumbnail_id($post->ID));
+                        $imagePath = $image;
+                    }
+                ?>
+                <a href="<?php echo get_post_meta($post->ID, 'siteurl', 1); ?>" target="_blank" class="display-block">
+                  <div class="pull-left no-padding things-to-do" style="background-image:url(<?php echo $imagePath; ?>)">
+    								<div class="gradient-overlay">
+    									<p class="pull-right price">From <span class="text-bold"><?php echo edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'price', 1))); ?></span></p>
+    									<p class="pull-left title margin-bottom-0"><?php echo $post->post_title; ?></p>
+    								</div>
+    							</div>
+                </a>
+              <?php
+                endforeach;
+                wp_reset_postdata();
+              ?>
+            </div>
+          <div class="fake-right"></div>
+        </div>
+      </div>
+    </div>
+    <?php
+      $settings = get_option( "snc_theme_settings" );
+      $hotelname = esc_html( stripslashes( $settings['snc_hotelname'] ) );
+      $add1 = esc_html( stripslashes( $settings["snc_add1"] ) );
+  		$add2 = esc_html( stripslashes( $settings["snc_add2"] ) );
+  		$city = esc_html( stripslashes( $settings["snc_city"] ) );
+  		$state = esc_html( stripslashes( $settings["snc_state"] ) );
+  		$pcode = esc_html( stripslashes( $settings["snc_pcode"] ) );
+  		$country = esc_html( stripslashes( $settings["snc_country"] ) );
+      $phone = esc_html( stripslashes( $settings["snc_phone"] ) );
+      $email = esc_html( stripslashes( $settings["snc_email"] ) );
+      $latitude = esc_html( stripslashes( $settings["snc_lat"] ) );
+      $longitude = esc_html( stripslashes( $settings["snc_long"] ) );
+    ?>
+    <div class="row margin-top-15">
+			<div class="col-xs-12 col-md-7">
+				<h6 class="font-bold margin-bottom-15">Location Details</h6>
+        <div id="confimationmap"></div>
+			</div>
+			<div class="col-xs-12 col-md-5 margin-top-30">
+				<p class="hotel-location-icons hotel-address">
+          <?php
+          echo $hotelname.',';
+          ?>
+          <?php
+            echo $add1.', ';
+            if(!empty($add2)){ echo $add2.', ';}
+            if(!empty($city)){ echo $city.', '; }
+            if(!empty($state)){ echo $state.', '; }
+            if(!empty($country)){  echo $country; }
+          ?>
+				</p>
+				<p class="hotel-location-icons hotel-telephone"><?php echo $phone;?></p>
+				<p class="hotel-location-icons hotel-email"><a href="mailto:<?php echo $email;?>"><?php echo $email;?></a></p>
+				<p class="pull-left margin-right-10 hotel-location-icons hotel-driving-directions"><a href="#">Driving Directions</a></p>
+				<p class="pull-left icon-parking"><a href="#">Parking Instructions</a></p>
+			</div>
+		</div>
+    <div class="row margin-top-15">
+      <div class="col-xs-12">
+        <?php
+          $agree_text  = edd_get_option( 'agree_text', '' );
+      		$agree_label = edd_get_option( 'agree_label', __( 'Terms and Conditions', 'easy-digital-downloads' ) );
+        ?>
+    		<div id="edd_terms_agreement" class="margin-top-10">
+    			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
+    			<div id="edd_terms">
+    				<?php
+    					echo wpautop( stripslashes( $agree_text ) );
+    				?>
+    			</div>
+    		</div>
+      </div>
+    </div>
+    <div class="row margin-top-15">
+      <div class="col-xs-12">
+        <?php
+          $agree_text  = edd_get_option( 'policy_text', '' );
+      		$agree_label = edd_get_option( 'policy_title', __( 'Policy', 'easy-digital-downloads' ) );
+        ?>
+    		<div id="edd_terms_agreement" class="margin-top-10 margin-bottom-20">
+    			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
+    			<div id="edd_terms">
+    				<?php
+    					echo wpautop( stripslashes( $agree_text ) );
+    				?>
+    			</div>
+    		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+  initMap();
+});
+
+var latitude = <?php echo $latitude; ?>;
+var longitude = <?php echo $longitude; ?>;
+// When you add a marker using a Place instead of a location, the Maps
+// API will automatically add a 'Save to Google Maps' link to any info
+// window associated with that marker.
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('confimationmap'), {
+    zoom: 17,
+    center: {lat: latitude, lng: longitude}
+  });
+
+  var marker = new google.maps.Marker({
+    map: map,
+    // Define the place with a location, and a query string.
+    place: {
+      location: {lat: latitude, lng: longitude},
+      query: '<?php echo $hotelname; ?>'
+    },
+    // Attributions help users find your site again.
+    attribution: {
+      source: '<?php echo $hotelname; ?>',
+      webUrl: '<?php echo get_site_url(); ?>'
+    }
+  });
+
+  // Construct a new InfoWindow.
+  var infoWindow = new google.maps.InfoWindow({
+    content: '<?php echo $hotelname; ?>'
+  });
+
+  // Opens the InfoWindow when marker is clicked.
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
+}
+</script>
+
+<div class="col-xs-12 no-padding hide">
 <div class="col-xs-12 no-padding border-1px-grey margin-bottom-10">
   <div class="col-xs-12 col-md-6 no-padding">
       <div class="col-xs-12 col-md-4">
@@ -214,9 +556,9 @@ $startdate = edd_booking_startdate($payment->ID);
         </div>
     </div>
     </div>
-    <div class="printbtn" >
-        <a href="#" id="btnPrint" class="btn btn-danger" >Print</a>
-        <a target="_blank" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
+    <div class="printbtn hide" >
+        <a href="#" class="btn btn-danger" >Print</a>
+        <a target="_blank" href="" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
     </div>
 
 
@@ -585,7 +927,7 @@ $startdate = edd_booking_startdate($payment->ID);
    <script type="text/javascript">
     $(document).ready(function () {
         $("#btnPrint").click(function () {
-            var contents = $("#printContents").html();
+            var contents = $("#dvContents").html();
             var frame1 = $('<iframe />');
             frame1[0].name = "frame1";
             // $("#frame1").width(10000);
@@ -600,11 +942,11 @@ $startdate = edd_booking_startdate($payment->ID);
             frameDoc.document.open();
 
             //Create a new HTML document.
-            frameDoc.document.write('<html><head><title>DIV Contents</title>');
+            frameDoc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
             frameDoc.document.write('</head><body>');
             //Append the external CSS file.
             // frameDoc.document.write('<link href="<?php //bloginfo('template_directory');  ?>/assets/styles/fonts.css" rel="stylesheet" type="text/css" media="print"/>');
-            //frameDoc.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">');
+            frameDoc.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">');
             frameDoc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print.css" rel="stylesheet" type="text/css"  media="print" />');
             //frameDoc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
 
@@ -623,4 +965,3 @@ $startdate = edd_booking_startdate($payment->ID);
         });
     });
 </script>
-<?php // endif; ?>
