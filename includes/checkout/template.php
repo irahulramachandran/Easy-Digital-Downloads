@@ -28,7 +28,7 @@ function edd_checkout_form() {
 	// $postItem = get_post($postid);
 	?>
 	<?php
-		echo '<div id="edd_checkout_wrap"> <div class="container">';
+		echo '<div id="edd_checkout_wrap"> <div class="col-xs-12 no-padding">';
 		if ( edd_get_cart_contents() || edd_cart_has_fees() ) :
 
 			edd_checkout_cart();
@@ -44,9 +44,9 @@ function edd_checkout_form() {
 					 * @since 1.0
 					 */
 					do_action( 'edd_checkout_form_top' );
-
+					do_action( 'edd_payment_mode_select'  );
 					if ( edd_show_gateways() ) {
-						do_action( 'edd_payment_mode_select'  );
+						//do_action( 'edd_payment_mode_select'  );
 					} else {
 						do_action( 'edd_purchase_form' );
 					}
@@ -178,10 +178,28 @@ function edd_user_info_fields() {
 	}
 
 	$customer = array_map( 'sanitize_text_field', $customer );
+	if(is_user_logged_in()){
+		$current_user = wp_get_current_user();
+	}
 	?>
-
-	<div class="row">
-		<div class="row text-center">
+	<div id="loading">
+  	<div class="loading_img"></div>
+	</div>
+	<div class="modal fade" tabindex="-1" role="dialog" id="loginpopup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div class="modal-body">
+				<?php do_shortcode('[edd_login]'); ?>
+      </div>
+    </div>
+  </div>
+</div>
+	<div class="col-xs-12 no-padding">
+		<div class="row text-center no-margin choice_mob_header">
 			<div class="choice_mob">
 				<div class="col-xs-12 hidden-sm hidden-md hidden-lg no-padding">
 					<h2>I AM BOOKING FOR</h2>
@@ -197,7 +215,13 @@ function edd_user_info_fields() {
 				</div>
 			</div>
 		</div>
-		<fieldset  class="col-xs-12 no-padding margin-top-20">
+		<div class="col-xs-12 hidden-md hidden-lg">
+			<?php
+			if(is_user_logged_in()){ ?>
+			<div class="col-xs-12"><h4 class="username"><?php echo "Welcome ".$current_user->user_firstname." ".$current_user->user_lastname.","; ?></h4></div>
+			<?php } ?>
+		</div>
+		<fieldset  class="col-xs-12 no-padding margin-top-10">
 			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 				<div class="hidden-xs col-sm-12 col-md-12">
 					<h2>I AM BOOKING FOR</h2>
@@ -212,38 +236,30 @@ function edd_user_info_fields() {
 						</div>
 
 				</div>
-				<div class="row">
+				<?php
+				if(is_user_logged_in()){ ?>
+				<div class="col-xs-12 hidden-xs hidden-sm margin-bottom-10"><h3 class="username"><?php echo "Welcome ".$current_user->user_firstname." ".$current_user->user_lastname.","; ?></h3></div>
+				<?php } ?>
+				<?php
+				if(!is_user_logged_in()){
+					?>
+				<div class="col-xs-12 no-padding">
+					<div class="col-xs-12 margin-top-10 no-padding">
+						<?php do_action( 'edd_checkout_login_button' ); ?>
 
-					<div class="col-xs-12 margin-top-20">
-						<div class="col-xs-12">Book Faster, Log in</div>
-						<div class="col-xs-3 col-sm-3">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/facebook.png" width="100%"/>
-						</div>
-						<div class="col-xs-3 col-sm-3">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/googleplus.png" width="100%"/>
-						</div>
-						<div class="col-xs-3 col-sm-3">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/linkedin.png" width="100%"/>
-						</div>
-						<div class="col-xs-3 col-sm-3">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/snhlogin.png" width="100%"/>
-						</div>
-						<div class="col-xs-12">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/separator_checkout.png" class="img_res"/>
-						</div>
+							<div class="col-xs-12">
+								<img src="<?php echo get_stylesheet_directory_uri();?>/imgs/separator_checkout.png" class="img_res"/>
+							</div>
 					</div>
 				</div>
-
+				<?php
+				}
+				?>
 		<!-- <h2 class="checkout-wizard-title">Personal Information</h2> -->
 		<!-- <form class="payment-form" method="POST"> -->
 	    <div class="form-container">
 	        <div class="personal-information">
-						<!-- <label for="card_number" class="edd-label">
-							<?php _e( 'Card Number', 'easy-digital-downloads' ); ?>
-							<span class="edd-required-indicator">*</span>
-							<span class="card-type"></span>
-						</label> -->
-						<div class="col-xs-12  no-padding">
+						<div class="col-xs-12 no-padding">
 							<div class="col-xs-12 col-sm-6">
 								<div class="margin-top-10">
 									First Name
@@ -303,9 +319,9 @@ function edd_user_info_fields() {
 								<label>
 								  <input type="checkbox" name="addInfo" class="addInfo"> <span class="addInfo_ckbox">I WANT TO PROVIDE ADDITIONAL INFORMATION</span>
 								</label>
-								<label>
+								<!-- <label>
 								  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">REGISTER TO EARN 744 $ILVER DOLLARS</span>
-								</label>
+								</label> -->
 							</div>
 						</div>
 
@@ -338,8 +354,7 @@ function edd_user_info_fields() {
 								<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
 							</div>
 						</div>
-					</div>
-					<div class="additonal-information col-xs-12 no-padding">
+					<div class="guest-additonal-information col-xs-12 no-padding">
 						<div class="col-xs-12 col-sm-6 ">
 							<div class="margin-top-10">
 								Address
@@ -347,7 +362,7 @@ function edd_user_info_fields() {
 							</div>
 							<div class="margin-top-10">
 								State
-								<input class="form-control edd_col_4" type="text" name="guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
+								<input class="form-control edd_col_4" type="text" name="edd_guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
@@ -369,7 +384,7 @@ function edd_user_info_fields() {
 							</div>
 						</div>
 					</div>
-
+				</div>
 				<div class="col-xs-12  no-padding">
 					<div class="payment-information">
 						<div class="col-xs-12 margin-top-10">
@@ -389,10 +404,10 @@ function edd_user_info_fields() {
 								Expiry Date*
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='__'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
+									<input class="form-control edd_expiry" placeholder='MM'  autocomplete="off" type="text" name="card_expiry_month" maxlength="5" id="card_expiry_month"/>
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='____'  autocomplete="off" type="text" name="card_expiry" maxlength="5" id="card_expiry"/>
+									<input class="form-control edd_expiry" placeholder='YYYY'  autocomplete="off" type="text" name="card_expiry_year" maxlength="5" id="card_expiry_year"/>
 								</div>
 							</div>
 
@@ -409,37 +424,69 @@ function edd_user_info_fields() {
 							</div>
 						<div class="col-xs-12 margin-top-10">
 							<label>
-							  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">I have read and agreed to the terms & conditions governing this booking.</span>
+							  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>">terms & conditions</a> governing this booking.</span>
 							</label>
 						</div>
 						<div class='hidden-xs col-sm-12 footer-button'>
 							<!--<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>-->
-							<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
+							<input class="btn btn-danger btn-md confirmBooking" type="submit" value="Confirm Booking" id="confirmBooking"/>
 						</div>
 					</div>
 				</div>
 	<!-- </form> -->
-	
-				
-		</div>
-			</div>
-			<div class="row">
+				<div class="row">
 					<div class="col-xs-12 hidden-sm hidden-md hidden-lg footer-button no-padding">
 						<!--<a href="#" class="btn btn-danger btn-md btn-backbtn">Back</a>-->
-						<input class="btn btn-danger btn-md" type="submit" value="Confirm Booking" id="confirmBooking"/>
+						<input class="btn btn-danger btn-md confirmBooking" type="submit" value="Confirm Booking" id="confirmBooking"/>
 					</div>
 				</div>
-			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
-				<div class='mini-cart-wrapper position-releative'>
-					<?php do_shortcode('[download_cart]'); ?>
+				<div class="col-xs-12">
+					<?php do_action( 'edd_purchase_form_before_submit' ); ?>
 				</div>
 			</div>
-		
-		</fieldset>
 	</div>
+	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
+		<div class='mini-cart-wrapper position-releative'>
+			<?php do_shortcode('[download_cart]'); ?>
+		</div>
+	</div>
+</fieldset>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".additonal-information,.guest-additonal-information").hide();
+			$('.guest-information').hide();
+			$(".addInfo").change(function(){
+				$(".additonal-information,.guest-additonal-information").slideToggle("fast");
+			});
+			$('input[name="booker"]').bind('change',function(e){
+				e.preventDefault();
+				var showOrHide = ($(this).val() == 1) ? true : false;
+				$('.guest-information').toggle(showOrHide);
+			});
 
+			if($(window).width() < 768){
+				if($(".mini-cart-wrapper").size() > 0 && $(".mini-cart-wrapper").hasClass("position-releative")){
+					$(".mini-cart-wrapper").removeClass("position-releative");
+				}
+			}
 
-	
+			if($(".edd-slg-login-wrapper").size() > 0){
+				var html = "<div class='edd-slg-login-wrapper nomargin'>";
+						html += "<a title='Connect with SN Select' href='javascript:void(0);' class='edd-slg-social-login-snselect social-button snselect-button'  data-toggle='modal' data-target='#loginpopup'>";
+						html += "</a></div>";
+
+				$(".edd-slg-clear").before(html);
+
+				$(".snselect-button").click(function(){
+					// $('#loginpopup').modal({
+					//   keyboard: false
+					// });
+					$("#loginpopup").addClass("in");
+					$("#loginpopup").css("display","block !important");
+				});
+			}
+		});
+	</script>
 
 	<?php do_action( 'edd_purchase_form_user_info' ); ?>
 	<?php do_action( 'edd_purchase_form_user_info_fields' ); ?>
@@ -975,25 +1022,52 @@ function edd_terms_agreement() {
 		$agree_text  = edd_get_option( 'agree_text', '' );
 		$agree_label = edd_get_option( 'agree_label', __( 'Agree to Terms?', 'easy-digital-downloads' ) );
 ?>
-		<fieldset id="edd_terms_agreement">
-			<div id="edd_terms" style="display:none;">
+		<div id="edd_terms_agreement">
+			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
+			<div id="edd_terms">
 				<?php
 					do_action( 'edd_before_terms' );
 					echo wpautop( stripslashes( $agree_text ) );
 					do_action( 'edd_after_terms' );
 				?>
 			</div>
-			<div id="edd_show_terms">
+			<!-- <div id="edd_show_terms">
 				<a href="#" class="edd_terms_links"><?php _e( 'Show Terms', 'easy-digital-downloads' ); ?></a>
 				<a href="#" class="edd_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'easy-digital-downloads' ); ?></a>
 			</div>
 			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
-			<input name="edd_agree_to_terms" class="required" type="checkbox" id="edd_agree_to_terms" value="1"/>
-		</fieldset>
+			<input name="edd_agree_to_terms" class="required" type="checkbox" id="edd_agree_to_terms" value="1"/> -->
+		</div>
 <?php
 	}
 }
 add_action( 'edd_purchase_form_before_submit', 'edd_terms_agreement' );
+
+function edd_property_policy() {
+	if ( edd_get_option( 'show_policy', false ) ) {
+		$agree_text  = edd_get_option( 'policy_text', '' );
+		$agree_label = edd_get_option( 'policy_title', __( 'Policy', 'easy-digital-downloads' ) );
+?>
+		<div id="edd_terms_agreement" class="margin-top-20 margin-bottom-20">
+			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
+			<div id="edd_terms">
+				<?php
+					do_action( 'edd_before_terms' );
+					echo wpautop( stripslashes( $agree_text ) );
+					do_action( 'edd_after_terms' );
+				?>
+			</div>
+			<!-- <div id="edd_show_terms">
+				<a href="#" class="edd_terms_links"><?php _e( 'Show Terms', 'easy-digital-downloads' ); ?></a>
+				<a href="#" class="edd_terms_links" style="display:none;"><?php _e( 'Hide Terms', 'easy-digital-downloads' ); ?></a>
+			</div>
+			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
+			<input name="edd_agree_to_terms" class="required" type="checkbox" id="edd_agree_to_terms" value="1"/> -->
+		</div>
+<?php
+	}
+}
+add_action( 'edd_purchase_form_before_submit', 'edd_property_policy' );
 
 /**
  * Shows the final purchase total at the bottom of the checkout page
@@ -1021,7 +1095,6 @@ add_action( 'edd_purchase_form_before_submit', 'edd_checkout_final_total', 999 )
 function edd_checkout_submit() {
 ?>
 	<fieldset id="edd_purchase_submit">
-		<?php do_action( 'edd_purchase_form_before_submit' ); ?>
 
 		<?php edd_checkout_hidden_fields(); ?>
 
