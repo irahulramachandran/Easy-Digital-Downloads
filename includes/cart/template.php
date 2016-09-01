@@ -357,8 +357,10 @@ function edd_get_cart_addon_total(){
 	foreach ($cart_items as $key => $item) {
 		$id = is_array( $item ) ? $item['id'] : $item;
 		$options    = !empty( $item['options'] ) ? $item['options'] : array();
-		foreach ($options['addons'] as $key => $addon) {
-			$addontotal = floatval($addontotal+floatval($addon->price));
+		if(sizeof($options['addons'])>0){
+			foreach ($options['addons'] as $key => $addon) {
+				$addontotal = floatval($addontotal+floatval($addon->price));
+			}
 		}
 	}
 	return $addontotal;
