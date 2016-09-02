@@ -333,10 +333,6 @@ function edd_purchase_form_required_fields() {
 		'edd_email' => array(
 			'error_id' => 'invalid_email',
 			'error_message' => __( '', 'easy-digital-downloads' )
-		),
-		'edd_first' => array(
-			'error_id' => 'invalid_first_name',
-			'error_message' => __( '', 'easy-digital-downloads' )
 		)
 	);
 
