@@ -1366,6 +1366,255 @@ function edd_modifybooking_email_tag() {
 }
 add_action( 'edd_add_email_tags', 'edd_modifybooking_email_tag' );
 
+function edd_emailheroimage_email_tag() {
+	edd_add_email_tag( 'emailheroimage', __( 'Returns the Hero Image URL', 'eddpdfi' ), 'edd_emailheroimage_email_template_tags' );
+}
+add_action( 'edd_add_email_tags', 'edd_emailheroimage_email_tag' );
+
+function edd_emailheroimage_email_template_tags($payment_id){
+	$cart = edd_get_payment_meta_cart_details($payment_id, true);
+	$imageURL = $cart[0]['item_number']['options']['imgurl'];
+	return wpthumb("http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/2016/04/Sofa-Set-Side-Flowers-Vase-In-Guest-Room.jpg", 'width=800&height=300&crop=1&resize=1');
+}
+
+function edd_bookingmessage_email_tag() {
+	edd_add_email_tag( 'bookingmessage', __( 'Enters the booking message', 'eddpdfi' ), 'edd_bookingmessage_email_template_tags' );
+}
+add_action( 'edd_add_email_tags', 'edd_bookingmessage_email_tag' );
+
+function edd_bookingmessage_email_template_tags($payment_id){
+	$useremail = edd_get_payment_user_email($payment_id);
+	$guestemail = edd_get_payment_guest_email($payment_id);
+
+	if(!empty($guestemail)){
+	  if($useremail != $guestemail){
+	    $bookingmessage = edd_get_option( 'booking_for_guest_message', '' );
+	  }
+	  else{
+	    $bookingmessage = edd_get_option( 'booking_for_self_message', '' );
+	  }
+	}
+	else{
+	  $bookingmessage = edd_get_option( 'booking_for_self_message', '' );
+	}
+
+	$payment = get_post($payment_id);
+
+	$bookingmessage = get_booking_message($bookingmessage,$payment);
+	return $bookingmessage;
+}
+
+function edd_booking_list_email_tag() {
+	edd_add_email_tag( 'booking_list', __( 'Enters the booking message', 'eddpdfi' ), 'edd_booking_list_email_template_tags' );
+}
+add_action( 'edd_add_email_tags', 'edd_booking_list_email_tag' );
+
+function edd_booking_list_email_template_tags($payment_id){
+	$cart = edd_get_payment_meta_cart_details($payment_id, true);
+	$i = 0;
+	$count = sizeof($cart);
+	$booking_list_html = "";
+	if ($cart) :
+		foreach ($cart as $key => $item) :
+				$item_title = $item['item_number']['options']['roomtypename'];
+				$rateplan_title = $item['item_number']['options']['name'];
+				$fromdatetime = strtotime($item['item_number']['options']['startdate']);
+				$todatetime = strtotime($item['item_number']['options']['enddate']);
+				$imgurl = $item['item_number']['options']['imgurl'];
+				$noofdays = $item['item_number']['options']['noofdays'];
+				$roomprice = $item['item_number']['options']['roomprice'];
+				$price = $item['item_number']['options']['price'];
+				$addonTotal = $item['item_number']['options']['addontotal'];
+				$fromdatetime = date('d M Y', $fromdatetime);
+				$todatetime = date('d M Y', $todatetime);
+				$booking_list_html .= '<tr class="block" style="float: left;width:100%">';
+				$booking_list_html .= '<td class="col-xs-12 col-md-7 no-padding room-image-container" style="position:relative">';
+				// $booking_list_html .= '<img class="room-image" src="'.$imgurl.'" style="height:330px"/>';
+				$booking_list_html .= '<img class="room-image" src="https://d13yacurqjgara.cloudfront.net/users/260537/screenshots/2274863/wip.png" style="height:300px;width:400px"/>';
+				$booking_list_html .= '<span style="position:absolute;background:rgba(0,0,0,0.35px);width:100%;height:100%;top:0;left:0">';
+				$booking_list_html .= '</td><td class="col-xs-12 col-md-5 no-padding padding-left-15 room-details-container" style="width:100%; padding:0px; padding-left:15px;" valign="top">';
+				$booking_list_html .= '<table cellspacing="0" cellpadding="0" border="0" width="100%">';
+				$booking_list_html .= '<tr class="block room-name-plan" style="float: left;width:100%">';
+				$booking_list_html .= '<td class="pull-left" style="width:80%;float:left;">';
+				$booking_list_html .= '<h2 style="margin:0px;">'.$item_title.'</h2>';
+				$booking_list_html .= '<h5 style="font-size:12px;margin:0px auto 10px;">'.$rateplan_title.'</h5>';
+				$booking_list_html .= '</td>';
+				$booking_list_html .= '<td style="float:right;">';
+				// $booking_list_html .= '<div class="duration-icon" style="content:\00CA;font-family: line-icons;text-align: center;"></div>';
+
+				if($noofdays == 1){
+					$noofdays = "1 Night";
+				}
+				else{
+					 $noofdays = $noofdays." Nights";
+				}
+				$booking_list_html .= '<p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p>';
+				$booking_list_html .= '</td></tr>';
+				$booking_list_html .= '<tr class="block margin-top-50 arrvial-departure-container" style="float: left;width:100%">';
+				$booking_list_html .= '<td class="pull-left" style="width:50%;float:left;">';
+				$booking_list_html .= '<span class="font-bold" style="font-weight:bold;">Arrival Date</span>';
+				$booking_list_html .= '<p class="arrival-date" style="margin:5px 0px 10px;">'.$fromdatetime.'</p>';
+				$booking_list_html .= '</td>';
+				$booking_list_html .= '<td class="pull-right" style="width:50%;float:left;text-align:right;">';
+				$booking_list_html .= '<span class="font-bold" style="font-weight:bold;">Departure Date</span>';
+				$booking_list_html .= '<p class="arrival-date" style="margin:5px 0px 10px;">'.$todatetime.'</p>';
+				$booking_list_html .= '</td></tr>';
+				$booking_list_html .= '<tr class="row block no-margin margin-top-30 padding-bottom-10 border-bottom-light room-total" style="float: left;width:100%">';
+				$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold; width:50%;float:left;margin-top:50px;">Room Total</td>';
+				$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;margin-top:50px">'.edd_currency_filter(edd_format_amount($roomprice)).'</td></tr>';
+				if($addonTotal > 0){
+					$booking_list_html .= '<tr class="row block no-margin margin-top-30 padding-bottom-10 border-bottom-light room-total" style="float: left;width:100%">';
+					$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold;width:50%;float:left;margin-top:10px;">Addon Total</td>';
+					$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;margin-top:10px">'.edd_currency_filter(edd_format_amount($addonTotal)).'</td></tr>';
+				}
+
+				$i++;
+				if($i == $count){
+					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;border-top:1px solid #cacaca;padding-top:10px;font-size:15px;">';
+					$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold;width:50%;float:left;">Total to be paid at hotel</td>';
+					$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;">'.edd_currency_filter(edd_format_amount($price)).'</td>';
+					$booking_list_html .= '</tr>';
+					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;padding-top:10px;font-size:15px;">';
+					$booking_list_html .= '<td style="width:49%;float:left;">';
+					$booking_list_html .= '<a href="'.esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $payment_id ), 'post_id' => $payment_id, 'reservation_id' => base64_encode(edd_get_reservation($payment_id))), edd_get_modification_page_uri() ) ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;">MODIFY RESERVATION</a>';
+					$booking_list_html .= '</td>';
+					$booking_list_html .= '<td style="width:49%;float:left;">';
+					$booking_list_html .= '<a href="'.edd_pdf_invoices()->get_pdf_invoice_url( $payment_id ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;">DOWNLOAD INVOICE</a>';
+					$booking_list_html .= '</td>';
+					$booking_list_html .= '</tr>';
+				}
+				$booking_list_html .= '</table></td>';
+				$booking_list_html .= '<td style="width:100%;float:left">';
+				$booking_list_html .= '<table class="margin-top-15" style="width:100%;float:left">';
+				$booking_list_html .= '<tr class="col-xs-12 enhance-stay-outer-container" style="padding:0;">';
+
+				$booking_list_html .= '<td style="width:100%;float:left;">';
+				$booking_list_html .= '<span class="pull-left font-bold" style="font-weight:bold; margin:10px auto;">Enhance Your Stay</span><br/>';
+				$booking_list_html .= '<table>';
+				$booking_list_html .= '<tr>';
+				$booking_list_html .= '<td class="fake-left" style="z-index:10"></td>';
+				$booking_list_html .= '</tr>';
+				$booking_list_html .= '</table>';
+				$booking_list_html .= '<table class="pull-left enhance-stay-inner-container" style="width:100%!important;float:left">';
+				$booking_list_html .= '<tr class="pull-left enhance-stay-container" style="width:100%!important;float:left">';
+
+				$args = array(
+					'posts_per_page'   => 4,
+					'orderby'          => 'date',
+					'order'            => 'DESC',
+					'post_type'        => 'snhotel_addons',
+					'post_status'      => 'publish',
+					);
+				$addonsFromDB = get_posts( $args );
+				foreach ( $addonsFromDB as $post ) : setup_postdata( $post );
+						if (has_post_thumbnail($post->ID)) {
+								$image = wp_get_attachment_url(get_post_thumbnail_id($post->ID)); //the_post_thumbnail_url();//wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'archive-post-thumbnail');
+								$imagePath = $image;
+						}
+						$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;border:1px solid #cacaca;padding:0px;">';
+		        //$booking_list_html .= '<img class="room-image" src="'.$imagePath.'" height="140" style="width:100%;"/>';
+		        // $booking_list_html .= '<div style="width:197px; height:140px; display:block; background-size:contain;background-image:url('.$imagePath.')"></div>';
+		        $booking_list_html .= '<div style="width:197px; height:140px; display:block; background-size:contain;background-image:url(https://external-sit4-1.xx.fbcdn.net/safe_image.php?d=AQCC2-XhuDSFnF9g&w=476&h=249&url=https%3A%2F%2Fd152j5tfobgaot.cloudfront.net%2Fwp-content%2Fuploads%2F2016%2F09%2Fjio.png&cfs=1&upscale=1)"></div>';
+		        $booking_list_html .= '<span class="gradient-overlay">';
+		        $booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From AUD <span class="text-bold">'.edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))).'</span></p>';
+		        $booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;">'.$post->post_title.'</p>';
+		        $booking_list_html .= '</span>';
+		        $booking_list_html .= '</td>';
+					endforeach;
+				wp_reset_postdata();
+				$booking_list_html .= '</tr></table>';
+				$booking_list_html .= '</td></tr></table></td>';
+
+				$booking_list_html .= '<td style="width:100%;float:left;">';
+				$booking_list_html .= '<span class="pull-left font-bold" style="font-weight:bold; margin:10px auto;">Top four things to do</span><br/>';
+				$booking_list_html .= '<table>';
+				$booking_list_html .= '<tr>';
+				$booking_list_html .= '<td class="fake-left" style="z-index:10"></td>';
+				$booking_list_html .= '</tr>';
+				$booking_list_html .= '</table>';
+				$booking_list_html .= '<table class="pull-left enhance-stay-inner-container" style="width:100%!important;float:left">';
+				$booking_list_html .= '<tr class="pull-left enhance-stay-container" style="width:100%!important;float:left">';
+
+				$args = array(
+					'posts_per_page'   => 4,
+					'orderby'          => 'date',
+					'order'            => 'DESC',
+					'post_type'        => 'snhotel_thingstodo',
+					'post_status'      => 'publish',
+					);
+				$addonsFromDB = get_posts( $args );
+				foreach ( $addonsFromDB as $post ) : setup_postdata( $post );
+						if (has_post_thumbnail($post->ID)) {
+								$image = wp_get_attachment_url(get_post_thumbnail_id($post->ID)); //the_post_thumbnail_url();//wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'archive-post-thumbnail');
+								$imagePath = $image;
+						}
+						$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;border:1px solid #cacaca;padding:0px;">';
+		        //$booking_list_html .= '<img class="room-image" src="'.$imagePath.'" height="140" style="width:100%;"/>';
+		        // $booking_list_html .= '<div style="width:197px; height:140px; display:block; background-size:contain;background-image:url('.$imagePath.')"></div>';
+		        $booking_list_html .= '<div style="width:197px; height:140px; display:block; background-size:contain;background-image:url(https://external-sit4-1.xx.fbcdn.net/safe_image.php?d=AQCC2-XhuDSFnF9g&w=476&h=249&url=https%3A%2F%2Fd152j5tfobgaot.cloudfront.net%2Fwp-content%2Fuploads%2F2016%2F09%2Fjio.png&cfs=1&upscale=1)"></div>';
+		        $booking_list_html .= '<span class="gradient-overlay">';
+		        $booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From AUD <span class="text-bold">'.edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))).'</span></p>';
+		        $booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;">'.$post->post_title.'</p>';
+		        $booking_list_html .= '</span>';
+		        $booking_list_html .= '</td>';
+					endforeach;
+				wp_reset_postdata();
+				$booking_list_html .= '</tr></table>';
+				$booking_list_html .= '</td></tr></table></td>';
+				$booking_list_html .= '<td style="width:100%;float:left;">';
+				$booking_list_html .= '<span class="pull-left font-bold" style="font-weight:bold; margin:10px auto;">Location Details</span><br/>';
+				$booking_list_html .= '<table>';
+				$booking_list_html .= '<tr>';
+				$booking_list_html .= '<td class="fake-left" style="z-index:10"></td>';
+				$booking_list_html .= '</tr>';
+				$booking_list_html .= '</table>';
+				$booking_list_html .= '<table class="pull-left enhance-stay-inner-container" style="width:100%!important;float:left">';
+				$booking_list_html .= '<tr class="pull-left enhance-stay-container" style="width:100%!important;float:left">';
+				$booking_list_html .= '<td style="width:49%;float:left;">';
+				$map_image  = edd_get_option( 'map_image', '' );
+				if(!empty($map_image)){
+					$booking_list_html .= '<img border="0" src="'.$map_image.'" class="heroImg map_image">';
+				}
+				$booking_list_html .= '</td>';
+				$booking_list_html .= '<td style="width:47%;float:left;padding-left:15px;">';
+
+				$settings = get_option( "snc_theme_settings" );
+		    $hotelname = esc_html( stripslashes( $settings['snc_hotelname'] ) );
+		    $add1 = esc_html( stripslashes( $settings["snc_add1"] ) );
+				$add2 = esc_html( stripslashes( $settings["snc_add2"] ) );
+				$city = esc_html( stripslashes( $settings["snc_city"] ) );
+				$state = esc_html( stripslashes( $settings["snc_state"] ) );
+				$pcode = esc_html( stripslashes( $settings["snc_pcode"] ) );
+				$country = esc_html( stripslashes( $settings["snc_country"] ) );
+		    $phone = esc_html( stripslashes( $settings["snc_phone"] ) );
+		    $email = esc_html( stripslashes( $settings["snc_email"] ) );
+
+				$address = $hotelname.',';
+	      if(!empty($add1)){ $address .= $add1.', ';}
+	      if(!empty($add2)){ $address .= $add2.', ';}
+	      if(!empty($city)){ $address .= $city.', '; }
+	      if(!empty($state)){ $address .= $state.', '; }
+	      if(!empty($country)){  $address .= $country; }
+				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$address.'</p>';
+				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$phone.'</p>';
+				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$email.'</p>';
+				$booking_list_html .= '<a href="#" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;margin-top:10px;">Driving Directions</a>';
+				$booking_list_html .= '<a href="#" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;margin-top:10px;">Parking Instructions</a>';
+				$booking_list_html .= '</td>';
+				$booking_list_html .= '</tr></table>';
+				$booking_list_html .= '</td></tr></table></td>';
+				$booking_list_html .= '</tr>';
+
+			endforeach;
+	endif;
+
+
+
+	return $booking_list_html;
+}
+
+
+
 /**
  * Email Template Tags
  *

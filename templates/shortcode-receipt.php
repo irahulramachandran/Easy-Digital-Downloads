@@ -56,6 +56,7 @@ $bookingmessage = get_booking_message($bookingmessage,$payment);
 $imageURL = $cart[0]['item_number']['options']['imgurl'];
 ?>
 <div class="container-fluid no-padding" id="dvContents">
+  <img src="<?php echo wpthumb($imageURL, 'width=2280&height=500&crop=1');?>" style="width:100%;" class="heroImg" alt="Booking confirmation" />
   <div class="hero" style="background-image:url(<?php echo $imageURL;?>)">
 		<div class="overlay">
 		</div>
@@ -63,6 +64,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
       <h2 class="pageheader">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
     </div>
 	</div>
+  <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container margin-top-30">
     <div class="row">
 			<div class="col-xs-12 padding-bottom-15 confirmation-header margin-bottom-10 ">
@@ -72,7 +74,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
 				</div>
 			</div>
-			<div class="col-xs-12 margin-bottom-15 confirmation-content">
+			<div class="col-xs-12 margin-bottom-15 confirmation-content print-100">
 				<p class="pull-left margin-bottom-15"><?php echo $bookingmessage; ?></p>
 			</div>
 		</div>
@@ -99,6 +101,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                   ?>
                   <div class="roomitem margin-top-10 pull-left col-xs-12 no-padding"> <!-- Loop Starts -->
           					<div class="col-xs-12 col-md-7 no-padding room-image-container">
+                      <img src="<?php echo $imgurl;?>" class="heroImg" style="width:100%;" alt="" />
           						<div class="room-image" style="background-image:url(<?php echo $imgurl;?>)">
           						</div>
           					</div>
@@ -126,7 +129,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           								</div>
           							</div>
           						</div>
-          						<div class="row no-margin margin-top-50 arrvial-departure-container">
+          						<div class="row no-margin arrvial-departure-container">
           							<div class="pull-left arrival">
           								<div class="pull-left">
           									<span class="font-bold">Arrival Date</span>
@@ -149,13 +152,13 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                       }
                         ?>
 
-          						<div class="row no-margin margin-top-30 padding-bottom-10 room-total <?php echo $className; ?>">
+          						<div class="row no-margin margin-top-10 padding-bottom-10 room-total <?php echo $className; ?>">
           							<span class="pull-left font-bold">Room Total</span>
           							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($roomprice)); ?></span>
           						</div>
                       <?php if($addonTotal > 0){
                         ?>
-                        <div class="row no-margin margin-top-30 padding-bottom-10 border-bottom-light room-total">
+                        <div class="row no-margin padding-bottom-10 border-bottom-light room-total">
             							<span class="pull-left font-bold">Addon Total</span>
             							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($addonTotal)); ?></span>
             						</div>
@@ -205,7 +208,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                     $imagePath = $image;
                 }
             ?>
-
+              <img class="enhance-stay-img" src="<?php echo $imagePath; ?>" />
 							<div class="pull-left no-padding enhance-stay" style="background-image:url(<?php echo $imagePath; ?>)">
 								<div class="gradient-overlay">
 									<p class="pull-right price">From <span class="text-bold"><?php echo edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))); ?></span></p>
@@ -240,7 +243,8 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                         $imagePath = $image;
                     }
                 ?>
-                <a href="<?php echo get_post_meta($post->ID, 'siteurl', 1); ?>" target="_blank" class="display-block">
+                <img class="enhance-stay-img" src="<?php echo $imagePath; ?>" />
+                <a href="<?php echo get_post_meta($post->ID, 'siteurl', 1); ?>" target="_blank" class="display-block enhance-link">
                   <div class="pull-left no-padding things-to-do" style="background-image:url(<?php echo $imagePath; ?>)">
     								<div class="gradient-overlay">
     									<p class="pull-right price">From <span class="text-bold"><?php echo edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'price', 1))); ?></span></p>
@@ -271,9 +275,17 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
       $latitude = esc_html( stripslashes( $settings["snc_lat"] ) );
       $longitude = esc_html( stripslashes( $settings["snc_long"] ) );
     ?>
-    <div class="row margin-top-15">
+    <div class="row margin-top-15 location-details">
 			<div class="col-xs-12 col-md-7">
 				<h6 class="font-bold margin-bottom-15">Location Details</h6>
+        <?php
+          $map_image  = edd_get_option( 'map_image', '' );
+          if(!empty($map_image)){
+        ?>
+        <img border="0" src="<?php echo $map_image; ?>" class="heroImg map_image">
+        <?php
+          }
+        ?>
         <div id="confimationmap"></div>
 			</div>
 			<div class="col-xs-12 col-md-5 margin-top-30">
@@ -301,7 +313,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           $agree_text  = edd_get_option( 'agree_text', '' );
       		$agree_label = edd_get_option( 'agree_label', __( 'Terms and Conditions', 'easy-digital-downloads' ) );
         ?>
-    		<div id="edd_terms_agreement" class="margin-top-10">
+    		<div id="edd_terms_agreement" class="margin-top-10 termsnagreement">
     			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
     			<div id="edd_terms">
     				<?php
@@ -317,7 +329,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           $agree_text  = edd_get_option( 'policy_text', '' );
       		$agree_label = edd_get_option( 'policy_title', __( 'Policy', 'easy-digital-downloads' ) );
         ?>
-    		<div id="edd_terms_agreement" class="margin-top-10 margin-bottom-20">
+    		<div id="edd_terms_agreement" class="margin-top-10 margin-bottom-20 policies">
     			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>
     			<div id="edd_terms">
     				<?php
@@ -945,8 +957,7 @@ function initMap() {
             frameDoc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
             frameDoc.document.write('</head><body>');
             //Append the external CSS file.
-            // frameDoc.document.write('<link href="<?php //bloginfo('template_directory');  ?>/assets/styles/fonts.css" rel="stylesheet" type="text/css" media="print"/>');
-            frameDoc.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">');
+            frameDoc.document.write('<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/styles/bootstrap.min.css" type="text/css" media="print" />');
             frameDoc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print.css" rel="stylesheet" type="text/css"  media="print" />');
             //frameDoc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
 

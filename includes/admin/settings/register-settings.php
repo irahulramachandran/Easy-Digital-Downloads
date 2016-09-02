@@ -940,6 +940,12 @@ function edd_get_registered_settings() {
 						'desc' => __( 'Enter the success message for guest booking. </br> {name} = Name </br> {email} = Email </br> {guestname} = Guest Name </br> {dates} = Booking Dates', 'easy-digital-downloads' ),
 						'type' => 'rich_editor',
 					),
+					'map_image' => array(
+						'id'   => 'map_image',
+						'name' => __( 'Map Image', 'easy-digital-downloads' ),
+						'desc' => __( 'Upload or choose a map image to be displayed at the bottom of the purchase receipt.', 'easy-digital-downloads' ),
+						'type' => 'upload',
+					),
 					'parking_instruction' => array(
 						'id'   => 'parking_instructions',
 						'name' => __( 'Parking Instructions', 'easy-digital-downloads' ),
