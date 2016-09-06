@@ -67,7 +67,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
     <div class="row">
-      <h2 class="padding-left-15 mobile-header hidden-md hidden-lg">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
+      <h2 class="padding-left-15 mobile-header hidden-md hidden-lg margin-top-0">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
 			<div class="col-xs-12 confirmation-header margin-bottom-10 padding-bottom-10">
 				<div class="pull-right confirmation-actions-container">
 					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
@@ -130,7 +130,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           								</div>
           							</div>
           						</div>
-          						<div class="row no-margin arrvial-departure-container">
+          						<div class="col-xs-12 no-padding margin-top-10 arrvial-departure-container">
           							<div class="pull-left arrival">
           								<div class="pull-left">
           									<span class="font-bold">Arrival Date</span>
@@ -140,8 +140,8 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           							</div>
           							<div class="pull-right departure">
           								<div class="pull-left">
-          									<span class="font-bold">Departure Date</span>
-          									<p class="arrival-date"><?php echo $todatetime; ?></p>
+          									<span class="font-bold display-block text-right">Departure Date</span>
+          									<p class="arrival-date display-block text-right"><?php echo $todatetime; ?></p>
           								</div>
           								<!-- <div class="pull-right icon-sunny arrival-weather-icon"></div> -->
           							</div>
@@ -153,15 +153,15 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                       }
                         ?>
 
-          						<div class="row no-margin margin-top-10 padding-bottom-10 room-total <?php echo $className; ?>">
+          						<div class="col-xs-12 no-padding margin-top-10 padding-bottom-10 room-total  <?php echo $className; ?>">
           							<span class="pull-left font-bold">Room Total</span>
-          							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($roomprice)); ?></span>
+          							<span class="pull-right font-bold display-block text-right"><?php echo edd_currency_filter(edd_format_amount($roomprice)); ?></span>
           						</div>
                       <?php if($addonTotal > 0){
                         ?>
-                        <div class="row no-margin padding-bottom-10 border-bottom-light room-total">
+                        <div class="col-xs-12 no-padding margin-top-10 padding-bottom-10 room-total">
             							<span class="pull-left font-bold">Addon Total</span>
-            							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($addonTotal)); ?></span>
+            							<span class="pull-right font-bold  display-block text-right"><?php echo edd_currency_filter(edd_format_amount($addonTotal)); ?></span>
             						</div>
                         <?php
                         }
@@ -170,13 +170,13 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                       $i++;
                       if($i == $count){
                         ?>
-                        <div class="row no-margin margin-top-10">
+                        <div class="col-xs-12 no-padding margin-top-10 border-top padding-top-10">
             							<span class="pull-left font-bold">Total to be paid at hotel</span>
             							<span class="pull-right font-bold"><?php echo edd_payment_amount($payment->ID); ?></span>
             						</div>
             						<div class="row margin-top-10 confirmation-action-mobile-container">
             							<a href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" class="col-xs-8 btn-danger download-btn-mobile">DOWNLOAD</a>
-            							<a href="#" class="col-xs-4 btn-secondary share-btn-mobile">SHARE</a>
+            							<a href="#" class="col-xs-4 btn-secondary download-btn-mobile share-btn-mobile">SHARE</a>
             						</div>
                         <?php
                       }

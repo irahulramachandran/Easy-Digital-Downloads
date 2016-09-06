@@ -702,30 +702,6 @@ function _bindQuantityChangeEvent(){
 
 		return false;
 	});
-
-	$("#card_expiry_month").mask("00");
-	$("#card_expiry_year").mask("0000");
-
-	$('#card_number').validateCreditCard(function(result) {
-			console.log(result);
-			if(result.card_type == null)
-			{
-					$('#card_number').removeClass().addClass("form-control");
-			}
-			else
-			{
-					$('#card_number').addClass(result.card_type.name);
-			}
-
-			if(!result.valid)
-			{
-					$('#card_number').removeClass("valid");
-			}
-			else
-			{
-					$('#card_number').addClass("valid");
-			}
-	});
 }
 
 function edd_load_gateway( payment_mode ) {
