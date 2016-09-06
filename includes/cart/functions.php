@@ -1404,6 +1404,15 @@ function edd_bookingmessage_email_template_tags($payment_id){
 	return $bookingmessage;
 }
 
+function edd_booking_id_email_tag() {
+	edd_add_email_tag( 'booking_id', __( 'Enters the booking ID', 'eddpdfi' ), 'edd_booking_id_email_template_tags' );
+}
+add_action( 'edd_add_email_tags', 'edd_booking_id_email_tag' );
+
+function edd_booking_id_email_template_tags($payment_id){
+		return get_psot_meta($payment_id, 'reservation_id',true);
+}
+
 function edd_booking_list_email_tag() {
 	edd_add_email_tag( 'booking_list', __( 'Enters the booking message', 'eddpdfi' ), 'edd_booking_list_email_template_tags' );
 }

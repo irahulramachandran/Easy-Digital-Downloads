@@ -445,7 +445,7 @@ function edd_user_info_fields() {
 			</div>
 	</div>
 	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
-		<div class='mini-cart-wrapper position-releative'>
+		<div class='mini-cart-wrapper checkout_page position-releative'>
 			<?php do_shortcode('[download_cart]'); ?>
 		</div>
 	</div>

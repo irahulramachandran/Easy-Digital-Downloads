@@ -65,9 +65,10 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     </div>
 	</div>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
-  <div class="container main-container margin-top-30">
+  <div class="container main-container">
     <div class="row">
-			<div class="col-xs-12 padding-bottom-15 confirmation-header margin-bottom-10 ">
+      <h2 class="padding-left-15 mobile-header hidden-md hidden-lg">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
+			<div class="col-xs-12 confirmation-header margin-bottom-10 padding-bottom-10">
 				<div class="pull-right confirmation-actions-container">
 					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
 					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
@@ -171,11 +172,11 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                         ?>
                         <div class="row no-margin margin-top-10">
             							<span class="pull-left font-bold">Total to be paid at hotel</span>
-            							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($price)); ?></span>
+            							<span class="pull-right font-bold"><?php echo edd_payment_amount($payment->ID); ?></span>
             						</div>
             						<div class="row margin-top-10 confirmation-action-mobile-container">
-            							<a href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" class="col-xs-8 no-padding btn-danger download-btn-mobile">DOWNLOAD</a>
-            							<a href="#" class="col-xs-4 no-padding btn-secondary share-btn-mobile">SHARE</a>
+            							<a href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" class="col-xs-8 btn-danger download-btn-mobile">DOWNLOAD</a>
+            							<a href="#" class="col-xs-4 btn-secondary share-btn-mobile">SHARE</a>
             						</div>
                         <?php
                       }
@@ -572,19 +573,8 @@ function initMap() {
         <a href="#" class="btn btn-danger" >Print</a>
         <a target="_blank" href="" id="btnSaveasPDF" class="btn btn-danger">Save as PDF</a>
     </div>
-
-
-
-
-
-
-
     <!--content for print-->
-
-
-
     <div id="printContents" class="font-display" style="display:none;">
-
         <?php
         ?>
         <?php
@@ -936,6 +926,8 @@ function initMap() {
 
 
 </div>
+</div>
+
    <script type="text/javascript">
     $(document).ready(function () {
         $("#btnPrint").click(function () {
