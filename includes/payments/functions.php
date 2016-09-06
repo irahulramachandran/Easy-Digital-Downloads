@@ -177,6 +177,7 @@ function edd_insert_payment( $payment_data = array() ) {
 
 	$payment->save();
 	$ReservationID = EDD()->session->get( 'ReservationID');
+	$CartItems = EDD()->session->get( 'CartItems');
 	$StartDate = EDD()->session->get( 'StartDate');
 	$EndDate = EDD()->session->get( 'EndDate');
 	$GuestName = EDD()->session->get( 'GuestName');
@@ -185,6 +186,7 @@ function edd_insert_payment( $payment_data = array() ) {
 	add_post_meta($payment->ID, 'startdate',$StartDate);
 	add_post_meta($payment->ID, 'enddate',$EndDate);
 	add_post_meta($payment->ID, 'guestname',$GuestName);
+	add_post_meta($payment->ID, 'cartitems',$CartItems);
 	add_post_meta($payment->ID, 'edd_guest_email',$eddguestemail);
 
 
