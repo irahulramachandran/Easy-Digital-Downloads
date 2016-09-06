@@ -174,7 +174,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
             							<span class="pull-right font-bold"><?php echo edd_currency_filter(edd_format_amount($price)); ?></span>
             						</div>
             						<div class="row margin-top-10 confirmation-action-mobile-container">
-            							<a href="#" class="col-xs-8 no-padding btn-primary download-btn-mobile">DOWNLOAD</a>
+            							<a href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" class="col-xs-8 no-padding btn-danger download-btn-mobile">DOWNLOAD</a>
             							<a href="#" class="col-xs-4 no-padding btn-secondary share-btn-mobile">SHARE</a>
             						</div>
                         <?php
