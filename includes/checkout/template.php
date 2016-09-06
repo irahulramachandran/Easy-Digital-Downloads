@@ -44,9 +44,8 @@ function edd_checkout_form() {
 					 * @since 1.0
 					 */
 					do_action( 'edd_checkout_form_top' );
-					do_action( 'edd_payment_mode_select'  );
 					if ( edd_show_gateways() ) {
-						//do_action( 'edd_payment_mode_select'  );
+						do_action( 'edd_payment_mode_select'  );
 					} else {
 						do_action( 'edd_purchase_form' );
 					}
@@ -388,7 +387,7 @@ function edd_user_info_fields() {
 				<div class="col-xs-12  no-padding">
 					<div class="payment-information">
 						<div class="col-xs-12 margin-top-10">
-							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be chared. It serves as guarantee only.)</span></h4>
+							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be charged. It serves as guarantee only.)</span></h4>
 						</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
 								Name on the card*
