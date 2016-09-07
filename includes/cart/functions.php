@@ -1411,7 +1411,7 @@ function edd_booking_id_email_tag() {
 add_action( 'edd_add_email_tags', 'edd_booking_id_email_tag' );
 
 function edd_booking_id_email_template_tags($payment_id){
-		return get_psot_meta($payment_id, 'reservation_id',true);
+		return get_post_meta($payment_id, 'reservation_id',true);
 }
 
 function edd_booking_list_email_tag() {
