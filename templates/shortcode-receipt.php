@@ -287,6 +287,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
         <?php
           }
         ?>
+        <div id="confimationmap"></div>
 			</div>
 			<div class="col-xs-12 col-md-5 margin-top-30">
 				<p class="hotel-location-icons hotel-address">
