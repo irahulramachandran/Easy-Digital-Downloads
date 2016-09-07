@@ -714,7 +714,7 @@ function edd_load_gateway( payment_mode ) {
 	jQuery.post(edd_scripts.ajaxurl + '?payment-mode=' + payment_mode, { action: 'edd_load_gateway', edd_payment_mode: payment_mode },
 		function(response){
 			$("#loading").hide();
-			jQuery('.personal-payment-information').html(response);
+			//jQuery('.personal-payment-information').html(response);
 			// if(location.pathname.indexOf('checkout')>0)
 		  // {
 		  //   var pageno = localStorage.getItem('pageno');
@@ -740,30 +740,6 @@ function edd_load_gateway( payment_mode ) {
 			// else if(location.pathname.indexOf('checkout') == -1){
 			// 	localStorage.setItem('pageno',1);
 			// }
-
-			$("#card_expiry_month").mask("00");
-			$("#card_expiry_year").mask("0000");
-
-			$('#card_number').validateCreditCard(function(result) {
-					console.log(result);
-					if(result.card_type == null)
-					{
-							$('#card_number').removeClass().addClass("form-control");
-					}
-					else
-					{
-							$('#card_number').addClass(result.card_type.name);
-					}
-
-					if(!result.valid)
-					{
-							$('#card_number').removeClass("valid");
-					}
-					else
-					{
-							$('#card_number').addClass("valid");
-					}
-			});
 
 			// jQuery('.edd-no-js').hide();
 			// jQuery(".btn-backbtn").click(function(e){

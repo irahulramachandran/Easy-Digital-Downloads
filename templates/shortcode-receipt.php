@@ -170,7 +170,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                       $i++;
                       if($i == $count){
                         ?>
-                        <div class="col-xs-12 no-padding margin-top-10 border-top padding-top-10">
+                        <div class="col-xs-12 no-padding margin-top-10 padding-top-10">
             							<span class="pull-left font-bold">Total to be paid at hotel</span>
             							<span class="pull-right font-bold"><?php echo edd_payment_amount($payment->ID); ?></span>
             						</div>
