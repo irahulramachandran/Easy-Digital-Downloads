@@ -1374,7 +1374,7 @@ add_action( 'edd_add_email_tags', 'edd_emailheroimage_email_tag' );
 function edd_emailheroimage_email_template_tags($payment_id){
 	$cart = edd_get_payment_meta_cart_details($payment_id, true);
 	$imageURL = $cart[0]['item_number']['options']['imgurl'];
-	return $imageURL;
+	return wpthumb($imageURL, 'width=800&height=300&crop=1&resize=1');
 	//return wpthumb("http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/2016/04/Sofa-Set-Side-Flowers-Vase-In-Guest-Room.jpg", 'width=800&height=300&crop=1&resize=1');
 }
 
@@ -1486,10 +1486,10 @@ function edd_booking_list_email_template_tags($payment_id){
 					$booking_list_html .= '</tr>';
 					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;padding-top:10px;font-size:15px;">';
 					$booking_list_html .= '<td style="width:49%;float:left;">';
-					$booking_list_html .= '<a href="'.esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $payment_id ), 'post_id' => $payment_id, 'reservation_id' => base64_encode(edd_get_reservation($payment_id))), edd_get_modification_page_uri() ) ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;">MODIFY RESERVATION</a>';
+					$booking_list_html .= '<a href="'.esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $payment_id ), 'post_id' => $payment_id, 'reservation_id' => base64_encode(edd_get_reservation($payment_id))), edd_get_modification_page_uri() ) ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff; font-size:11px;">MODIFY RESERVATION</a>';
 					$booking_list_html .= '</td>';
 					$booking_list_html .= '<td style="width:49%;float:left;">';
-					$booking_list_html .= '<a href="'.edd_pdf_invoices()->get_pdf_invoice_url( $payment_id ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff;">DOWNLOAD INVOICE</a>';
+					$booking_list_html .= '<a href="'.edd_pdf_invoices()->get_pdf_invoice_url( $payment_id ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff; font-size:11px;">DOWNLOAD INVOICE</a>';
 					$booking_list_html .= '</td>';
 					$booking_list_html .= '</tr>';
 				}
