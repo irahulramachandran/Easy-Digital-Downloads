@@ -419,7 +419,9 @@ jQuery(document).ready(function ($) {
 		return false;
 	});
 
-	edd_load_gateway("paypal");
+	if($("#card_number").size() > 0){
+		edd_load_gateway("paypal");
+	}
 
 	// Auto load first payment gateway
 	if( edd_scripts.is_checkout == '1' && $('select#edd-gateway, input.edd-gateway').length ) {

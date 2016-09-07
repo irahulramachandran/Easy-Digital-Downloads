@@ -36,9 +36,9 @@
 		{inclusion}
 	</div>
 	<div class="col-xs-12 cart-item-info">
-		<a href="#">Rate Description</a>
-		<a href="#">All Inclusions</a>
-		<a href="#">Policies</a>
+		<a href="#" data-target="{popupRateDescriptionId}">Rate Description</a>
+		<a href="#" data-target="{popupModalInclusionId}">All Inclusions</a>
+		<a href="#" data-target="{popupPenalitiesId}">Policies</a>
 	</div>
 	<div class='col-xs-12 cart-item-roomrate'>
 		<div class="col-xs-6 no-padding">Room Rate</div>

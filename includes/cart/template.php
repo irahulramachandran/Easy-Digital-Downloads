@@ -186,6 +186,11 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$item = ob_get_clean();
 
 	$item = str_replace( '{item_title}', $title, $item );
+
+	$item = str_replace( '{popupRateDescriptionId}', $title, $item );
+	$item = str_replace( '{popupModalInclusionId}', $title, $item );
+	$item = str_replace( '{popupPenalitiesId}', $title, $item );
+
 	$item = str_replace('{item_img}', wpthumb( $imgurl, 'width=335&height=223&crop=1' ), $item);
 	$item = str_replace('{inclusion}', $inclusionsText, $item);
 	$item = str_replace('{download_id}', $download_id, $item);
