@@ -36,7 +36,7 @@ function edd_checkout_form() {
 			<div id="edd_checkout_form_wrap" class="edd_clearfix">
 			<!--	<h2 class='checkout-wizard-title purchase-details-title margin-bottom-20'>Purchase Details</h2>-->
 				<?php do_action( 'edd_before_purchase_form' ); ?>
-				<form id="edd_purchase_form" class="edd_form" action="<?php echo $form_action; ?>" method="POST">
+				<form id="edd_purchase_form" class="edd_form" method="POST" action="<?php echo $form_action; ?>">
 					<?php
 					/**
 					 * Hooks in at the top of the checkout form
@@ -185,19 +185,19 @@ function edd_user_info_fields() {
   	<div class="loading_img"></div>
 	</div>
 	<div class="modal fade" tabindex="-1" role="dialog" id="loginpopup">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Login</h4>
-      </div>
-      <div class="modal-body">
-				<?php do_shortcode('[edd_login]'); ?>
-      </div>
-    </div>
-  </div>
-</div>
-	<div class="col-xs-12 no-padding">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Login</h4>
+	      </div>
+	      <div class="modal-body">
+					<?php do_shortcode('[edd_login]'); ?>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="col-xs-12 no-padding" id="checkoutitems">
 		<div class="row text-center no-margin choice_mob_header">
 			<div class="choice_mob">
 				<div class="col-xs-12 hidden-sm hidden-md hidden-lg no-padding">
@@ -449,7 +449,8 @@ function edd_user_info_fields() {
 			<?php do_shortcode('[download_cart]'); ?>
 		</div>
 	</div>
-</fieldset>
+	</fieldset>
+</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".additonal-information,.guest-additonal-information").hide();

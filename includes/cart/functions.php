@@ -1486,7 +1486,7 @@ function edd_booking_list_email_template_tags($payment_id){
 					$booking_list_html .= '</tr>';
 					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;padding-top:10px;font-size:15px;">';
 					$booking_list_html .= '<td style="width:49%;float:left;">';
-					$booking_list_html .= '<a href="'.esc_url( add_query_arg( array('payment_key' => edd_get_payment_key( $payment_id ), 'post_id' => $payment_id, 'reservation_id' => base64_encode(edd_get_reservation($payment_id))), edd_get_modification_page_uri() ) ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff; font-size:11px;">MODIFY RESERVATION</a>';
+					$booking_list_html .= '<a href="'.get_site_url().'/reservations/" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff; font-size:11px;">MODIFY RESERVATION</a>';
 					$booking_list_html .= '</td>';
 					$booking_list_html .= '<td style="width:49%;float:left;">';
 					$booking_list_html .= '<a href="'.edd_pdf_invoices()->get_pdf_invoice_url( $payment_id ).'" style="margin:5px 0px;padding:10px 15px;text-decoration:none;background-color:#820053;color:#fff; font-size:11px;">DOWNLOAD INVOICE</a>';

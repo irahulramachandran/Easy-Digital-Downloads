@@ -27,21 +27,24 @@ function edd_process_purchase_form() {
 		$valid_data = false;
 		edd_set_error( 'empty_cart', __( 'Your cart is empty', 'easy-digital-downloads' ) );
 	} else {
+		error_log("1::::::USER");
 		// Validate the form $_POST data
 		$valid_data = edd_purchase_form_validate_fields();
 
 		// Allow themes and plugins to hook to errors
 		do_action( 'edd_checkout_error_checks', $valid_data, $_POST );
 	}
-
+	error_log("2::::::USER");
 	$is_ajax = isset( $_POST['edd_ajax'] );
 
 	// Process the login form
 	if ( isset( $_POST['edd_login_submit'] ) ) {
+		error_log("3::::::USER");
 		edd_process_purchase_login();
 	}
 
 	// Validate the user
+	error_log("4::::::USER");
 	$user = edd_get_purchase_form_user( $valid_data );
 
 	if ( false === $valid_data || edd_get_errors() || ! $user ) {
@@ -52,7 +55,7 @@ function edd_process_purchase_form() {
 			return false;
 		}
 	}
-
+	error_log("5::::::USER");
 	if ( $is_ajax ) {
 		echo 'success';
 		// $r = new stdClass();
@@ -95,6 +98,7 @@ function edd_process_purchase_form() {
 	// Add the user data for hooks
 	$valid_data['user'] = $user;
 
+	error_log("6::::::USER");
 	// Allow themes and plugins to hook before the gateway
 	do_action( 'edd_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
@@ -192,9 +196,11 @@ function edd_purchase_form_validate_fields() {
 		edd_purchase_form_validate_agree_to_terms();
 
 	if ( is_user_logged_in() ) {
+		error_log("1::::::USER purchase");
 		// Collect logged in user data
 		$valid_data['logged_in_user'] = edd_purchase_form_validate_logged_in_user();
 	} else if ( isset( $_POST['edd-purchase-var'] ) && $_POST['edd-purchase-var'] == 'needs-to-register' ) {
+		error_log("2::::::USER purchase");
 		// Set new user registration as required
 		$valid_data['need_new_user'] = true;
 
@@ -202,17 +208,19 @@ function edd_purchase_form_validate_fields() {
 		$valid_data['new_user_data'] = edd_purchase_form_validate_new_user();
 		// Check if login validation is needed
 	} else if ( isset( $_POST['edd-purchase-var'] ) && $_POST['edd-purchase-var'] == 'needs-to-login' ) {
+		error_log("3::::::USER purchase");
 		// Set user login as required
 		$valid_data['need_user_login'] = true;
 
 		// Validate users login info
 		$valid_data['login_user_data'] = edd_purchase_form_validate_user_login();
 	} else {
+		error_log("4::::::USER purchase");
 		// Not registering or logging in, so setup guest user data
 		$valid_data['guest_user_data'] = edd_purchase_form_validate_guest_user();
 	}
 
-
+	error_log("5::::::USER purchase");
 	error_log("Error from Validate");
 	// Return collected data
 	return $valid_data;
