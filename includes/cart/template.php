@@ -84,7 +84,10 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$rateplantitle = $options['name'];
 	$imgurl = $options['imgurl'];
 	$roomprice = $options['roomprice'];
-
+	$roomtypecode = $options['roomtypecode'];
+	$rateplancode = $options['rateplancode'];
+	$ratedescription = $options['roomtypedescription'];
+  $policies = $options['policies'];
 	$inclusion = $options['inclusion'];
 	$adultoccupancy = $options['adultoccupancy'];
 	$download_id = $options['id'];
@@ -106,7 +109,14 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 			$occupany .= "<span class='pull-left'>".$childoccupancy." Children</span>";
 		}
 	}
-
+	$terms = get_terms( 'snhotel_hotel_cancelpenalties' );
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ){
+	    $penality = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
+	    foreach ( $terms as $term ) {
+	        $penality .= "<li style='color:".$term_meta['color'].";'>" . $term->name . "</li>";
+	    }
+	    $penality .= "</ul>";
+	}
 	if($inclusion != null){
 		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 		foreach ($inclusion as $key => $value) {
@@ -187,9 +197,15 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 	$item = str_replace( '{item_title}', $title, $item );
 
-	$item = str_replace( '{popupRateDescriptionId}', $title, $item );
-	$item = str_replace( '{popupModalInclusionId}', $title, $item );
-	$item = str_replace( '{popupPenalitiesId}', $title, $item );
+	$item = str_replace( '{RateDescriptionId}', $roomtypecode, $item );
+	$item = str_replace( '{ModalInclusionId}', $roomtypecode, $item );
+	$item = str_replace( '{PenalitiesId}', $roomtypecode, $item );
+	$item = str_replace( '{RateDescriptionPlanId}', $rateplancode, $item );
+	$item = str_replace( '{ModalInclusionPlanId}', $rateplancode, $item );
+	$item = str_replace( '{PenalitiesPlanId}', $rateplancode, $item );
+	$item = str_replace( '{RateDescription}', $ratedescription, $item );
+	$item = str_replace( '{Penality}', $penality, $item );
+
 
 	$item = str_replace('{item_img}', wpthumb( $imgurl, 'width=335&height=223&crop=1' ), $item);
 	$item = str_replace('{inclusion}', $inclusionsText, $item);

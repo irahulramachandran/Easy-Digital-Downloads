@@ -18,7 +18,7 @@ global $post; ?>
 		</div>
 		<!-- <div class="header-column col-xs-12 col-md-3 no-padding">
 			Sub Total
-		</div> 
+		</div>
 	</div>
 	<div class="table-body col-xs-12 no-padding">
 		<?php $cart_items = edd_get_cart_contents(); ?>
@@ -250,6 +250,3 @@ global $post; ?>
 		</tr>
 	</tfoot>
 </table>
-
-
-

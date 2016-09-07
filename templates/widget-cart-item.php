@@ -1,5 +1,5 @@
 <li class="edd-cart-item">
-	<div class='col-xs-12 no-padding cart-item-row'>
+	<div class="col-xs-12 no-padding cart-item-row">
 		<img class="roomimage" src="{item_img}"/>
 		<div class="overlay"></div>
 		<div class="item-titles">
@@ -8,7 +8,7 @@
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
-				<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart pull-right"><?php _e( 'Remove', 'easy-digital-downloads' ); ?></a>
+				<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart pull-right"><?php _e( "Remove", "easy-digital-downloads" ); ?></a>
 			</div>
 		</div>
 	<div>
@@ -36,15 +36,61 @@
 		{inclusion}
 	</div>
 	<div class="col-xs-12 cart-item-info">
-		<a href="#" data-target="{popupRateDescriptionId}">Rate Description</a>
-		<a href="#" data-target="{popupModalInclusionId}">All Inclusions</a>
-		<a href="#" data-target="{popupPenalitiesId}">Policies</a>
+		<a href="#" data-toggle="modal" data-target="#popupRD{RateDescriptionPlanId}-{RateDescriptionId}">Rate Description</a>
+		<a href="#" data-toggle="modal" data-target="#popupInclusion{ModalInclusionPlanId}-{ModalInclusionId}">All Inclusions</a>
+		<a href="#" data-toggle="modal" data-target="#popupPenalty{PenalitiesPlanId}-{PenalitiesId}">Policies</a>
+		<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupInclusion{ModalInclusionPlanId}-{ModalInclusionId}" role="dialog">
+									<div class="modal-dialog popupInclusion">
+									<div class="modal-content">
+									<div class="modal-header btn-danger">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="popupModalLabel">Inclusions</h4>
+									</div>
+									<div class="modal-body">
+											{inclusion}
+									</div>
+
+									</div>
+									</div>
+									</div>
+									<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupRD{RateDescriptionPlanId}-{RateDescriptionId}" role="dialog">
+									<div class="modal-dialog popupRateDescription">
+									<div class="modal-content">
+									<div class="modal-header btn-danger">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="popupRDLabel">Rate Description</h4>
+									</div>
+									<div class="modal-body">
+									{RateDescription}
+
+									</div>
+									</div>
+									</div>
+									</div>
+									<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupPenalty{PenalitiesPlanId}-{PenalitiesId}" role="dialog">
+									<div class="modal-dialog popupPenalities">
+									<div class="modal-content">
+									<div class="modal-header btn-danger">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="popupPenalitiesLabel">Penalities</h4>
+
+									</div>
+									<div class="modal-body">
+
+									{Penality}
+									</div>
+									</div>
+									</div>
+									</div>
 	</div>
-	<div class='col-xs-12 cart-item-roomrate'>
+	<div class="col-xs-12 cart-item-roomrate">
 		<div class="col-xs-6 no-padding">Room Rate</div>
 		<div class="col-xs-6 no-padding"><span class="pull-right">{item_amount}</span></div>
 	</div>
-	<div class='col-xs-12 cart-item-rate' id="addons{download_id}">
+	<div class="col-xs-12 cart-item-rate" id="addons{download_id}">
 		{addons}
 	</div>
 	<!-- <span class="edd-cart-item-separator">-</span><span class="edd-cart-item-quantity">&nbsp;{item_quantity}&nbsp;@&nbsp;</span><span class="edd-cart-item-price">&nbsp;{item_amount}&nbsp;</span><span class="edd-cart-item-separator">-</span> -->
