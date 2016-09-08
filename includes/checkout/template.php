@@ -458,6 +458,7 @@ function edd_user_info_fields() {
 			$(".addInfo").change(function(){
 				$(".additonal-information,.guest-additonal-information").slideToggle("fast");
 			});
+			$('input[name="booker"]').first().prop('checked',true);
 			$('input[name="booker"]').bind('change',function(e){
 				e.preventDefault();
 				var showOrHide = ($(this).val() == 1) ? true : false;
