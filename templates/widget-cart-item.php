@@ -39,7 +39,7 @@
 		<a href="#" data-toggle="modal" data-target="#popupRD{RateDescriptionPlanId}-{RateDescriptionId}">Rate Description</a>
 		<a href="#" data-toggle="modal" data-target="#popupInclusion{ModalInclusionPlanId}-{ModalInclusionId}">All Inclusions</a>
 		<a href="#" data-toggle="modal" data-target="#popupPenalty{PenalitiesPlanId}-{PenalitiesId}">Policies</a>
-		<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupInclusion{ModalInclusionPlanId}-{ModalInclusionId}" role="dialog">
+		<div class="modal fade widgetPopup" data-backdrop="false" id="popupInclusion{ModalInclusionPlanId}-{ModalInclusionId}" role="dialog">
 									<div class="modal-dialog popupInclusion">
 									<div class="modal-content">
 									<div class="modal-header btn-danger">
@@ -54,7 +54,7 @@
 									</div>
 									</div>
 									</div>
-									<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupRD{RateDescriptionPlanId}-{RateDescriptionId}" role="dialog">
+									<div class="modal fade widgetPopup" data-backdrop="false" id="popupRD{RateDescriptionPlanId}-{RateDescriptionId}" role="dialog">
 									<div class="modal-dialog popupRateDescription">
 									<div class="modal-content">
 									<div class="modal-header btn-danger">
@@ -69,7 +69,7 @@
 									</div>
 									</div>
 									</div>
-									<div class="modal fade widgetPopup" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false" id="popupPenalty{PenalitiesPlanId}-{PenalitiesId}" role="dialog">
+									<div class="modal fade widgetPopup" data-backdrop="false" id="popupPenalty{PenalitiesPlanId}-{PenalitiesId}" role="dialog">
 									<div class="modal-dialog popupPenalities">
 									<div class="modal-content">
 									<div class="modal-header btn-danger">

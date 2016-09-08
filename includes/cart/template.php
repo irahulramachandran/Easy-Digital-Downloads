@@ -78,7 +78,6 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 	$remove_url = edd_remove_item_url( $cart_key );
 	$options    = !empty( $item['options'] ) ? $item['options'] : array();
-
 	$title  = $options['roomtypename'];
 	$downid  = $options['id'];
 	$rateplantitle = $options['name'];
@@ -109,7 +108,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 			$occupany .= "<span class='pull-left'>".$childoccupancy." Children</span>";
 		}
 	}
-	$terms = get_terms( 'snhotel_hotel_cancelpenalties' );
+	$terms = get_the_terms( get_the_ID(), 'snhotel_hotel_cancelpenalties' );//get_terms( 'snhotel_hotel_cancelpenalties' );
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ){
 	    $penality = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 	    foreach ( $terms as $term ) {
@@ -117,6 +116,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	    }
 	    $penality .= "</ul>";
 	}
+		//$penality = print_r($item);
 	if($inclusion != null){
 		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 		foreach ($inclusion as $key => $value) {
