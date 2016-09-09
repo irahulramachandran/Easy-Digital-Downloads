@@ -205,7 +205,7 @@ function edd_user_info_fields() {
 
 						<div class="checkbox">
 							<div class="label">
-							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
+							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MY SELF</span>
 							</div>
 							<div class="label">
 							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
@@ -227,7 +227,7 @@ function edd_user_info_fields() {
 
 						<div class="checkbox">
 							<div class="label">
-							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MYSELF</span>
+							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MY SELF</span>
 							</div>
 							<div class="label">
 							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
@@ -390,7 +390,7 @@ function edd_user_info_fields() {
 							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be charged. It serves as guarantee only.)</span></h4>
 						</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
-								Name on the card*
+								Name On Card*
 								<input class="form-control edd_card_name"  autocomplete="off" type="text" name="card_name" id="card_name" />
 							</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
