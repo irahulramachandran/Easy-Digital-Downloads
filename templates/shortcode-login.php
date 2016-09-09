@@ -24,7 +24,7 @@ if ( ! is_user_logged_in() ) :
 				<input type="hidden" name="edd_login_nonce" value="<?php echo wp_create_nonce( 'edd-login-nonce' ); ?>"/>
 				<input type="hidden" name="edd_action" value="user_login"/>
 				<input id="edd_login_submit" type="submit" class="edd_submit btn btn-danger pull-right" value="<?php _e( 'Log In', 'easy-digital-downloads' ); ?>"/>
-				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php _e( 'Lost Password', 'easy-digital-downloads' ); ?>">
+				<a href="<?php echo wp_lostpassword_url(); ?>" title="<?php _e( 'Lost Password', 'easy-digital-downloads' ); ?>" class="forgotpassword">
 					<?php _e( 'Lost Password?', 'easy-digital-downloads' ); ?>
 				</a>
 			</p>
