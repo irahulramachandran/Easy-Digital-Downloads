@@ -147,14 +147,14 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$startday = date("D", strtotime($options['startdate']));
 	$startmnth = date("M", strtotime($options['startdate']));
 
-	$startdate = "<div class='col-xs-6 date'>".$startdateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding'>".$startday."</div><div class='col-xs-12 no-padding'>".$startmnth."</div></div>";
+	$startdate = "<div class='col-xs-6 date'>".$startdateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding day'>".$startday."</div><div class='col-xs-12 no-padding month'>".$startmnth."</div></div>";
 
 	$enddate = "";
 	$enddateNumber = date("d", strtotime($options['enddate']));
 	$endday = date("D", strtotime($options['enddate']));
 	$endmnth = date("M", strtotime($options['enddate']));
 
-	$enddate = "<div class='col-xs-6 date'>".$enddateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding'>".$endday."</div><div class='col-xs-12 no-padding'>".$endmnth."</div></div>";
+	$enddate = "<div class='col-xs-6 date'>".$enddateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding day'>".$endday."</div><div class='col-xs-12 no-padding month'>".$endmnth."</div></div>";
 
 	$quantity   = edd_get_cart_item_quantity( $id, $options );
 	$price      = edd_get_cart_item_price( $id, $options );

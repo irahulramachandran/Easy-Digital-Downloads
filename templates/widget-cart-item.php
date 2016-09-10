@@ -2,9 +2,14 @@
 	<div class="col-xs-12 no-padding cart-item-row">
 		<img class="roomimage" src="{item_img}"/>
 		<div class="overlay"></div>
+		<div class="item-titles-name">
+			<div class="col-xs-12 no-padding">
+				<span class="item_title_name">{item_title}</span>
+			</div>
+		</div>
 		<div class="item-titles">
 			<div class="col-xs-8 no-padding">
-				<span class="item_title">{item_title}</span></br>
+				<!-- <span class="item_title">{item_title}</span></br> -->
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
