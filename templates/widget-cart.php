@@ -8,7 +8,7 @@ $display       = $cart_quantity > 0 ? '' : ' style="display:none;"';
 $total = edd_currency_filter( edd_format_amount( edd_get_cart_total() ) );
 ?>
 <div class="reservation-summary-header" <?php echo $display; ?>>
-	<span class="title">Reservation Summary</span>
+	<span class="title">RESERVATION SUMMARY</span>
 	<div class="item-count"><?php echo $cart_quantity; ?></div>
 	<div class="total-price"><?php echo $total;?></div>
 	<div class="glyphicon glyphicon-menu-up"></div>

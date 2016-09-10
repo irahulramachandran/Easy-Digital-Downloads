@@ -121,7 +121,8 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 		foreach ($inclusion as $key => $value) {
 			$term_meta = get_option( "taxonomy_".$value->term_id );
-			$inclusionsText .= "<li style='color:".$term_meta['color'].";'>".$value->name."</li>";
+			$inclusionsText .= "<li style='color:".$term_meta['color']."; padding-right:0px;'>".$value->name."</li>";
+			$inclusionsText .="<li  style='color:".$term_meta['color'].";' class='no-padding'>,</li>";
 		}
 
 		$inclusionsText .="</ul>";
