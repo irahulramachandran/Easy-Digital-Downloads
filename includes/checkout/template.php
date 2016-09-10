@@ -205,21 +205,24 @@ function edd_user_info_fields() {
 
 						<div class="checkbox">
 							<div class="label">
-							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MY SELF</span>
+							  <input type="radio" name="booker1" class="booker" value="2" checked="checked"> <span>MY SELF</span>
 							</div>
 							<div class="label">
-							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
+							  <input type="radio" name="booker1" class="booker" value="1"> <span>SOMEONE ELSE</span>
 							</div>
 						</div>
 				</div>
 			</div>
 		</div>
+
 		<div class="col-xs-12 hidden-md hidden-lg">
+			<div class="col-xs-12 checkout-wizard-title hidden-sm hidden-md hidden-lg"><b>Personal Information</b></div>
 			<?php
 			if(is_user_logged_in()){ ?>
 			<div class="col-xs-12"><h4 class="username"><?php echo "Welcome ".$current_user->user_firstname." ".$current_user->user_lastname.","; ?></h4></div>
 			<?php } ?>
 		</div>
+
 		<fieldset  class="col-xs-12 no-padding margin-top-10">
 			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
 				<div class="hidden-xs col-sm-12 col-md-12">
@@ -227,7 +230,7 @@ function edd_user_info_fields() {
 
 						<div class="checkbox">
 							<div class="label">
-							  <input type="radio" name="booker" class="booker" value="2" checked> <span>MY SELF</span>
+							  <input type="radio" name="booker" class="booker" value="2" checked="checked"> <span>MY SELF</span>
 							</div>
 							<div class="label">
 							  <input type="radio" name="booker" class="booker" value="1"> <span>SOMEONE ELSE</span>
@@ -254,7 +257,7 @@ function edd_user_info_fields() {
 				<?php
 				}
 				?>
-		<!-- <h2 class="checkout-wizard-title">Personal Information</h2> -->
+		 <!--<h2 class="checkout-wizard-title hidden-sm hidden-md hidden-lg">Personal Information</h2>-->
 		<!-- <form class="payment-form" method="POST"> -->
 	    <div class="form-container">
 	        <div class="personal-information">
@@ -276,7 +279,7 @@ function edd_user_info_fields() {
 									<input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
 									<?php do_action( 'edd_purchase_form_after_email' ); ?>
 									</div>
-									<div class="margin-top-10">
+									<div class="margin-top-10 hidden-xs">
 									Phone
 									<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
 								</div>
@@ -288,13 +291,17 @@ function edd_user_info_fields() {
 									Address
 									<input class="form-control edd_col_4" type="text" name="edd_address" id="edd_address" value="<?php echo esc_attr( $customer['address'] ); ?>" placeholder="Address" maxlength="300"/>
 								</div>
+								<div class="hidden-sm hidden-md hidden-lg margin-top-10">
+									City
+									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+								</div>
 								<div class="margin-top-10">
 									State
 									<input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State" maxlength="300"/>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6 ">
-								<div class="margin-top-10">
+								<div class="hidden-xs margin-top-10">
 									City
 									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 								</div>
@@ -348,7 +355,7 @@ function edd_user_info_fields() {
 								Email
 								<input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
 							</div>
-							<div class="margin-top-10">
+							<div class="margin-top-10 hidden-xs">
 								Phone
 								<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
 							</div>
@@ -359,13 +366,17 @@ function edd_user_info_fields() {
 								Address
 								<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
 							</div>
+							<div class="hidden-sm hidden-md hidden-lg margin-top-10">
+								City
+								<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+							</div>
 							<div class="margin-top-10">
 								State
 								<input class="form-control edd_col_4" type="text" name="edd_guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
-							<div class="margin-top-10">
+							<div class="hidden-xs margin-top-10">
 								City
 								<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>
 							</div>
@@ -458,13 +469,19 @@ function edd_user_info_fields() {
 			$(".addInfo").change(function(){
 				$(".additonal-information,.guest-additonal-information").slideToggle("fast");
 			});
-			$('input[name="booker"]').first().prop('checked',true);
+
+			//$('input.booker.mobile').first().prop('checked',true);
+
 			$('input[name="booker"]').bind('change',function(e){
 				e.preventDefault();
 				var showOrHide = ($(this).val() == 1) ? true : false;
 				$('.guest-information').toggle(showOrHide);
 			});
-
+			$('input[name="booker1"]').bind('change',function(e){
+				e.preventDefault();
+				var showOrHide = ($(this).val() == 1) ? true : false;
+				$('.guest-information').toggle(showOrHide);
+			});
 			if($(window).width() < 768){
 				if($(".mini-cart-wrapper").size() > 0 && $(".mini-cart-wrapper").hasClass("position-releative")){
 					$(".mini-cart-wrapper").removeClass("position-releative");
