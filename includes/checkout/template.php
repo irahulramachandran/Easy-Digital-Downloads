@@ -432,9 +432,10 @@ function edd_user_info_fields() {
 									<img src="<?php echo get_stylesheet_directory_uri()?>/imgs/cardcvv.png"/>
 								</div>
 							</div>
-							<div class="guest-additonal-information col-xs-12 no-padding">
+							<div class="guest-additonal-information col-xs-12 no-padding-mobile">
+								<div class="row hidden-sm hidden-md hidden-lg"><hr></div>
 								<div class="margin-top-10">
-										Special Request
+										<b>Special Request</b>
 										<textarea class="special_req" name="comment" placeholder="Please ensure guest can check in at any time"></textarea>
 								</div>
 							</div>
