@@ -216,7 +216,7 @@ function edd_user_info_fields() {
 		</div>
 
 		<div class="col-xs-12 hidden-md hidden-lg">
-			<div class="col-xs-12 checkout-wizard-title hidden-sm hidden-md hidden-lg"><b>Personal Information</b></div>
+			<div class="col-xs-12 margin-top-10 checkout-wizard-title hidden-sm hidden-md hidden-lg"><b>Personal Details</b></div>
 			<?php
 			if(is_user_logged_in()){ ?>
 			<div class="col-xs-12"><h4 class="username"><?php echo "Welcome ".$current_user->user_firstname." ".$current_user->user_lastname.","; ?></h4></div>
