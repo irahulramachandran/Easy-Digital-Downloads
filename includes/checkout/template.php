@@ -432,6 +432,12 @@ function edd_user_info_fields() {
 									<img src="<?php echo get_stylesheet_directory_uri()?>/imgs/cardcvv.png"/>
 								</div>
 							</div>
+							<div class="guest-additonal-information col-xs-12 no-padding">
+								<div class="margin-top-10">
+										Special Request
+										<textarea class="special_req" name="comment" placeholder="Please ensure guest can check in at any time"></textarea>
+								</div>
+							</div>
 						<div class="col-xs-12 margin-top-10">
 							<label>
 							  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>">terms & conditions</a> governing this booking.</span>
@@ -442,6 +448,7 @@ function edd_user_info_fields() {
 							<input class="btn btn-danger btn-md confirmBooking" type="submit" value="Confirm Booking" id="confirmBooking"/>
 						</div>
 					</div>
+
 				</div>
 	<!-- </form> -->
 				<div class="row">
