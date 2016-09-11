@@ -702,7 +702,7 @@ function edd_receipt_shortcode( $atts, $content = null ) {
 add_shortcode( 'edd_receipt', 'edd_receipt_shortcode' );
 
 
-function get_booking_message($bookingmessage, $payment){
+function get_booking_message($bookingmessage, $payment, $isEmail = false){
 	$user = edd_get_payment_meta_user_info($payment->ID);
 	$useremail = edd_get_payment_user_email($payment->ID);
 	$guestname = get_post_meta($payment->ID, 'guestname',true);
@@ -724,7 +724,12 @@ function get_booking_message($bookingmessage, $payment){
 
 	$bookingmessage = str_replace("{name}",$name,$bookingmessage);
 	$bookingmessage = str_replace("{guestname}",$guestname,$bookingmessage);
-	$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span> (<a href='#' class='modifyemail' data-email='".$useremail."'>click here</a> if you want to change the e-mail address)",$bookingmessage);
+	if($isEmail){
+		$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span>",$bookingmessage);
+	}else{
+			$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span> (<a href='#' class='modifyemail' data-email='".$useremail."'>click here</a> if you want to change the e-mail address)",$bookingmessage);
+	}
+
 	$bookingmessage = str_replace("{dates}",$date,$bookingmessage);
 	return $bookingmessage;
 }

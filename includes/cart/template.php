@@ -133,10 +133,14 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 	$quanity = "<select data-download-id='".$downid."' class='quanity edd-quanity pull-right'>";
 	for ($i=1; $i <= intval($availablequantity); $i++) {
+			$isSelectedValue = "";
+			if($i == $options['quantity']){
+				$isSelectedValue = " selected='selected'";
+			}
 			if($i == 1){
-				$quanity .= "<option value='".$i."'>".$i." Room</option>";
+				$quanity .= "<option value='".$i."' ".$isSelectedValue.">".$i." Room</option>";
 			}else{
-				$quanity .= "<option value='".$i."'>".$i." Rooms</option>";
+				$quanity .= "<option value='".$i."'  ".$isSelectedValue.">".$i." Rooms</option>";
 		}
 	}
 
@@ -368,7 +372,7 @@ function edd_get_cart_room_total(){
 	foreach ($cart_items as $key => $item) {
 		$id = is_array( $item ) ? $item['id'] : $item;
 		$options    = !empty( $item['options'] ) ? $item['options'] : array();
-		$roomtotal = floatval($roomtotal+floatval($options['roomprice']));
+		$roomtotal = floatval($roomtotal+floatval($options['roomprice']*$options['quantity']));
 	}
 	return $roomtotal;
 }
@@ -381,7 +385,7 @@ function edd_get_cart_addon_total(){
 		$options    = !empty( $item['options'] ) ? $item['options'] : array();
 		if(sizeof($options['addons'])>0){
 			foreach ($options['addons'] as $key => $addon) {
-				$addontotal = floatval($addontotal+floatval($addon->price));
+				$addontotal = floatval($addontotal+floatval($addon->price*$options['quantity']));
 			}
 		}
 	}
