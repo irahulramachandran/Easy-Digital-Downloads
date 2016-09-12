@@ -481,7 +481,7 @@ jQuery(document).ready(function ($) {
 		if($("#card_name").val() == ""){
 			var error = {};
 			error.id = "#card_name";
-			error.message = "Card name cannot be empty";
+			error.message = "Name on the Card field cannot be empty";
 			errors.push(error);
 			$("#card_name").parent(".col-xs-12").addClass("has-error");
 		}
@@ -489,7 +489,7 @@ jQuery(document).ready(function ($) {
 		if($("#card_number").val() == ""){
 			var error = {};
 			error.id = "#card_number";
-			error.message = "Credit card number cannot be empty";
+			error.message = "Card number field cannot be empty";
 			errors.push(error);
 			$("#card_number").parent(".col-xs-12").addClass("has-error");
 		}
@@ -504,7 +504,7 @@ jQuery(document).ready(function ($) {
 		if($("#card_expiry_month").val() == ""){
 			var error = {};
 			error.id = "#card_expiry_month";
-			error.message = "Expiry Month cannot be empty";
+			error.message = "Expiry Month field cannot be empty";
 			errors.push(error);
 			$("#card_expiry_month").parent(".col-xs-6").addClass("has-error");
 		}
@@ -523,7 +523,7 @@ jQuery(document).ready(function ($) {
 		if($("#card_expiry_year").val() == ""){
 			var error = {};
 			error.id = "#card_expiry_year";
-			error.message = "Expiry Month cannot be empty";
+			error.message = "Expiry Year field cannot be empty";
 			errors.push(error);
 			$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
 		}
@@ -546,7 +546,7 @@ jQuery(document).ready(function ($) {
 		if($("#edd_cvc").val() == ""){
 			var error = {};
 			error.id = "#edd_cvc";
-			error.message = "CVV cannot be empty";
+			error.message = "CVV field cannot be empty";
 			errors.push(error);
 			$("#edd_cvc").parent(".col-xs-7").addClass("has-error");
 		}
