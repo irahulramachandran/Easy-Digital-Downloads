@@ -398,6 +398,7 @@ function edd_set_cart_item_quantity( $download_id = 0, $quantity = 1, $options =
 	}
 
 	$cart[ $key ]['quantity'] = $quantity;
+	$cart[ $key ]['options']['quantity'] = $quantity;
 
 	error_log("CART AFTER UPDATE");
 	error_log(json_encode($cart));
@@ -847,7 +848,7 @@ function edd_get_cart_fee_tax() {
 		}
 	}
 
-	error_log("TAX".$tax);
+	// error_log("TAX".$tax);
 
 	return apply_filters( 'edd_get_cart_fee_tax', $tax );
 }
@@ -905,8 +906,8 @@ function edd_get_cart_tax() {
 
 	$cart_tax += edd_get_cart_fee_tax();
 
-	error_log("TEXASSADSA");
-	error_log($cart_tax);
+	//error_log("TEXASSADSA");
+	//error_log($cart_tax);
 
 	return apply_filters( 'edd_get_cart_tax', edd_sanitize_amount( $cart_tax ) );
 }
@@ -1401,7 +1402,7 @@ function edd_bookingmessage_email_template_tags($payment_id){
 
 	$payment = get_post($payment_id);
 
-	$bookingmessage = get_booking_message($bookingmessage,$payment);
+	$bookingmessage = get_booking_message($bookingmessage,$payment, true);
 	return $bookingmessage;
 }
 
@@ -1482,7 +1483,7 @@ function edd_booking_list_email_template_tags($payment_id){
 				if($i == $count){
 					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;border-top:1px solid #cacaca;padding-top:10px;font-size:15px;">';
 					$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold;width:50%;float:left;">Total to be paid at hotel</td>';
-					$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;">'.edd_currency_filter(edd_format_amount($price)).'</td>';
+					$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;">'.edd_payment_amount($payment_id).'</td>';
 					$booking_list_html .= '</tr>';
 					$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;padding-top:10px;font-size:15px;">';
 					$booking_list_html .= '<td style="width:49%;float:left;">';

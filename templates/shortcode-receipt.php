@@ -87,11 +87,12 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
             if ($cart) : ?>
               <?php foreach ($cart as $key => $item) : ?>
                   <?php
-                  //print_r(json_encode($item));
+                  // print_r(json_encode($item));
                   $item_title = $item['item_number']['options']['roomtypename'];
                   $rateplan_title = $item['item_number']['options']['name'];
                   $fromdatetime = strtotime($item['item_number']['options']['startdate']);
                   $todatetime = strtotime($item['item_number']['options']['enddate']);
+                  $quantity = intval($item['item_number']['options']['quantity']);
                   $imgurl = $item['item_number']['options']['imgurl'];
                   $noofdays = $item['item_number']['options']['noofdays'];
                   $roomprice = $item['item_number']['options']['roomprice'];
@@ -155,13 +156,13 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 
           						<div class="col-xs-12 no-padding margin-top-10 padding-bottom-10 room-total  <?php echo $className; ?>">
           							<span class="pull-left font-bold">Room Total</span>
-          							<span class="pull-right font-bold display-block text-right"><?php echo edd_currency_filter(edd_format_amount($roomprice)); ?></span>
+          							<span class="pull-right font-bold display-block text-right"><?php echo edd_currency_filter(edd_format_amount(floatval($roomprice*$quantity))); ?></span>
           						</div>
                       <?php if($addonTotal > 0){
                         ?>
                         <div class="col-xs-12 no-padding margin-top-10 padding-bottom-10 room-total">
             							<span class="pull-left font-bold">Addon Total</span>
-            							<span class="pull-right font-bold  display-block text-right"><?php echo edd_currency_filter(edd_format_amount($addonTotal)); ?></span>
+            							<span class="pull-right font-bold  display-block text-right"><?php echo edd_currency_filter(edd_format_amount(floatval($quantity*$addonTotal))); ?></span>
             						</div>
                         <?php
                         }

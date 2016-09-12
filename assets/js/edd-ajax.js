@@ -6,35 +6,8 @@ jQuery(document).ready(function ($) {
 	$('a.edd-add-to-cart').addClass('edd-has-js');
 
 	// var creditly = Creditly.initialize('.payment-information .edd_expiry', '.payment-information .edd_number', '.payment-information .edd_cvc', '.payment-information .card-type');
-	$(".mini-cart-wrapper .reservation-summary-header").click(function(){
-		if(!$(this).parents(".mini-cart-wrapper").hasClass("position-releative")){
-			$(this).next(".edd-cart").slideToggle();
-			if($(window).width() < 768){
-				var height = $(window).height();
-				$(".edd-cart").css("max-height",(height-44-42)+"px");
-				$(".edd-cart").css("height",(height-44-42)+"px !important");
-			}
-			if($(this).find(".glyphicon").hasClass("glyphicon-menu-down")){
-				$(this).find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
-			}
-			else{
-				$(this).find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
-			}
-		}
-		else{
-			return false;
-		}
-	});
-
-	$(".btn-addanotherroom").click(function(e){
-		e.stopPropagation();
-		$(".mini-cart-wrapper .reservation-summary-header").click();
-		return false;
-	});
 
 	_bindQuantityChangeEvent();
-
-
 
 	// Send Remove from Cart requests
 	$('body').on('click.eddRemoveFromCart', '.edd-remove-from-cart', function (event) {
@@ -56,6 +29,7 @@ jQuery(document).ready(function ($) {
 				withCredentials: true
 			},
 			success: function (response) {
+				console.log(edd_scripts.position_in_cart);
 				if (response.removed) {
 					if ( parseInt( edd_scripts.position_in_cart, 10 ) === parseInt( item, 10 ) ) {
 						window.location = window.location;
@@ -89,12 +63,19 @@ jQuery(document).ready(function ($) {
 					}
 
 					$('.cart_item.edd_total span').html( response.total );
+					$(".edd_cart_roomtotal span").html(response.roomtotal);
+					$(".edd_cart_addontotal span").html(response.addontotal);
 
 					if( response.cart_quantity == 0 ) {
-						$('.cart_item.edd_subtotal,.edd-cart-number-of-items,.cart_item.edd_checkout,.cart_item.edd_cart_tax,.cart_item.edd_total').hide();
-						$('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
-						$(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
-						$(".mini-cart-wrapper .edd-cart").fadeOut("fast");
+						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html("");
+						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html(edd_scripts.empty_cart_message);
+						if( edd_scripts.is_checkout == '1'){
+							window.location = site_url+'/accommodation/';
+						}
+						// $('.edd-cart li').hide();
+						// $('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
+						// $(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
+						// $(".mini-cart-wrapper .edd-cart").fadeOut("fast");
 					}
 					else{
 						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
@@ -276,10 +257,11 @@ jQuery(document).ready(function ($) {
 						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
 						$(".mini-cart-wrapper .reservation-summary-header .total-price").html( response.total );
 						$(".mini-cart-wrapper .reservation-summary-header").fadeIn("fast");
-						$('.addons-dropdown').val(undefined);
-						$(".multiselect-container input[type='checkbox']").removeAttr("checked");
-						$(".multiselect-selected-text").text("Select Addons");
-						$('.addons-dropdown').change();
+
+						$this.parents(".table-body-row").find('.addons-dropdown').val(undefined);
+						$this.parents(".table-body-row").find(".multiselect-container input[type='checkbox']").removeAttr("checked");
+						$this.parents(".table-body-row").find(".multiselect-selected-text").text("Select Addons");
+						$this.parents(".table-body-row").find('.addons-dropdown').change();
 						// $(dropdown).parent(".col-xs-12").parent(".col-xs-12").find(".totalprice").html(jsonData[i].rate);
 						// $(".edd-add-to-cart[data-download-id='"+download+"']").attr("value");
 					}
@@ -687,6 +669,9 @@ function _bindQuantityChangeEvent(){
 					$(this).text(response.taxes);
 				});
 
+				$(".edd_cart_roomtotal span").html(response.roomtotal);
+				$(".edd_cart_addontotal span").html(response.addontotal);
+
 				$('.edd_cart_amount').each(function() {
 					$(this).text(response.total);
 					//$body.trigger('edd_quantity_updated', [ response ]);
@@ -704,6 +689,34 @@ function _bindQuantityChangeEvent(){
 			}
 		});
 
+		return false;
+	});
+
+	$(".mini-cart-wrapper .reservation-summary-header").unbind("click");
+	$(".mini-cart-wrapper .reservation-summary-header").click(function(){
+		if(!$(this).parents(".mini-cart-wrapper").hasClass("position-releative")){
+			$(this).next(".edd-cart").slideToggle();
+			if($(window).width() < 768){
+				var height = $(window).height();
+				$(".edd-cart").css("max-height",(height-44-42)+"px");
+				$(".edd-cart").css("height",(height-44-42)+"px !important");
+			}
+			if($(this).find(".glyphicon").hasClass("glyphicon-menu-down")){
+				$(this).find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+			}
+			else{
+				$(this).find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+			}
+		}
+		else{
+			return false;
+		}
+	});
+
+	$(".btn-addanotherroom").unbind("click");
+	$(".btn-addanotherroom").click(function(e){
+		e.stopPropagation();
+		$(".mini-cart-wrapper .reservation-summary-header").click();
 		return false;
 	});
 }
