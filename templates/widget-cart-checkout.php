@@ -7,7 +7,7 @@
 <?php if ( edd_use_taxes() ) : ?>
 <li class="cart_item edd-cart-meta edd_cart_tax col-xs-12">
   <?php _e( 'Included Tax', 'easy-digital-downloads' ); ?>
-  <a href="#" class="btn-tax" title="<?php echo edd_get_tax_rate(false, false)*100;?>%">i</a>
+  <a href="#" class="btn-information"></a>
   <span class="cart-tax pull-right"><?php echo edd_currency_filter( edd_format_amount( edd_ibe_calculate_tax(edd_get_cart_total()) ) ); ?></span>
 </li>
 <?php endif; ?>

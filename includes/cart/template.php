@@ -159,7 +159,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$startday = date("D", strtotime($options['startdate']));
 	$startmnth = date("M", strtotime($options['startdate']));
 
-	$startdate = "<div class='col-xs-6 date'>".$startdateNumber."</div><div class='col-xs-6'><div class='col-xs-12 no-padding day'>".$startday."</div><div class='col-xs-12 no-padding month'>".$startmnth."</div></div>";
+	$startdate = "<div class='col-xs-6 no-padding date'>".$startdateNumber."</div><div class='col-xs-6 no-padding'><div class='col-xs-12 no-padding day'>".$startday."</div><div class='col-xs-12 no-padding month'>".$startmnth."</div></div>";
 
 	$enddate = "";
 	$enddateNumber = date("d", strtotime($options['enddate']));
