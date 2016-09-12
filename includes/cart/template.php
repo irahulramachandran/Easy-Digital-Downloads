@@ -108,15 +108,23 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 			$occupany .= "<span class='pull-left'>".$childoccupancy." Children</span>";
 		}
 	}
-	$terms = get_the_terms( get_the_ID(), 'snhotel_hotel_cancelpenalties' );//get_terms( 'snhotel_hotel_cancelpenalties' );
+
+	$page = get_page_by_title( $rateplancode, OBJECT, 'snhotel_rateplan' );
+	$terms = wp_get_post_terms( $page->ID,'snhotel_hotel_cancelpenalties' );//get_terms( 'snhotel_hotel_cancelpenalties' );
+	//$penality = print_r($terms);
+
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ){
+
 	    $penality = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 	    foreach ( $terms as $term ) {
-	        $penality .= "<li style='color:".$term_meta['color'].";'>" . $term->name . "</li>";
+	       //$penality .= "<li style='color:".$term_meta['color'].";'>" . $term->name . "</li>";
+						$penality .= "<span style='color:".$term_meta['color'].";'>".$term->name . "</span></br>";
 	    }
 	    $penality .= "</ul>";
 	}
-		//$penality = print_r($item);
+
+
+		//$penality = $page->ID;
 	if($inclusion != null){
 		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 		foreach ($inclusion as $key => $value) {
