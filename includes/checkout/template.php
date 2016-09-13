@@ -265,23 +265,23 @@ function edd_user_info_fields() {
 							<div class="col-xs-12 col-sm-6">
 								<div class="margin-top-10">
 									First Name
-									<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
+									<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" maxlength="50" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
 									Last Name
-									<input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
+									<input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" maxlength="50" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="margin-top-10">
 									<?php do_action( 'edd_purchase_form_before_email' ); ?>
 									Email*
-									<input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
+									<input class="form-control edd_col_3" type="email" name="edd_email" id="edd_email" maxlength="100" autocomplete="on" placeholder="Email" value="<?php echo esc_attr( $customer['email'] ); ?>" maxlength="50"/>
 									<?php do_action( 'edd_purchase_form_after_email' ); ?>
 									</div>
 									<div class="margin-top-10 hidden-xs">
 									Phone
-									<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
+									<input class="form-control edd_col_3" type="text" name="edd_phonenumber" id="edd_phonenumber" maxlength="12" value="<?php echo esc_attr( $customer['phonenumber'] ); ?>" placeholder="Phone Number" maxlength="15"/>
 								</div>
 							</div>
 						</div>
@@ -289,21 +289,21 @@ function edd_user_info_fields() {
 							<div class="col-xs-12 col-sm-6 ">
 								<div class="margin-top-10">
 									Address
-									<input class="form-control edd_col_4" type="text" name="edd_address" id="edd_address" value="<?php echo esc_attr( $customer['address'] ); ?>" placeholder="Address" maxlength="300"/>
+									<input class="form-control edd_col_4" type="text" name="edd_address" id="edd_address" maxlength="200" value="<?php echo esc_attr( $customer['address'] ); ?>" placeholder="Address" maxlength="300"/>
 								</div>
 								<div class="hidden-sm hidden-md hidden-lg margin-top-10">
 									City
-									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
 									State
-									<input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State" maxlength="300"/>
+									<input class="form-control edd_col_4" type="text" name="edd_StateProv" id="edd_StateProv" maxlength="200" value="<?php echo esc_attr( $customer['StateProv'] ); ?>" placeholder="State" maxlength="300"/>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6 ">
 								<div class="hidden-xs margin-top-10">
 									City
-									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
 									Country
@@ -342,18 +342,18 @@ function edd_user_info_fields() {
 						<div class="col-xs-12 col-sm-6 ">
 							<div class="margin-top-10">
 								First Name
-								<input class="form-control edd_col_3" type="text" name="edd_guest_first" id="edd_guest_first" value="<?php echo esc_attr( $customer['guest_first_name'] ); ?>" placeholder="Guest First Name" maxlength="50"/>
+								<input class="form-control edd_col_3" type="text" name="edd_guest_first" id="edd_guest_first" maxlength="50" value="<?php echo esc_attr( $customer['guest_first_name'] ); ?>" placeholder="Guest First Name" maxlength="50"/>
 							</div>
 							<div class="margin-top-10">
 								Last Name
-								<input class="form-control edd_col_3" type="text" name="edd_guest_last" id="edd_guest_last" value="<?php echo esc_attr( $customer['guest_last_name'] ); ?>" placeholder="Guest Last Name" maxlength="50"/>
+								<input class="form-control edd_col_3" type="text" name="edd_guest_last" id="edd_guest_last" maxlength="50" value="<?php echo esc_attr( $customer['guest_last_name'] ); ?>" placeholder="Guest Last Name" maxlength="50"/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 ">
 
 							<div class="margin-top-10">
 								Email
-								<input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
+								<input class="form-control edd_col_3" type="email" name="edd_guest_email" id="edd_guest_email" maxlength="100" autocomplete="on" placeholder="Guest Email" value="" maxlength="50"/>
 							</div>
 							<div class="margin-top-10 hidden-xs">
 								Phone
@@ -364,21 +364,21 @@ function edd_user_info_fields() {
 						<div class="col-xs-12 col-sm-6 ">
 							<div class="margin-top-10">
 								Address
-								<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
+								<input class="form-control edd_col_4" type="text" name="edd_guest_address" id="edd_guest_address" maxlength="200" value="<?php echo esc_attr( $customer['guest_address'] ); ?>" placeholder="Guest Address" maxlength="300"/>
 							</div>
 							<div class="hidden-sm hidden-md hidden-lg margin-top-10">
 								City
-								<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+								<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 							</div>
 							<div class="margin-top-10">
 								State
-								<input class="form-control edd_col_4" type="text" name="edd_guest_StateProv" id="guest_StateProv" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
+								<input class="form-control edd_col_4" type="text" name="edd_guest_StateProv" id="guest_StateProv" maxlength="200" value="<?php echo esc_attr( $customer['guest_StateProv'] ); ?>" placeholder="Guest State"/>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
 							<div class="hidden-xs margin-top-10">
 								City
-								<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>
+								<input class="form-control edd_col_4" type="text" name="edd_guest_CityName" id="edd_guest_CityName" maxlength="200" value="<?php echo esc_attr( $customer['guest_CityName'] ); ?>" placeholder="Guest City" maxlength="50"/>
 							</div>
 							<div class="margin-top-10">
 								Country
@@ -402,11 +402,11 @@ function edd_user_info_fields() {
 						</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
 								Name On Card*
-								<input class="form-control edd_card_name"  autocomplete="off" type="text" name="card_name" id="card_name" />
+								<input class="form-control edd_card_name"  maxlength="100" autocomplete="off" type="text" name="card_name" id="card_name" />
 							</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
 								Card Number*
-								<input class="form-control edd_number ccFormatMonitor"  autocomplete="off" type="text" name="card_number" id="card_number"/>
+								<input class="form-control edd_number ccFormatMonitor"  maxlength="16" autocomplete="off" type="text" name="card_number" id="card_number"/>
 								<input type='hidden' name='card_type' id="card_type"/>
 							</div>
 							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
@@ -414,10 +414,10 @@ function edd_user_info_fields() {
 								Expiry Date*
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='MM'  autocomplete="off" type="text" name="card_expiry_month" maxlength="5" id="card_expiry_month"/>
+									<input class="form-control edd_expiry" placeholder='MM'   autocomplete="off" type="text" name="card_expiry_month" maxlength="2" id="card_expiry_month"/>
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='YYYY'  autocomplete="off" type="text" name="card_expiry_year" maxlength="5" id="card_expiry_year"/>
+									<input class="form-control edd_expiry" placeholder='YYYY'   autocomplete="off" type="text" name="card_expiry_year" maxlength="4" id="card_expiry_year"/>
 								</div>
 							</div>
 
