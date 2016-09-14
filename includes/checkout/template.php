@@ -357,7 +357,7 @@ function edd_user_info_fields() {
 							</div>
 							<div class="margin-top-10 hidden-xs">
 								Phone
-								<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="15"/>
+								<input class="form-control edd_col_3" type="text" name="edd_guest_phonenumber" id="edd_guest_phonenumber" value="<?php echo esc_attr( $customer['guest_phonenumber'] ); ?>" placeholder="Guest Phone Number" maxlength="12"/>
 							</div>
 						</div>
 					<div class="guest-additonal-information col-xs-12 no-padding">
