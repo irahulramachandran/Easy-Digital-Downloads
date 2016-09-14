@@ -81,7 +81,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 		</div>
     <div class="row">
 				<div class="col-xs-12 confirmation-summary">
-					<h6 class="font-bold margin-bottom-5 margin-top-0">Booking Summary</h6>
+					<span class="font-bold margin-bottom-5 margin-top-0">Booking Summary</span>
           <?php
           $i = 0;
             if ($cart) : ?>
@@ -190,7 +190,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 			</div>
       <div class="row margin-top-15">
 				<div class="col-xs-12 enhance-stay-outer-container">
-					<h6 class="font-bold margin-bottom-15">Enhance Your Stay</h6>
+					<span class="font-bold margin-bottom-15">Enhance Your Stay</span>
 					<div class="pull-left enhance-stay-inner-container">
 						<div class="fake-left"></div>
             <div class="pull-left enhance-stay-container">
@@ -226,7 +226,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 			</div>
       <div class="row margin-top-15">
 				<div class="col-xs-12 things-to-do-outer-container">
-					<h6 class="font-bold margin-bottom-15">Top four things to be done in Wollongong</h6>
+					<span class="font-bold margin-bottom-15">Top four things to do in Wollongong</span>
 					<div class="pull-left things-to-do-inner-container">
 					<div class="fake-left"></div>
 						<div class="pull-left things-to-do-container">
@@ -279,7 +279,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     ?>
     <div class="row margin-top-15 location-details">
 			<div class="col-xs-12 col-md-7">
-				<h6 class="font-bold margin-bottom-15">Location Details</h6>
+				<span class="font-bold margin-bottom-15">Location Details</span>
         <?php
           $map_image  = edd_get_option( 'map_image', '' );
           if(!empty($map_image)){
