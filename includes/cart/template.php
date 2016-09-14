@@ -76,6 +76,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 	$id = is_array( $item ) ? $item['id'] : $item;
 
+
 	$remove_url = edd_remove_item_url( $cart_key );
 	$options    = !empty( $item['options'] ) ? $item['options'] : array();
 	$title  = $options['roomtypename'];
@@ -85,9 +86,11 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$roomprice = $options['roomprice'];
 	$roomtypecode = $options['roomtypecode'];
 	$rateplancode = $options['rateplancode'];
+	$rateplanObj = new Rateplan;
+  $rt1 = $rateplanObj->getByCode($rateplancode);
 	$ratedescription = $options['roomtypedescription'];
   $policies = $options['policies'];
-	//print_r(json_encode($ratedescription));
+	//print_r(json_encode());
 	$inclusion = $options['inclusion'];
 	$adultoccupancy = $options['adultoccupancy'];
 	$download_id = $options['id'];
@@ -110,8 +113,9 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 		}
 	}
 
-	$page = get_page_by_title( $rateplancode, OBJECT, 'snhotel_rateplan' );
-	$terms = wp_get_post_terms( $page->ID,'snhotel_hotel_cancelpenalties' );//get_terms( 'snhotel_hotel_cancelpenalties' );
+	//$page = get_page_by_title( $rt1->id, OBJECT, 'snhotel_rateplan' );
+//	print_r(json_encode($rateplantitle));
+	$terms = wp_get_post_terms( $rt1->id,'snhotel_hotel_cancelpenalties' );//get_terms( 'snhotel_hotel_cancelpenalties' );
 	//$penality = print_r($terms);
 
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ){
