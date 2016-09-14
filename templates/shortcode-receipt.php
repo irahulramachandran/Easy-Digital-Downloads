@@ -226,7 +226,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 			</div>
       <div class="row margin-top-15">
 				<div class="col-xs-12 things-to-do-outer-container">
-					<h6 class="font-bold margin-bottom-15">Top four things to do in Brisbane</h6>
+					<h6 class="font-bold margin-bottom-15">Top four things to be done in Wollongong</h6>
 					<div class="pull-left things-to-do-inner-container">
 					<div class="fake-left"></div>
 						<div class="pull-left things-to-do-container">
