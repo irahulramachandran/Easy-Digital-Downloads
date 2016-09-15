@@ -13,7 +13,7 @@
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
-				<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart pull-right"><?php _e( "Remove", "easy-digital-downloads" ); ?></a>
+				<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart pull-right"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 			</div>
 		</div>
 	<div>
