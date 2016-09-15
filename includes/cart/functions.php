@@ -1490,6 +1490,12 @@ function edd_booking_list_email_template_tags($payment_id){
 
 				$i++;
 				if($i == $count){
+					$cart_tax = (float) edd_ibe_calculate_tax(edd_get_payment_amount( $payment_id ));
+				$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;border-top:1px solid #cacaca;padding-top:10px;font-size:15px;">';
+					$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold;width:50%;float:left;">Included Tax</td>';
+					$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;">'.edd_currency_filter( edd_format_amount( $cart_tax ) ) .'</td>';
+				$booking_list_html .= '</tr>';
+
 							$booking_list_html .= '<tr class="row block no-margin margin-top-10" style="float: left;width:100%;margin-top:20px;border-top:1px solid #cacaca;padding-top:10px;font-size:15px;">';
 								$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold;width:50%;float:left;">Total to be paid at hotel</td>';
 								$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:50%;float:left;text-align:right;">'.edd_payment_amount($payment_id).'</td>';
