@@ -1279,9 +1279,9 @@ function edd_get_cart_discounts_html( $discounts = false ) {
 			edd_get_checkout_uri()
 		);
 
-		$html .= "<span class=\"edd_discount\">\nDiscount:";
-			$html .= "<a href=\"$remove_url\" data-code=\"$discount\" class=\"edd_discount_remove pull-right\"></a>\n";
-			$html .= "<span class=\"edd_discount_rate pull-right\">$discount&nbsp;&ndash;&nbsp;$rate</span>\n";
+		$html .= "<span class=\"edd_discount\">\n$discount";
+			//$html .= "<a href=\"$remove_url\" data-code=\"$discount\" class=\"edd_discount_remove pull-right\"></a>\n";
+			$html .= "<span class=\"edd_discount_rate pull-right\">-$rate</span>\n";
 		$html .= "</span>\n";
 	}
 

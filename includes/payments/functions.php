@@ -952,7 +952,7 @@ function edd_get_payment_meta_downloads( $payment_id ) {
 function edd_get_payment_meta_cart_details( $payment_id, $include_bundle_files = false ) {
 	$payment      = new EDD_Payment( $payment_id );
 
-	error_log(json_encode($payment));
+	//error_log(json_encode($payment));
 
 	$cart_details = $payment->cart_details;
 

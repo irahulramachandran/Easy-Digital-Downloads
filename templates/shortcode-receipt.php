@@ -16,7 +16,7 @@ if (empty($payment)) :
     return;
 endif;
 // error_log("SENDING EMAIL To the user");
-// edd_email_purchase_receipt_for_user( $payment->ID );
+//edd_email_purchase_receipt_for_user( $payment->ID );
 // error_log("SEND EMAIL To the user");
 
 $meta = edd_get_payment_meta($payment->ID);
@@ -55,33 +55,57 @@ $bookingmessage = get_booking_message($bookingmessage,$payment);
 
 $imageURL = $cart[0]['item_number']['options']['imgurl'];
 ?>
+<div class="modal fade" id="cancelPopup" role="dialog">
+  <div class="modal-dialog modal-sm popupCancel">
+    <!-- Modal content-->
+    <div class="modal-content">
+  	<div class="modal-header cancelHeader">
+  	  <button type="button" class="close" data-dismiss="modal">&times;</button>
+  	  <h4 class="modal-title">Modify Email ID</h4>
+  	</div>
+  	<div class="modal-body">
+  	  Email ID: <input class="form-control" id="booker_email" value="<?php echo $useremail; ?>" />
+  	</div>
+  	<div class="modal-footer">
+  	  <button type="button" class="btn btn-yes popBtn" data-dismiss="modal">Cancel</button>
+  	  <button type="button" class="btn btn-danger popBtn modify_emailid" data-postid="<?php echo $payment->ID; ?>" data-dismiss="modal">Modify</button>
+  	</div>
+    </div>
+  </div>
+</div>
 <div class="container-fluid no-padding" id="dvContents">
   <img src="<?php echo wpthumb($imageURL, 'width=2280&height=500&crop=1');?>" style="width:100%;" class="heroImg" alt="Booking confirmation" />
   <div class="hero" style="background-image:url(<?php echo $imageURL;?>)">
 		<div class="overlay">
 		</div>
-    <div class="container">
-      <h2 class="pageheader">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
-    </div>
+    <!-- <div class="container">
+    </div> -->
 	</div>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
     <div class="row">
-      <h2 class="padding-left-15 mobile-header hidden-md hidden-lg margin-top-0">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
-			<div class="col-xs-12 confirmation-header margin-bottom-10 padding-bottom-10">
-				<div class="pull-right confirmation-actions-container">
-					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
-					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
-					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
-				</div>
-			</div>
+      <div class="col-xs-12 confirmation-header margin-bottom-10 padding-bottom-10">
+        <h2 class="pageheader pull-left no-margin hidden-xs hidden-sm">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
+        <h2 class="padding-left-15 mobile-header hidden-md hidden-lg margin-top-0">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
+  			<div class="col-xs-5 pull-right no-padding">
+  				<div class="pull-right confirmation-actions-container">
+  					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
+  					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
+  					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
+            <ul class="list-unstyled social-share-icons recipt">
+              <li><a href="https://www.facebook.com/sharer/sharer.php" class="social-share-icon fb display-block"></a></li>
+              <li><a href="https://twitter.com/home?status="  class="social-share-icon twitter display-block"></a></li>
+            </ul>
+  				</div>
+  			</div>
+      </div>
 			<div class="col-xs-12 margin-bottom-15 confirmation-content print-100">
 				<p class="pull-left margin-bottom-15"><?php echo $bookingmessage; ?></p>
 			</div>
 		</div>
     <div class="row">
 				<div class="col-xs-12 confirmation-summary">
-					<span class="font-bold margin-bottom-5 margin-top-0">Booking Summary</span>
+					<span class="font-bold margin-bottom-5 margin-top-0 hidden-xs hidden-sm">Booking Summary</span>
           <?php
           $i = 0;
             if ($cart) : ?>
@@ -346,6 +370,56 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 <script>
 $(document).ready(function(){
   initMap();
+  $(".btn-share").click(function(e){
+      $("ul.list-unstyled.social-share-icons.recipt").show();
+      return false;
+  });
+
+  $(".modify_emailid").click(function(e){
+    var postId = $(this).data("postid");
+
+    var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if ($("#booker_email").val() != "" && Email.test($('#booker_email').val()) == true) {
+
+      var data   = {
+				action: 'modify_email',
+				emailid: $("#booker_email").val(),
+        post_id: postId
+			};
+
+  		 $.ajax({
+  			type: "POST",
+  			data: data,
+  			dataType: "json",
+  			url: edd_scripts.ajaxurl,
+  			xhrFields: {
+  				withCredentials: true
+  			},
+  			success: function (response) {
+          if(response == true){
+            $(".modifiedemail").text($("#booker_email").val());
+            return true;
+          }
+          else{
+            e.stopPropagation();
+            return false;
+          }
+        }
+        }).fail(function (response) {
+    			if ( window.console && window.console.log ) {
+    				console.log( response );
+    			}
+    		}).done(function (response) {
+
+    		});
+
+    }
+    else{
+      $("#booker_email").parent(".modal-body").addClass("has-error");
+      e.stopPropagation();
+      return false;
+    }
+  });
 });
 
 var latitude = <?php echo $latitude; ?>;

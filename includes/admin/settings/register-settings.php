@@ -922,6 +922,67 @@ function edd_get_registered_settings() {
 						'type' => 'rich_editor',
 					),
 				),
+				'socialshare'     => array(
+					'Facebook Settings' => array(
+						'id'   => 'Facebook Settings',
+						'name' => '<h3>' . __( 'Facebook Settings', 'easy-digital-downloads' ) . '</h3>',
+						'type' => 'header',
+					),
+					'fb_id' => array(
+						'id'   => 'fb_id',
+						'name' => __( 'Facebook App ID', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Facebook App ID', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'fb_siteurl' => array(
+						'id'   => 'fb_siteurl',
+						'name' => __( 'URL', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter URL to share, default will the website url', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'fb_title' => array(
+						'id'   => 'fb_title',
+						'name' => __( 'Title', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Title', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'fb_description' => array(
+						'id'   => 'fb_description',
+						'name' => __( 'Description', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Description to share', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'Twitter Settings' => array(
+						'id'   => 'Twitter Settings',
+						'name' => '<h3>' . __( 'Twitter Settings', 'easy-digital-downloads' ) . '</h3>',
+						'type' => 'header',
+					),
+					'twitter_siteurl' => array(
+						'id'   => 'twitter_siteurl',
+						'name' => __( 'URL', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter URL to share, default will the website url', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'twitter_title' => array(
+						'id'   => 'twitter_title',
+						'name' => __( 'Title', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Title', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+					'twitter_description' => array(
+						'id'   => 'twitter_description',
+						'name' => __( 'Description', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Description to share', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
+					),
+				),
 				'ibe'     => array(
 					'ibe_settings' => array(
 						'id'   => 'ibe_settings',
@@ -939,6 +1000,13 @@ function edd_get_registered_settings() {
 						'name' => __( 'Success message for guest booking', 'easy-digital-downloads' ),
 						'desc' => __( 'Enter the success message for guest booking. </br> {name} = Name </br> {email} = Email </br> {guestname} = Guest Name </br> {dates} = Booking Dates', 'easy-digital-downloads' ),
 						'type' => 'rich_editor',
+					),
+					'noofpeoplenotifier_id' => array(
+						'id'   => 'noofpeoplenotifier_id',
+						'name' => __( 'No Of People Notifier ID', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter the notifier posts ID', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'size' => 'regular',
 					),
 					'map_image' => array(
 						'id'   => 'map_image',
@@ -1226,6 +1294,7 @@ function edd_get_registered_settings_sections() {
 			'accounting'         => __( 'Accounting Settings', 'easy-digital-downloads' ),
 			'site_terms'         => __( 'Terms of Agreement', 'easy-digital-downloads' ),
 			'ibe'         => __( 'IBE', 'easy-digital-downloads' ),
+			'socialshare'         => __( 'Social Share', 'easy-digital-downloads' ),
 			'property_policy'         => __( 'Policy', 'easy-digital-downloads' ),
 		) ),
 	);
