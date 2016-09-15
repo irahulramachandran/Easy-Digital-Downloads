@@ -196,6 +196,12 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                       if($i == $count){
                         ?>
                         <div class="col-xs-12 no-padding margin-top-10 padding-top-10">
+            							<span class="pull-left font-bold">Included Tax</span>
+            							<span class="pull-right font-bold"><?php
+                          $cart_tax = (float) edd_ibe_calculate_tax(edd_get_payment_amount( $payment->ID ));
+                          echo edd_currency_filter( edd_format_amount( $cart_tax ) ); ?></span>
+            						</div>
+                        <div class="col-xs-12 no-padding margin-top-10 padding-top-10">
             							<span class="pull-left font-bold">Total to be paid at hotel</span>
             							<span class="pull-right font-bold"><?php echo edd_payment_amount($payment->ID); ?></span>
             						</div>
