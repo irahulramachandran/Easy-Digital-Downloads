@@ -398,7 +398,7 @@ function edd_user_info_fields() {
 				<div class="col-xs-12  no-padding">
 					<div class="payment-information">
 						<div class="col-xs-12 margin-top-10">
-							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10">Payment Details <span>(Your card will not be charged. It serves as guarantee only.)</span></h4>
+							<h4 class="checkout-wizard-title margin-top-0 margin-bottom-10"><b>Payment Details <span>(Your card will not be charged. It serves as guarantee only.)</span></b></h4>
 						</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
 								Name On Card*
