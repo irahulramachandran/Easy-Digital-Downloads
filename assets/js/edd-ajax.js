@@ -74,8 +74,8 @@ jQuery(document).ready(function ($) {
 						}
 						// $('.edd-cart li').hide();
 						// $('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
-						// $(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
-						// $(".mini-cart-wrapper .edd-cart").fadeOut("fast");
+						$(".mini-cart-wrapper .reservation-summary-header").fadeOut("fast");
+						$(".mini-cart-wrapper .edd-cart").fadeOut("fast");
 					}
 					else{
 						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
@@ -551,6 +551,14 @@ jQuery(document).ready(function ($) {
 			$("#edd_cvc").parent(".col-xs-7").addClass("has-error");
 		}
 
+		if(!$("#termsandcondition").attr("checked")){
+			var error = {};
+			error.id = "#termsandcondition";
+			error.message = "Please agree to the terms and conditions";
+			errors.push(error);
+			$("#termsandcondition").parent(".col-xs-12").addClass("has-error");
+		}
+
 		if(errors.length>0){
 			var errorsString="";
 			for (var i = 0; i < errors.length; i++) {
@@ -593,10 +601,12 @@ jQuery(document).ready(function ($) {
 				$(eddPurchaseform).submit();
 			} else {
 				// $('#edd-purchase-button').val(complete_purchase_val);
-				$('.edd-cart-ajax').remove();
-				$('.edd_errors').remove();
-				$('.edd-error').hide();
-				$('#edd_purchase_submit').before(data);
+				var jsonData = JSON.parse(data);
+				if(jsonData.status = "false"){
+					$(".alert-checkout-error").remove();
+					$("#edd_checkout_cart_wrap").prepend("<div class='alert alert-danger alert-dismissible alert-checkout-error' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"+jsonData.message+"</div>");
+				}
+
 			}
 		});
 

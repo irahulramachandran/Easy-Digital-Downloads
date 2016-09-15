@@ -727,7 +727,7 @@ function get_booking_message($bookingmessage, $payment, $isEmail = false){
 	if($isEmail){
 		$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span>",$bookingmessage);
 	}else{
-			$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span> (<a href='#' class='modifyemail' data-email='".$useremail."'>click here</a> if you want to change the e-mail address)",$bookingmessage);
+			$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span> (<a href='#' class='modifyemail'  data-toggle='modal' data-target='#cancelPopup' data-email='".$useremail."'>click here</a> if you want to change the e-mail address)",$bookingmessage);
 	}
 
 	$bookingmessage = str_replace("{dates}",$date,$bookingmessage);

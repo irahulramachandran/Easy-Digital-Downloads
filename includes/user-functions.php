@@ -30,13 +30,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function edd_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
-	if ( empty( $user ) ) {
-		$user = get_current_user_id();
-	}
+	// if ( empty( $user ) ) {
+	// 	$user = get_current_user_id();
+	// }
 
-	if ( 0 === $user ) {
-		return false;
-	}
+	// if ( 0 === $user ) {
+	// 	return false;
+	// }
 
 	$status = $status === 'complete' ? 'publish' : $status;
 

@@ -435,13 +435,15 @@ function edd_user_info_fields() {
 							<div class="guest-additonal-information col-xs-12 no-padding-mobile">
 								<div class="row hidden-sm hidden-md hidden-lg"><hr></div>
 								<div class="margin-top-10">
-										<b>Special Request</b>
-										<textarea class="special_req" name="comment" placeholder="Please ensure guest can check in at any time"></textarea>
+										<div class="col-xs-12">Special Request</div>
+										<div class="col-xs-12">
+											<textarea class="form-control special_req" name="comment" placeholder="Please ensure guest can check in at any time"></textarea>
+										</div>
 								</div>
 							</div>
 						<div class="col-xs-12 margin-top-10">
 							<label>
-							  <input type="checkbox" name="earnDollars" class="earnDollars" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>">terms & conditions</a> governing this booking.</span>
+							  <input type="checkbox" name="earnDollars" class="earnDollars" id="termsandcondition" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>">terms & conditions</a> governing this booking.</span>
 							</label>
 						</div>
 						<div class='hidden-xs col-sm-12 footer-button'>

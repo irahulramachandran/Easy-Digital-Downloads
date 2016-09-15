@@ -385,7 +385,7 @@ function edd_get_cart_room_total(){
 	foreach ($cart_items as $key => $item) {
 		$id = is_array( $item ) ? $item['id'] : $item;
 		$options    = !empty( $item['options'] ) ? $item['options'] : array();
-		$roomtotal = floatval($roomtotal+floatval($options['roomprice']*$options['quantity']));
+		$roomtotal = floatval($roomtotal+floatval($options['roomprice']*$item['quantity']));
 	}
 	return $roomtotal;
 }
@@ -396,9 +396,9 @@ function edd_get_cart_addon_total(){
 	foreach ($cart_items as $key => $item) {
 		$id = is_array( $item ) ? $item['id'] : $item;
 		$options    = !empty( $item['options'] ) ? $item['options'] : array();
-		if(sizeof($options['addons'])>0){
+		if(!empty($options['addons'])){
 			foreach ($options['addons'] as $key => $addon) {
-				$addontotal = floatval($addontotal+floatval($addon->price*$options['quantity']));
+				$addontotal = floatval($addontotal+floatval($addon->price*$item['quantity']));
 			}
 		}
 	}
