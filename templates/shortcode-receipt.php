@@ -335,10 +335,25 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 				</p>
 				<p class="hotel-location-icons hotel-telephone"><?php echo $phone;?></p>
 				<p class="hotel-location-icons hotel-email"><a href="mailto:<?php echo $email;?>"><?php echo $email;?></a></p>
-				<p class="pull-left margin-right-10 hotel-location-icons hotel-driving-directions"><a href="#">Driving Directions</a></p>
-				<p class="pull-left icon-parking"><a href="#">Parking Instructions</a></p>
+				<p class="pull-left margin-right-10 hotel-location-icons hotel-driving-directions"><a href="https://maps.google.com/?daddr=<?php echo $hotelname; ?>" target="_blank">Driving Directions</a></p>
+				<p class="pull-left icon-parking"><a href="#" data-toggle="modal" data-target="#parking_div">Parking Instructions</a></p>
 			</div>
 		</div>
+    <div id="parking_div" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p><?php echo edd_get_option( 'parking_instructions', '' ) ?></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
     <div class="row margin-top-15">
       <div class="col-xs-12">
         <?php
