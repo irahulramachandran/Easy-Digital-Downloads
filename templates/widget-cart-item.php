@@ -13,9 +13,29 @@
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
-				<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart pull-right"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+				<a href="#" class="removemodal pull-right" data-backdrop="false" data-toggle="modal" data-target="#modal-remove" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 			</div>
 		</div>
+		<div id="modal-remove" class="modal fade removeclass" role="dialog">
+			<div class="modal-dialog modal-sm popupCancel">
+
+						  <!-- Modal content-->
+						  <div class="modal-content">
+							<div class="modal-header cancelHeader">
+							  <button type="button" class="close" data-dismiss="modal">&times;</button>
+							  <h4 class="modal-title">Remove Room</h4>
+							</div>
+							<div class="modal-body">
+							  <p>Do you want to remove this room?</p>
+							</div>
+							<div class="modal-footer">
+							  <a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart btnrem" data-toggle="modal" data-target="#modal-remove">YES</a>
+							  <button type="button" class="btn btn-danger popBtn" data-dismiss="modal">NO</button>
+							</div>
+						  </div>
+
+						</div>
+</div>
 	<div>
 	<div class="col-xs-12 cart-item-date">
 		<div class="col-xs-4 no-padding border-right">
