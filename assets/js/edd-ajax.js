@@ -29,7 +29,7 @@ jQuery(document).ready(function ($) {
 				withCredentials: true
 			},
 			success: function (response) {
-				console.log(edd_scripts.position_in_cart);
+				//console.log(edd_scripts.position_in_cart);
 				if (response.removed) {
 					if ( parseInt( edd_scripts.position_in_cart, 10 ) === parseInt( item, 10 ) ) {
 						window.location = window.location;
@@ -84,7 +84,9 @@ jQuery(document).ready(function ($) {
 					}
 					_bindQuantityChangeEvent();
 					$('body').trigger('edd_cart_item_removed', [ response ]);
+
 				}
+				$("body").removeClass("modal-open");
 			}
 		}).fail(function (response) {
 			if ( window.console && window.console.log ) {
