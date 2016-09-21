@@ -81,6 +81,9 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     <!-- <div class="container">
     </div> -->
 	</div>
+  <?php
+    the_content();
+  ?>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
     <div class="row">
