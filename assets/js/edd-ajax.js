@@ -530,17 +530,40 @@ jQuery(document).ready(function ($) {
 			$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
 		}
 		else if($.trim($("#card_expiry_year").val()).length == 4){
-			var valString = $("#card_expiry_year").val();
+			// var valString = $("#card_expiry_year").val();
 			var d = new Date();
 			var n = d.getFullYear();
-			var currentYear = n.toString().substring(2);
-
-			if(Number(valString) < Number(n)){
+			// var currentYear = n.toString().substring(2);
+			//
+			// if(Number(valString) < Number(n)){
+			// 	var error = {};
+			// 	error.id = "#card_expiry_year";
+			// 	error.message = "Invalid year in expiry date";
+			// 	errors.push(error);
+			// 	$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
+			// }
+			var $exp_mon = $( "#card_expiry_month" );
+			var $exp_year = $( "#card_expiry_year" );
+			var exp_mon = $exp_mon.val();
+			var exp_year = $exp_year.val();
+			//-- Card expiration must be future month
+			var currentYear = d.getFullYear();
+			var currentMonth = d.getMonth() + 1;
+			if (currentMonth < 10) {
+				currentMonth = "0" + currentMonth;
+			}
+			var curYrMn = currentYear.toString() + currentMonth.toString();
+			var expYrMn = exp_year + exp_mon;
+		//	alert(curYrMn+' '+ expYrMn);
+			if (parseInt(expYrMn, 10) < parseInt(curYrMn, 10)) {
+				// alert("Please enter a future expiration date.");
+				// $exp_mon.select();
+				// return false;
 				var error = {};
-				error.id = "#card_expiry_year";
-				error.message = "Invalid year in expiry date";
-				errors.push(error);
-				$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
+					error.id = "#card_expiry_year";
+					error.message = "Invalid year in expiry date";
+					errors.push(error);
+					$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
 			}
 		}
 
