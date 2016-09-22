@@ -447,7 +447,7 @@ function edd_user_info_fields() {
 
   </div>
 </div>
-							<div class="guest-additonal-information col-xs-12 no-padding-mobile">
+							<div class="guest-additonal-information col-xs-12 no-padding">
 								<div class="row hidden-sm hidden-md hidden-lg"><hr></div>
 								<div class="margin-top-10">
 										<div class="col-xs-12">Special Request</div>
