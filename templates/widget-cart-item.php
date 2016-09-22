@@ -13,10 +13,11 @@
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
-				<a href="#" class="removemodal pull-right" data-backdrop="false" data-toggle="modal" data-target="#modal-remove" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-			</div>
+				<?php $remlink= '<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart btnrem" data-toggle="modal" data-target="#modal-remove">YES</a>'; ?>
+				<a href="#" class="removemodal pull-right" data-backdrop="false" data-toggle="modal" data-target="#modal-remove-{RateDescriptionPlanId}-{RateDescriptionId}" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+				</div>
 		</div>
-		<div id="modal-remove" class="modal fade removeclass" role="dialog">
+		<div id="modal-remove-{RateDescriptionPlanId}-{RateDescriptionId}" class="modal fade removeclass" role="dialog">
 			<div class="modal-dialog modal-sm popupCancel">
 
 						  <!-- Modal content-->
@@ -29,7 +30,7 @@
 							  <p>Do you want to remove this room?</p>
 							</div>
 							<div class="modal-footer">
-							  <a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart btnrem" data-toggle="modal" data-target="#modal-remove">YES</a>
+							  <?php echo $remlink; ?>
 							  <button type="button" class="btn btn-danger popBtn" data-dismiss="modal">NO</button>
 							</div>
 						  </div>
