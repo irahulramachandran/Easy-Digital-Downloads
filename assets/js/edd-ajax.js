@@ -513,7 +513,7 @@ jQuery(document).ready(function ($) {
 		else if($.trim($("#card_expiry_month").val()).length == 2){
 			var valString = $("#card_expiry_month").val();
 			// var mnthAndYear = valString.split('/');
-			if(Number(valString) > 12){
+			if(Number(valString) > 12 || Number(valString) == 0){
 				var error = {};
 				error.id = "#card_expiry";
 				error.message = "Invalid month in expiry date";
