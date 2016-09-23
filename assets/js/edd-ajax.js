@@ -480,10 +480,13 @@ jQuery(document).ready(function ($) {
 				$("#edd_email").parent(".margin-top-10").addClass("has-error");
     }
 
-		if($("#card_name").val() == ""){
+		var charReg = /^\s*[a-zA-Z,\s]+\s*$/;
+
+		if($("#card_name").val() == "" || !charReg.test($('#card_name').val())){
+
 			var error = {};
 			error.id = "#card_name";
-			error.message = "Name on the Card field cannot be empty";
+			error.message = "Name on the Card field should not be empty or special characters";
 			errors.push(error);
 			$("#card_name").parent(".col-xs-12").addClass("has-error");
 		}
@@ -567,14 +570,29 @@ jQuery(document).ready(function ($) {
 			}
 		}
 
+		var charCVVReg = /^\s*[0-9,\s]+\s*$/;
+		var value = $('#edd_cvc').val();
 
-		if($("#edd_cvc").val() == ""){
+		if($("#edd_cvc").val() == "" || !charCVVReg.test($('#edd_cvc').val()) || value.length < 3){
 			var error = {};
 			error.id = "#edd_cvc";
 			error.message = "CVV field cannot be empty";
 			errors.push(error);
 			$("#edd_cvc").parent(".col-xs-7").addClass("has-error");
 		}
+
+		//Phone Number Validation
+		var numberReg =  /^[0-9]+$/;
+		var telephone = $('#edd_phonenumber').val();
+		var geustphone = $('#edd_guest_phonenumber').val();
+		$('.error').hide();
+		if(telephone == "" || !numberReg.test(telephone)){
+					$('#edd_phonenumber').after('<span class="error"> Please enter correct number</span>');
+		}
+		if(geustphone == "" || !numberReg.test(geustphone)){
+					$('#edd_guest_phonenumber').after('<span class="error"> Please enter correct number</span>');
+		}
+
 
 		if(!$("#termsandcondition").attr("checked")){
 			var error = {};

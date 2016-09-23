@@ -433,20 +433,20 @@ function edd_user_info_fields() {
 								</div>
 							</div>
 							<div id="mycvv" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+						  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <img src="<?php echo get_template_directory_uri()?>/imgs/cvv.png"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-body text-center">
+						        <img src="<?php echo get_template_directory_uri()?>/imgs/cvv.png"/>
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
 
-  </div>
-</div>
+						  </div>
+						</div>
 							<div class="guest-additonal-information col-xs-12 no-padding">
 								<div class="row hidden-sm hidden-md hidden-lg"><hr></div>
 								<div class="margin-top-10">
@@ -489,6 +489,19 @@ function edd_user_info_fields() {
 </div>
 	<script type="text/javascript">
 		$(document).ready(function(){
+		
+			//Restrict Space
+			$('#card_name').keydown(function(e) {
+				if (e.keyCode == 32) {
+					return false;
+				}
+			});
+			$('#edd_cvc').keydown(function(e) {
+				if (e.keyCode == 32) {
+					return false;
+				}
+			});
+
 			$(".additonal-information,.guest-additonal-information").hide();
 			$('.guest-information').hide();
 			$(".addInfo").change(function(){
