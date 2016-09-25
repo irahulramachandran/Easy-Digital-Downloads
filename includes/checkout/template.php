@@ -28,6 +28,19 @@ function edd_checkout_form() {
 	// $postItem = get_post($postid);
 	?>
 	<?php
+  $cart_quantity = edd_get_cart_quantity();
+	  $className  = $cart_quantity > 0 ? ' active' : '';
+	  $widthOption  = $cart_quantity > 0 ? ' width:50%' : 'width:0%';
+	  $valueOption  = $cart_quantity > 0 ? ' 50' : '0';
+	?>
+	<div class='bar_group' max='100'>
+	    <div class='bar_group__bar thin elastic' label='Oranges' style="<?php echo $widthOption; ?>" value='<?php echo $valueOption; ?>'></div>
+	    <div class="col-xs-3 text-center search-rooms progress-indicator <?php echo $className; ?>">Search</div>
+	    <div class="col-xs-3 text-center select-rooms progress-indicator <?php echo $className; ?>">Select Room</div>
+	    <div class="col-xs-3 text-center personal-info progress-indicator">Personal Information</div>
+	    <div class="col-xs-3 text-center confirm-booking progress-indicator">Confimation</div>
+	</div>
+	<?php
 		echo '<div id="edd_checkout_wrap"> <div class="col-xs-12 no-padding">';
 		if ( edd_get_cart_contents() || edd_cart_has_fees() ) :
 
@@ -406,7 +419,7 @@ function edd_user_info_fields() {
 							</div>
 							<div class="col-xs-12 col-md-6 margin-top-10">
 								Card Number*
-								<input class="form-control edd_number ccFormatMonitor"  maxlength="16" autocomplete="off" type="text" name="card_number" id="card_number"/>
+								<input class="form-control edd_number ccFormatMonitor" maxlength="19" autocomplete="off" type="text" name="card_number" id="card_number"/>
 								<input type='hidden' name='card_type' id="card_type"/>
 							</div>
 							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
@@ -488,6 +501,48 @@ function edd_user_info_fields() {
 	</fieldset>
 </div>
 	<script type="text/javascript">
+		function valid_credit_card(value) {
+			if($("#card_number").hasClass("valid")){
+				if($("#card_number").hasClass('amex')){
+					$("#card_type").val("AX");
+					return true;
+				}
+				else if($("#card_number").hasClass('diners_club_carte_blanche')){
+					$("#card_type").val("CB");
+					return true;
+				}
+				else if($("#card_number").hasClass('diners_club_international')){
+					$("#card_type").val("DN");
+					return true;
+				}
+				else if($("#card_number").hasClass('discover')){
+					$("#card_type").val("DS");
+					return true;
+				}
+				else if($("#card_number").hasClass('mastercard')){
+					$("#card_type").val("MC");
+					return true;
+				}
+				else if($("#card_number").hasClass('visa')){
+					$("#card_type").val("VI");
+					return true;
+				}
+				else if($("#card_number").hasClass('visa_electron')){
+					$("#card_type").val("VE");
+					return true;
+				}
+				else if($("#card_number").hasClass('jcb')){
+					$("#card_type").val("JC");
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
 		$(document).ready(function(){
 		
 			//Restrict Space
@@ -501,6 +556,53 @@ function edd_user_info_fields() {
 					return false;
 				}
 			});
+
+			var stopProgressInterval = false;
+			setInterval(function(){
+				if(Number($(".bar_group__bar").attr("value")) != 100)
+				{
+					var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+					if ($("#edd_email").val() == "" && Email.test($('#edd_email').val()) == false) {
+							$(".bar_group__bar").attr("value","50").css("width","50%");
+							$(".bar_group .personal-info").removeClass("active");
+							return false;
+					}
+
+					if ($("#card_name").val() == "") {
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					if ($("#card_number").val() == "" && !valid_credit_card($("#card_number").val())) {
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					if($("#card_expiry_month").val() == "" || Number($("#card_expiry_month").val()) > 12){
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					if($("#card_expiry_year").val() == "" || $.trim($("#card_expiry_year").val()).length != 4){
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					if($("#edd_cvc").val() == ""){
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					$(".bar_group__bar").attr("value","75").css("width","75%");
+					$(".bar_group .personal-info").addClass("active");
+					return false;
+				}
+			}, 500);
 
 			$(".additonal-information,.guest-additonal-information").hide();
 			$('.guest-information').hide();
@@ -544,6 +646,7 @@ function edd_user_info_fields() {
 
 			$("#card_expiry_month").mask("00");
 			$("#card_expiry_year").mask("0000");
+			$("#edd_cvc").mask("0000");
 
 			$('#card_number').validateCreditCard(function(result) {
 					console.log(result);

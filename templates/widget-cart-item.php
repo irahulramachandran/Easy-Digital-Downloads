@@ -19,23 +19,21 @@
 		</div>
 		<div id="modal-remove-{RateDescriptionPlanId}-{RateDescriptionId}" class="modal fade removeclass" role="dialog">
 			<div class="modal-dialog modal-sm popupCancel">
-
-						  <!-- Modal content-->
-						  <div class="modal-content">
-							<div class="modal-header cancelHeader">
-							  <button type="button" class="close" data-dismiss="modal">&times;</button>
-							  <h4 class="modal-title">Remove Room</h4>
-							</div>
-							<div class="modal-body">
-							  <p>Do you want to remove this room?</p>
-							</div>
-							<div class="modal-footer">
-							  <?php echo $remlink; ?>
-							  <button type="button" class="btn btn-danger popBtn" data-dismiss="modal">NO</button>
-							</div>
-						  </div>
-
-						</div>
+			  <!-- Modal content-->
+			  <div class="modal-content">
+				<div class="modal-header cancelHeader">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Remove Room</h4>
+				</div>
+				<div class="modal-body">
+				  <p>Do you want to remove this room?</p>
+				</div>
+				<div class="modal-footer">
+				  <a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart btnrem" data-toggle="modal" data-target="#modal-remove">YES</a>
+				  <button type="button" class="btn btn-danger popBtn" data-dismiss="modal">NO</button>
+				</div>
+			  </div>
+		</div>
 </div>
 	<div>
 	<div class="col-xs-12 cart-item-date">

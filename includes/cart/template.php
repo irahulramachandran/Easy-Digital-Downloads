@@ -76,7 +76,6 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 	$id = is_array( $item ) ? $item['id'] : $item;
 
-
 	$remove_url = edd_remove_item_url( $cart_key );
 	$options    = !empty( $item['options'] ) ? $item['options'] : array();
 	$title  = $options['roomtypename'];
@@ -223,6 +222,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$item = str_replace( '{PenalitiesPlanId}', $rateplancode, $item );
 	$item = str_replace( '{RateDescription}', $ratedescription, $item );
 	$item = str_replace( '{Penality}', $penality, $item );
+	$item = str_replace( '{cart_key}', $cart_key, $item );
 
 
 	$item = str_replace('{item_img}', wpthumb( $imgurl, 'width=335&height=223&crop=1' ), $item);

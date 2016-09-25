@@ -133,18 +133,8 @@ function edd_get_cart_quantity() {
  */
 function edd_add_to_cart( $download_id, $options = array() ) {
 	//$download = get_post( $download_id );
-	$download;
-
-	// $rateplans = EDD()->session->get( 'rateplans' );
-	//
-	// error_log("rateplans");
-	// error_log(json_encode($rateplans));
-	//
-	// foreach ($rateplans as $rateplan) {
-	// 	if($rateplan->id == $download_id){
-	// 		$download = $rateplan;
-	// 	}
-	// }
+	$download = new stdClass();
+	$download->availablequantity = intval($options['availablequantity']);
 	//
 	// $fromdatetime = strtotime(EDD()->session->get('startDate'));
   // $todatetime = strtotime(EDD()->session->get('endDate'));
@@ -248,22 +238,21 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 		$to_add = apply_filters( 'edd_add_to_cart_item', $item );
 		if ( ! is_array( $to_add ) )
 			return;
-
 		if ( ! isset( $to_add['id'] ) || empty( $to_add['id'] ) )
 			return;
 
 		if( edd_item_in_cart( $to_add['id'], $to_add['options'] ) && edd_item_quantities_enabled() ) {
-
 			$key = edd_get_item_position_in_cart( $to_add['id'], $to_add['options'] );
 			if($cart[ $key ]['quantity']+$quantity <= $download->availablequantity){
 				$cart[ $key ]['quantity'] += $quantity;
+				$cart[ $key ]['options']['quantity'] = $cart[ $key ]['quantity'];
 			}
 		} else {
-
 			$cart[] = $to_add;
-
 		}
 	}
+
+	//$cart[] = $to_add;
 
 	error_log(json_encode($cart));
 	EDD()->session->set( 'edd_cart', $cart );
@@ -272,8 +261,9 @@ function edd_add_to_cart( $download_id, $options = array() ) {
 
 	// Clear all the checkout errors, if any
 	edd_clear_errors();
-
-	return count( $cart ) - 1;
+	$count = sizeof($cart);
+	$count = $count-1;
+	return $count;
 }
 
 /**
@@ -667,6 +657,9 @@ function edd_cart_subtotal() {
 function edd_get_cart_subtotal() {
 
 	$items    = edd_get_cart_content_details();
+
+	error_log("EDD CART ITEMS");
+	error_log(json_encode($items));
 	$subtotal = edd_get_cart_items_subtotal( $items );
 
 	return apply_filters( 'edd_get_cart_subtotal', $subtotal );
@@ -1375,8 +1368,7 @@ add_action( 'edd_add_email_tags', 'edd_emailheroimage_email_tag' );
 function edd_emailheroimage_email_template_tags($payment_id){
 	$cart = edd_get_payment_meta_cart_details($payment_id, true);
 	$imageURL = $cart[0]['item_number']['options']['imgurl'];
-	return wpthumb($imageURL, 'width=800&height=300&crop=1&resize=1');
-	//return wpthumb("http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/2016/04/Sofa-Set-Side-Flowers-Vase-In-Guest-Room.jpg", 'width=800&height=300&crop=1&resize=1');
+	return wpthumb($imageURL, 'width=1000&height=300&crop=1&resize=1');
 }
 
 function edd_bookingmessage_email_tag() {
@@ -1441,27 +1433,25 @@ function edd_booking_list_email_template_tags($payment_id){
 				$todatetime = date('d M Y', $todatetime);
 
 				$booking_list_html .= '<tr class="block" style="float: left;width:100%">';
-					$booking_list_html .= '<td class="col-xs-12 col-md-7 no-padding room-image-container" style="position:relative">';
+				$booking_list_html .= '<table style="width:100%;float:left;"><tr>';
+					$booking_list_html .= '<td class="room-image-container" style="position:relative">';
 						$booking_list_html .= '<img class="room-image" src="'.wpthumb( $imgurl, 'width=470&height=330&crop=1' ).'" style="height:330px; width:470px"/>';
-						$booking_list_html .= '<span style="position:absolute;background:rgba(0,0,0,0.35px);width:100%;height:100%;top:0;left:0">';
 					$booking_list_html .= '</td>';
-					$booking_list_html .= '<td class="col-xs-12 col-md-5 no-padding padding-left-15 room-details-container" style="width:100%; padding:0px; padding-left:15px;" valign="top">';
-
+					$booking_list_html .= '<td class="room-details-container" style="padding:0px; padding-left:15px;" valign="top">';
 						$booking_list_html .= '<table cellspacing="0" cellpadding="0" border="0" width="100%">';
 							$booking_list_html .= '<tr class="block room-name-plan" style="float: left;width:100%">';
-								$booking_list_html .= '<td class="pull-left" style="width:80%;float:left;">';
+								$booking_list_html .= '<td class="pull-left" style="width:50%;float:left;">';
 									$booking_list_html .= '<h2 style="margin:0px;">'.$item_title.'</h2>';
 									$booking_list_html .= '<h5 style="font-size:12px;margin:0px auto 10px;">'.$rateplan_title.'</h5>';
 								$booking_list_html .= '</td>';
 								$booking_list_html .= '<td style="float:right;">';
-
-						if($noofdays == 1){
-							$noofdays = "1 Night";
-						}
-						else{
-							 $noofdays = $noofdays." Nights";
-						}
-								$booking_list_html .= '<p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p>';
+								if($noofdays == 1){
+									$noofdays = "1 Night";
+								}
+								else{
+									 $noofdays = $noofdays." Nights";
+								}
+									$booking_list_html .= '<p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p>';
 								$booking_list_html .= '</td>';
 							$booking_list_html .= '</tr>';
 
@@ -1512,6 +1502,7 @@ function edd_booking_list_email_template_tags($payment_id){
 
 						$booking_list_html .= '</table>';
 					$booking_list_html .= '</td>';
+					$booking_list_html .= '</tr><table>';
 				$booking_list_html .= '</tr>';
 			endforeach;
 	endif;
@@ -1548,11 +1539,14 @@ function edd_booking_list_email_template_tags($payment_id){
 														$image = wp_get_attachment_url(get_post_thumbnail_id($post->ID)); //the_post_thumbnail_url();//wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'archive-post-thumbnail');
 														$imagePath = $image;
 												}
-												$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;border:1px solid #cacaca;padding:0px;">';
-			        						$booking_list_html .= '<div style="width:191px; height:140px; display:block; background-size:contain;background-image:url('.wpthumb( $imagePath, 'width=191&height=140&crop=1' ).')"></div>';
+												//$imagePath = "https://d13yacurqjgara.cloudfront.net/users/137200/screenshots/2959251/careers.jpg";
+												$imagePath = "http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/cache/2016/04/3363866371/264990945.jpg";
+												$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;padding:0px;height:220px;">';
+												$booking_list_html .= '<img style="width:100%; height:140px; display:block;" src="'.wpthumb( $imagePath, 'width=310&height=207&crop=1' ).'" />';
+												// $booking_list_html .= '<div style="width:100%; height:140px; display:block; background-size:contain;background-image:url('.wpthumb( $imagePath, 'width=310&height=207&crop=1' ).'); background-position:center; background-repeat:no-repeat;"></div>';
 			        						$booking_list_html .= '<span class="gradient-overlay">';
 			        							$booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From AUD <span class="text-bold">'.edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))).'</span></p>';
-			        							$booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;">'.$post->post_title.'</p>';
+			        							$booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;font-size:13px;">'.$post->post_title.'</p>';
 			        					$booking_list_html .= '</span>';
 			        				$booking_list_html .= '</td>';
 										endforeach;
@@ -1586,13 +1580,15 @@ function edd_booking_list_email_template_tags($payment_id){
 								$image = wp_get_attachment_url(get_post_thumbnail_id($post->ID)); //the_post_thumbnail_url();//wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'archive-post-thumbnail');
 								$imagePath = $image;
 						}
-						$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;border:1px solid #cacaca;padding:0px;">';
+						$imagePath = "http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/cache/2016/04/3363866371/264990945.jpg";
+						$booking_list_html .= '<td class="pull-left no-padding enhance-stay first-enhance-stay" style="width:24%;float:left;margin-right:4px;padding:0px;height:220px">';
 		        //$booking_list_html .= '<img class="room-image" src="'.$imagePath.'" height="140" style="width:100%;"/>';
-		        $booking_list_html .= '<div style="width:191px; height:140px; display:block; background-size:contain;background-image:url('.wpthumb( $imagePath, 'width=191&height=140&crop=1' ).')"></div>';
-		        // $booking_list_html .= '<div style="width:197px; height:140px; display:block; background-size:contain;background-image:url(https://external-sit4-1.xx.fbcdn.net/safe_image.php?d=AQCC2-XhuDSFnF9g&w=476&h=249&url=https%3A%2F%2Fd152j5tfobgaot.cloudfront.net%2Fwp-content%2Fuploads%2F2016%2F09%2Fjio.png&cfs=1&upscale=1)"></div>';
+						$booking_list_html .= '<img style="width:100%; height:140px; display:block;" src="'.wpthumb( $imagePath, 'width=310&height=207&crop=1' ).'" />';
+		        // $booking_list_html .= '<div style="width:100%; height:140px; display:block; background-size:contain;background-image:url('.wpthumb( $imagePath, 'width=310height=207&crop=1' ).'); background-position:center; background-repeat:no-repeat;"></div>';
+		        //$booking_list_html .= '<div style="width:100%; height:140px; display:block; background-size:contain;background-image:url(https://external-sit4-1.xx.fbcdn.net/safe_image.php?d=AQCC2-XhuDSFnF9g&w=476&h=249&url=https%3A%2F%2Fd152j5tfobgaot.cloudfront.net%2Fwp-content%2Fuploads%2F2016%2F09%2Fjio.png&cfs=1&upscale=1)"></div>';
 		        $booking_list_html .= '<span class="gradient-overlay">';
 		        $booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From AUD <span class="text-bold">'.edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'pricefield', 1))).'</span></p>';
-		        $booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;">'.$post->post_title.'</p>';
+		        $booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;font-size:13px;">'.$post->post_title.'</p>';
 		        $booking_list_html .= '</span>';
 		        $booking_list_html .= '</td>';
 					endforeach;

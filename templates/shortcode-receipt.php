@@ -74,8 +74,8 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
   </div>
 </div>
 <div class="container-fluid no-padding" id="dvContents">
-  <img src="<?php echo wpthumb($imageURL, 'width=2280&height=500&crop=1');?>" style="width:100%;" class="heroImg" alt="Booking confirmation" />
-  <div class="hero" style="background-image:url(<?php echo $imageURL;?>)">
+  <img src="<?php echo wpthumb($imageURL, 'width=1500&height=500&crop=1');?>" style="width:100%;" class="heroImg" alt="Booking confirmation" />
+  <div class="hero" style="background-image:url(<?php echo $imageURL;?>); background-size:cover;">
 		<div class="overlay">
 		</div>
     <!-- <div class="container">
@@ -96,8 +96,8 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
   					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
   					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
             <ul class="list-unstyled social-share-icons recipt">
-              <li><a href="https://www.facebook.com/sharer/sharer.php" class="social-share-icon fb display-block"></a></li>
-              <li><a href="https://twitter.com/home?status="  class="social-share-icon twitter display-block"></a></li>
+              <li><a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class="social-share-icon fb display-block"></a></li>
+              <li><a href="https://twitter.com/home?status=" target="_blank" class="social-share-icon twitter display-block"></a></li>
             </ul>
   				</div>
   			</div>

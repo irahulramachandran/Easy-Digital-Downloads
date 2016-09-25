@@ -70,6 +70,7 @@ jQuery(document).ready(function ($) {
 						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html("");
 						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html(edd_scripts.empty_cart_message);
 						if( edd_scripts.is_checkout == '1'){
+							$(".bar_group__bar").attr("value","0").css("width","0%");
 							window.location = site_url+'/accommodation/';
 						}
 						// $('.edd-cart li').hide();
@@ -220,14 +221,15 @@ jQuery(document).ready(function ($) {
 			success: function (response) {
 				console.log(response);
 				if( edd_scripts.redirect_to_checkout == '1' && form.find( '#edd_redirect_to_checkout' ).val() == '1' ) {
-
+					$(".bar_group__bar").attr("value","50").css("width","50%");
+					$(".bar_group .select-rooms").addClass("active");
 					window.location = edd_scripts.checkout_page;
-
 				}
 				else if(directcheckout == '1'){
 					window.location = edd_scripts.checkout_page;
 				} else {
-
+					$(".bar_group__bar").attr("value","50").css("width","50%");
+					$(".bar_group .select-rooms").addClass("active");
 					// // Add the new item to the cart widget
 					if ( edd_scripts.taxes_enabled === '1' ) {
 						$('.cart_item.edd_subtotal').show();
@@ -414,48 +416,48 @@ jQuery(document).ready(function ($) {
 		}, 200);
 	}
 
-	function valid_credit_card(value) {
-		if($("#card_number").hasClass("valid")){
-			if($("#card_number").hasClass('amex')){
-				$("#card_type").val("AX");
-				return true;
-			}
-			else if($("#card_number").hasClass('diners_club_carte_blanche')){
-				$("#card_type").val("CB");
-				return true;
-			}
-			else if($("#card_number").hasClass('diners_club_international')){
-				$("#card_type").val("DN");
-				return true;
-			}
-			else if($("#card_number").hasClass('discover')){
-				$("#card_type").val("DS");
-				return true;
-			}
-			else if($("#card_number").hasClass('mastercard')){
-				$("#card_type").val("MC");
-				return true;
-			}
-			else if($("#card_number").hasClass('visa')){
-				$("#card_type").val("VI");
-				return true;
-			}
-			else if($("#card_number").hasClass('visa_electron')){
-				$("#card_type").val("VE");
-				return true;
-			}
-			else if($("#card_number").hasClass('jcb')){
-				$("#card_type").val("JC");
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-		else{
-			return false;
-		}
-	}
+	// function valid_credit_card(value) {
+	// 	if($("#card_number").hasClass("valid")){
+	// 		if($("#card_number").hasClass('amex')){
+	// 			$("#card_type").val("AX");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('diners_club_carte_blanche')){
+	// 			$("#card_type").val("CB");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('diners_club_international')){
+	// 			$("#card_type").val("DN");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('discover')){
+	// 			$("#card_type").val("DS");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('mastercard')){
+	// 			$("#card_type").val("MC");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('visa')){
+	// 			$("#card_type").val("VI");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('visa_electron')){
+	// 			$("#card_type").val("VE");
+	// 			return true;
+	// 		}
+	// 		else if($("#card_number").hasClass('jcb')){
+	// 			$("#card_type").val("JC");
+	// 			return true;
+	// 		}
+	// 		else{
+	// 			return false;
+	// 		}
+	// 	}
+	// 	else{
+	// 		return false;
+	// 	}
+	// }
 
 	var errors = [];
 
@@ -472,13 +474,15 @@ jQuery(document).ready(function ($) {
 
 		var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if ($("#edd_email").val()!= "" && Email.test($('#edd_email').val()) == false) {
-
         var error = {};
         error.id = "#edd_email";
         error.message = "Email is not valid.";
         errors.push(error);
 				$("#edd_email").parent(".margin-top-10").addClass("has-error");
     }
+		else{
+			$("#edd_email").parent(".margin-top-10").removeClass("has-error");
+		}
 
 		var charReg = /^\s*[a-zA-Z,\s]+\s*$/;
 
@@ -489,6 +493,9 @@ jQuery(document).ready(function ($) {
 			error.message = "Name on the Card field should not be empty or special characters";
 			errors.push(error);
 			$("#card_name").parent(".col-xs-12").addClass("has-error");
+		}
+		else{
+			$("#card_name").parent(".col-xs-12").removeClass("has-error");
 		}
 
 		if($("#card_number").val() == ""){
@@ -505,6 +512,9 @@ jQuery(document).ready(function ($) {
 			errors.push(error);
 			$("#card_number").parent(".col-xs-12").addClass("has-error");
 		}
+		else{
+			$("#card_number").parent(".col-xs-12").removeClass("has-error");
+		}
 
 		if($("#card_expiry_month").val() == ""){
 			var error = {};
@@ -513,7 +523,7 @@ jQuery(document).ready(function ($) {
 			errors.push(error);
 			$("#card_expiry_month").parent(".col-xs-6").addClass("has-error");
 		}
-		else if($.trim($("#card_expiry_month").val()).length == 2){
+		else if($.trim($("#card_expiry_month").val()).length > 1){
 			var valString = $("#card_expiry_month").val();
 			// var mnthAndYear = valString.split('/');
 			if(Number(valString) > 12 || Number(valString) == 0){
@@ -522,6 +532,9 @@ jQuery(document).ready(function ($) {
 				error.message = "Invalid month in expiry date";
 				errors.push(error);
 				$("#card_expiry_month").parent(".col-xs-6").addClass("has-error");
+			}
+			else{
+				$("#card_expiry_month").parent(".col-xs-6").removeClass("has-error");
 			}
 		}
 
@@ -568,6 +581,9 @@ jQuery(document).ready(function ($) {
 					errors.push(error);
 					$("#card_expiry_year").parent(".col-xs-6").addClass("has-error");
 			}
+			else{
+				$("#card_expiry_year").parent(".col-xs-6").removeClass("has-error");
+			}
 		}
 
 		var charCVVReg = /^\s*[0-9,\s]+\s*$/;
@@ -579,6 +595,9 @@ jQuery(document).ready(function ($) {
 			error.message = "CVV field cannot be empty";
 			errors.push(error);
 			$("#edd_cvc").parent(".col-xs-7").addClass("has-error");
+		}
+		else{
+			$("#edd_cvc").parent(".col-xs-7").removeClass("has-error");
 		}
 
 		//Phone Number Validation
@@ -601,6 +620,9 @@ jQuery(document).ready(function ($) {
 			errors.push(error);
 			$("#termsandcondition").parent(".col-xs-12").addClass("has-error");
 		}
+		else{
+			$("#termsandcondition").parent(".col-xs-12").removeClass("has-error");
+		}
 
 		if(errors.length>0){
 			var errorsString="";
@@ -608,7 +630,7 @@ jQuery(document).ready(function ($) {
 				errorsString += errors[i].message+"</br>";
 			}
 			$(".alert-checkout-error").remove();
-			$("#edd_checkout_cart_wrap").prepend("<div class='alert alert-danger alert-dismissible alert-checkout-error' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Error!</strong></br>"+errorsString+"</div>");
+			$("#edd_checkout_cart_wrap").prepend("<div class='alert alert-danger alert-dismissible alert-checkout-error' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Please enter all the mandatory fields</div>");
 			return false;
 		}
 		return true;
@@ -637,6 +659,9 @@ jQuery(document).ready(function ($) {
 		$.post(edd_global_vars.ajaxurl, $('#edd_purchase_form').serialize() + '&action=edd_process_checkout&edd_ajax=true', function(data) {
 			$("#loading").hide();
 			if ( $.trim(data) == 'success' ) {
+				$(".bar_group__bar").attr("value","100").css("width","100%");
+				$(".bar_group .confirm-booking").addClass("active");
+				stopProgressInterval = true;
 				$('.edd_errors').remove();
 				$('.edd-error').hide();
 				localStorage.removeItem('pageno');
