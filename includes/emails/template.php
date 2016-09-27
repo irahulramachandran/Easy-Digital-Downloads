@@ -170,6 +170,30 @@ function edd_get_email_body_content( $payment_id = 0, $payment_data = array() ) 
 }
 
 /**
+ * Email Template Body
+ *
+ * @since 1.0.8.2
+ * @param int $payment_id Payment ID
+ * @param array $payment_data Payment Data
+ * @return string $email_body Body of the email
+ */
+function edd_get_cancel_email_body_content( $payment_id = 0, $payment_data = array() ) {
+	$default_email_body = __( "Dear", "easy-digital-downloads" ) . " {name},\n\n";
+	$default_email_body .= __( " Your booking has been cancelled successfully.", "easy-digital-downloads" ) . "\n\n";
+	$default_email_body .= "{download_list}\n\n";
+	$default_email_body .= "{sitename}";
+
+	$email = edd_get_option( 'cancel_booking_body', false );
+	$email = $email ? stripslashes( $email ) : $default_email_body;
+
+	$email_body = wpautop( $email );
+
+	//$email_body = apply_filters( 'edd_purchase_receipt_' . EDD()->emails->get_template(), $email_body, $payment_id, $payment_data );
+
+	return apply_filters( 'edd_purchase_receipt', $email_body, $payment_id, $payment_data );
+}
+
+/**
  * Sale Notification Template Body
  *
  * @since 1.7

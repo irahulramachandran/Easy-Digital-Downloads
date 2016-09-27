@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
 						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html(edd_scripts.empty_cart_message);
 						if( edd_scripts.is_checkout == '1'){
 							$(".bar_group__bar").attr("value","0").css("width","0%");
-							window.location = site_url+'/accommodation/';
+							window.location = site_url+'/accommodations/';
 						}
 						// $('.edd-cart li').hide();
 						// $('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
@@ -484,10 +484,10 @@ jQuery(document).ready(function ($) {
 			$("#edd_email").parent(".margin-top-10").removeClass("has-error");
 		}
 
-		var charReg = /^\s*[a-zA-Z,\s]+\s*$/;
+		// var charReg = /^\s*[a-zA-Z,\s]+\s*$/;
 
-		if($("#card_name").val() == "" || !charReg.test($('#card_name').val())){
-
+		if($.trim($("#card_name").val()) == "")
+		{
 			var error = {};
 			error.id = "#card_name";
 			error.message = "Name on the Card field should not be empty or special characters";
@@ -601,16 +601,16 @@ jQuery(document).ready(function ($) {
 		}
 
 		//Phone Number Validation
-		var numberReg =  /^[0-9]+$/;
-		var telephone = $('#edd_phonenumber').val();
-		var geustphone = $('#edd_guest_phonenumber').val();
-		$('.error').hide();
-		if(telephone == "" || !numberReg.test(telephone)){
-					$('#edd_phonenumber').after('<span class="error"> Please enter correct number</span>');
-		}
-		if(geustphone == "" || !numberReg.test(geustphone)){
-					$('#edd_guest_phonenumber').after('<span class="error"> Please enter correct number</span>');
-		}
+		// var numberReg =  /^[0-9]+$/;
+		// var telephone = $('#edd_phonenumber').val();
+		// var geustphone = $('#edd_guest_phonenumber').val();
+		// $('.error').hide();
+		// if(telephone == "" || !numberReg.test(telephone)){
+		// 			$('#edd_phonenumber').after('<span class="error"> Please enter correct number</span>');
+		// }
+		// if(geustphone == "" || !numberReg.test(geustphone)){
+		// 			$('#edd_guest_phonenumber').after('<span class="error"> Please enter correct number</span>');
+		// }
 
 
 		if(!$("#termsandcondition").attr("checked")){

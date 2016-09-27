@@ -539,6 +539,27 @@ function edd_get_registered_settings() {
 						'std'  => __( "Dear", "easy-digital-downloads" ) . " {name},\n\n" . __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "easy-digital-downloads" ) . "\n\n{download_list}\n\n{sitename}",
 					),
 				),
+				'cancel_bookings' => array(
+					'cancel_booking_settings' => array(
+						'id'   => 'cancel_booking_settings',
+						'name' => '<h3>' . __( 'Booking Cancellation', 'easy-digital-downloads' ) . '</h3>',
+						'type' => 'header',
+					),
+					'cancel_booking_subject' => array(
+						'id'   => 'cancel_booking_subject',
+						'name' => __( 'Cancel Booking Email Subject', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter the subject line for the cancel booking email', 'easy-digital-downloads' ),
+						'type' => 'text',
+						'std'  => __( 'Booking Cancelled', 'easy-digital-downloads' ),
+					),
+					'cancel_booking_body' => array(
+						'id'   => 'cancel_booking_body',
+						'name' => __( 'Cancel Booking Message', 'easy-digital-downloads' ),
+						'desc' => __('Enter the text that is sent as Booking cancellation email to users after cancelling a booking. HTML is accepted. Available template tags:','easy-digital-downloads' ),
+						'type' => 'rich_editor',
+						'std'  => __( "Dear", "easy-digital-downloads" ) . " {name},\n\n" . __( "Your booking have been cancelled, You will be missed.", "easy-digital-downloads" ),
+					),
+				),
 				'sale_notifications' => array(
 					'sale_notification_settings' => array(
 						'id'   => 'sale_notification_settings',
@@ -1275,6 +1296,7 @@ function edd_get_registered_settings_sections() {
 			'main'               => __( 'Email Settings', 'easy-digital-downloads' ),
 			'purchase_receipts'  => __( 'Purchase Receipts', 'easy-digital-downloads' ),
 			'sale_notifications' => __( 'New Sale Notifications', 'easy-digital-downloads' ),
+			'cancel_bookings'  => __( 'Booking Cancellation', 'easy-digital-downloads' ),
 		) ),
 		'styles'     => apply_filters( 'edd_settings_sections_styles', array(
 			'main'               => __( 'Style Settings', 'easy-digital-downloads' ),

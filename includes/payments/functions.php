@@ -182,12 +182,14 @@ function edd_insert_payment( $payment_data = array() ) {
 	$EndDate = EDD()->session->get( 'EndDate');
 	$GuestName = EDD()->session->get( 'GuestName');
 	$eddguestemail = EDD()->session->get( 'edd_guest_email');
+	$edduseremail = EDD()->session->get( 'edd_booker_email');
 	add_post_meta($payment->ID, 'reservation_id',$ReservationID);
 	add_post_meta($payment->ID, 'startdate',$StartDate);
 	add_post_meta($payment->ID, 'enddate',$EndDate);
 	add_post_meta($payment->ID, 'guestname',$GuestName);
 	add_post_meta($payment->ID, 'cartitems',$CartItems);
 	add_post_meta($payment->ID, 'edd_guest_email',$eddguestemail);
+	add_post_meta($payment->ID, 'edd_booker_email',$edduseremail);
 
 
 	do_action( 'edd_insert_payment', $payment->ID, $payment_data );
@@ -1016,6 +1018,10 @@ function edd_get_payment_user_email( $payment_id ) {
 
 function edd_get_payment_guest_email( $payment_id ) {
 	return get_post_meta($payment_id,'edd_guest_email',true);
+}
+
+function edd_get_payment_booker_email( $payment_id ) {
+	return get_post_meta($payment_id,'edd_booker_email',true);
 }
 
 /**

@@ -544,7 +544,7 @@ function edd_user_info_fields() {
 			}
 		}
 		$(document).ready(function(){
-		
+
 			//Restrict Space
 			$('#card_name').keydown(function(e) {
 				if (e.keyCode == 32) {
@@ -619,8 +619,9 @@ function edd_user_info_fields() {
 			});
 			$('input[name="booker1"]').bind('change',function(e){
 				e.preventDefault();
-				var showOrHide = ($(this).val() == 1) ? true : false;
-				$('.guest-information').toggle(showOrHide);
+				$('input[name="booker"]').val($(this).val());
+				// var showOrHide = ($(this).val() == 1) ? true : false;
+				// $('.guest-information').toggle(showOrHide);
 			});
 			if($(window).width() < 768){
 				if($(".mini-cart-wrapper").size() > 0 && $(".mini-cart-wrapper").hasClass("position-releative")){

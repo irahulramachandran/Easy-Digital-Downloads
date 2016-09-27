@@ -29,7 +29,7 @@ $hotelCode = esc_html(stripslashes($settings["snc_hotelid"]));
 $hotelName = esc_html(stripslashes($settings["snc_hotelname"]));
 $startdate = edd_booking_startdate($payment->ID);
 $count = sizeof($cart);
-$useremail = edd_get_payment_user_email($payment->ID);
+$useremail = edd_get_payment_booker_email($payment->ID);
 $guestemail = edd_get_payment_guest_email($payment->ID);
 $name = $user['first_name']." ".$user['last_name'];
 
