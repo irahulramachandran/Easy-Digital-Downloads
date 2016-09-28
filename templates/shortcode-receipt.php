@@ -82,7 +82,9 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     </div> -->
 	</div>
   <?php
-    the_content();
+    //the_content();
+    //echo get_stylesheet_directory();
+    include( get_stylesheet_directory() . '/templates/template-navbar.php');
   ?>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
