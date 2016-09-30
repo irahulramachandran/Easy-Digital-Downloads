@@ -436,7 +436,7 @@ function edd_user_info_fields() {
 
 							<div class="col-xs-12 col-md-6 no-padding margin-top-10">
 								<div class="col-xs-12">
-								CVV
+								CVV*
 								</div>
 								<div class="col-xs-7">
 									<input class="form-control edd_cvc"  autocomplete="off" type="password" name="card_cvc" maxlength="4" id="edd_cvc" />
