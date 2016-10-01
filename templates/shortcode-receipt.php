@@ -55,6 +55,12 @@ $bookingmessage = get_booking_message($bookingmessage,$payment);
 
 $imageURL = $cart[0]['item_number']['options']['imgurl'];
 ?>
+<!-- <script>
+  $(document).ready(function(){
+    $("meta[name='image']").remove();
+    $('head').append("<meta property='og:image' content='<?php echo wpthumb($imageURL, 'width=600&height=315&crop=1');?>'/>");
+  });
+</script> -->
 <div class="modal fade" id="cancelPopup" role="dialog">
   <div class="modal-dialog modal-sm popupCancel">
     <!-- Modal content-->
@@ -98,8 +104,12 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
   					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
   					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
             <ul class="list-unstyled social-share-icons recipt">
-              <li><a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class="social-share-icon fb display-block"></a></li>
-              <li><a href="https://twitter.com/home?status=" target="_blank" class="social-share-icon twitter display-block"></a></li>
+              <?php
+                $frontpage_id = get_option( 'page_on_front' );
+                $frontpage_img = wp_get_attachment_url( get_post_thumbnail_id($frontpage_id) );
+              ?>
+              <li><a href="http://www.facebook.com/sharer.php?s=100&p[title]=<?php echo edd_get_option( 'fb_title', '' ); ?>&p[summary]=<?php echo edd_get_option('fb_description', ''); ?>&p[url]=<?php echo get_site_url(); ?>&p[images][0]=<?php echo wpthumb($frontpage_img, 'width=1500&height=500&crop=1');?>" target="_blank" class="social-share-icon fb display-block"></a></li>
+              <li><a href="http://www.twitter.com/share?url=<?php echo get_site_url(); ?>" target="_blank" class="social-share-icon twitter display-block"></a></li>
             </ul>
   				</div>
   			</div>
@@ -223,7 +233,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
             <?php endif; ?>
 				</div>
 			</div>
-      <div class="row margin-top-15">
+      <div class="row margin-top-15 hide">
 				<div class="col-xs-12 enhance-stay-outer-container">
 					<span class="font-bold margin-bottom-15">Enhance Your Stay</span>
 					<div class="pull-left enhance-stay-inner-container">
@@ -379,7 +389,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
       <div class="col-xs-12">
         <?php
           $agree_text  = edd_get_option( 'policy_text', '' );
-      		$agree_label = edd_get_option( 'policy_title', __( 'Policy', 'easy-digital-downloads' ) );
+      		$agree_label = edd_get_option( 'policy_title', __( '', 'easy-digital-downloads' ) );
         ?>
     		<div id="edd_terms_agreement" class="margin-top-10 margin-bottom-20 policies">
     			<label for="edd_agree_to_terms"><?php echo stripslashes( $agree_label ); ?></label>

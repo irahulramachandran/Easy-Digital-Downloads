@@ -1451,8 +1451,8 @@ function edd_booking_list_email_template_tags($payment_id){
 								//Room Data - Title
 								$booking_list_html .= '<tr class="block room-name-plan" style="float: left;width:100%">';
 									$booking_list_html .= '<td class="pull-left" style="width:170px;float:left;">';
-											$booking_list_html .= '<h2 style="margin:0px;">'.$item_title.'</h2>';
-											$booking_list_html .= '<h5 style="font-size:12px;margin:0px auto 10px;">'.$rateplan_title.'</h5>';
+											$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><h2 style="margin:0px;">'.$item_title.'</h2></font>';
+											$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><h5 style="font-size:12px;margin:0px auto 10px;">'.$rateplan_title.'</h5></font>';
 										$booking_list_html .= '</td>';
 										$booking_list_html .= '<td style="float:right;width:160px;">';
 										if($noofdays == 1){
@@ -1461,7 +1461,7 @@ function edd_booking_list_email_template_tags($payment_id){
 										else{
 										 	$noofdays = $noofdays." Nights";
 										}
-											$booking_list_html .= '<p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p>';
+											$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p></font>';
 									$booking_list_html .= '</td>';
 								$booking_list_html .= '</tr>';
 
@@ -1469,11 +1469,11 @@ function edd_booking_list_email_template_tags($payment_id){
 								$booking_list_html .= '<tr class="block margin-top-50 arrvial-departure-container" style="float: left;width:100%">';
 									$booking_list_html .= '<td class="pull-left" style="width:170px;float:left;">';
 										$booking_list_html .= '<span class="font-bold" style="font-weight:bold;">Arrival Date</span>';
-										$booking_list_html .= '<p class="arrival-date" style="margin:5px 0px 10px;">'.$fromdatetime.'</p>';
+										$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><p class="arrival-date" style="margin:5px 0px 10px;">'.$fromdatetime.'</p></font>';
 									$booking_list_html .= '</td>';
 									$booking_list_html .= '<td class="pull-right" style="width:160px;float:left;text-align:right;">';
 										$booking_list_html .= '<span class="font-bold" style="font-weight:bold;">Departure Date</span>';
-										$booking_list_html .= '<p class="arrival-date" style="margin:5px 0px 10px;">'.$todatetime.'</p>';
+										$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><p class="arrival-date" style="margin:5px 0px 10px;">'.$todatetime.'</p></font>';
 									$booking_list_html .= '</td>';
 								$booking_list_html .= '</tr>';
 

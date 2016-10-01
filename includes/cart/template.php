@@ -146,7 +146,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$quanity = "<select data-download-id='".$downid."' class='quanity edd-quanity pull-right'>";
 	for ($i=1; $i <= intval($availablequantity); $i++) {
 			$isSelectedValue = "";
-			if($i == $options['quantity']){
+			if($i == $item['quantity']){
 				$isSelectedValue = " selected='selected'";
 			}
 			if($i == 1){

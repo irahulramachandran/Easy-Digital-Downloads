@@ -180,7 +180,7 @@ function edd_cancellation_email_to_user( $payment_id) {
 	$emails->__set( 'headers', $headers );
 
 	$emails->send( $to_email, $subject, $message, $attachments );
-	error_log("Cancellation email sent to ".$email);
+	error_log("Cancellation email sent to ".$to_email);
 	return true;
 }
 

@@ -982,10 +982,10 @@ function edd_get_registered_settings() {
 						'name' => '<h3>' . __( 'Twitter Settings', 'easy-digital-downloads' ) . '</h3>',
 						'type' => 'header',
 					),
-					'twitter_siteurl' => array(
-						'id'   => 'twitter_siteurl',
-						'name' => __( 'URL', 'easy-digital-downloads' ),
-						'desc' => __( 'Enter URL to share, default will the website url', 'easy-digital-downloads' ),
+					'twitter_user' => array(
+						'id'   => 'twitter_user',
+						'name' => __( 'Twitter User', 'easy-digital-downloads' ),
+						'desc' => __( 'Enter Hotels Twitter account id', 'easy-digital-downloads' ),
 						'type' => 'text',
 						'size' => 'regular',
 					),

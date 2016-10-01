@@ -546,7 +546,7 @@ function edd_user_info_fields() {
 		$(document).ready(function(){
 
 			//Restrict Space
-			$('#card_name').keydown(function(e) {
+			$('#card_number').keydown(function(e) {
 				if (e.keyCode == 32) {
 					return false;
 				}
@@ -620,8 +620,8 @@ function edd_user_info_fields() {
 			$('input[name="booker1"]').bind('change',function(e){
 				e.preventDefault();
 				$('input[name="booker"]').val($(this).val());
-				// var showOrHide = ($(this).val() == 1) ? true : false;
-				// $('.guest-information').toggle(showOrHide);
+				var showOrHide = ($(this).val() == 1) ? true : false;
+				$('.guest-information').toggle(showOrHide);
 			});
 			if($(window).width() < 768){
 				if($(".mini-cart-wrapper").size() > 0 && $(".mini-cart-wrapper").hasClass("position-releative")){
@@ -629,21 +629,21 @@ function edd_user_info_fields() {
 				}
 			}
 
-			if($(".edd-slg-login-wrapper").size() > 0){
-				var html = "<div class='edd-slg-login-wrapper nomargin'>";
-						html += "<a title='Connect with SN Select' href='javascript:void(0);' class='edd-slg-social-login-snselect social-button snselect-button'  data-toggle='modal' data-target='#loginpopup'>";
-						html += "</a></div>";
-
-				$(".edd-slg-clear").before(html);
-
-				$(".snselect-button").click(function(){
-					// $('#loginpopup').modal({
-					//   keyboard: false
-					// });
-					$("#loginpopup").addClass("in");
-					$("#loginpopup").css("display","block !important");
-				});
-			}
+			// if($(".edd-slg-login-wrapper").size() > 0){
+			// 	var html = "<div class='edd-slg-login-wrapper nomargin'>";
+			// 			html += "<a title='Connect with SN Select' href='javascript:void(0);' class='edd-slg-social-login-snselect social-button snselect-button'  data-toggle='modal' data-target='#loginpopup'>";
+			// 			html += "</a></div>";
+			//
+			// 	$(".edd-slg-clear").before(html);
+			//
+			// 	$(".snselect-button").click(function(){
+			// 		// $('#loginpopup').modal({
+			// 		//   keyboard: false
+			// 		// });
+			// 		$("#loginpopup").addClass("in");
+			// 		$("#loginpopup").css("display","block !important");
+			// 	});
+			// }
 
 			$("#card_expiry_month").mask("00");
 			$("#card_expiry_year").mask("0000");
