@@ -90,7 +90,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
   <?php
     //the_content();
     //echo get_stylesheet_directory();
-    include( get_stylesheet_directory() . '/templates/template-navbar.php');
+    // include( get_stylesheet_directory() . '/templates/template-navbar.php');
   ?>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
@@ -508,23 +508,23 @@ function initMap() {
           frame1.css({"width": "20000px", "height": "20000px"});
           frame1.css({"position": "absolute", "top": "-1000000px"});
           $("body").append(frame1);
-          var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-          frameDoc.document.open();
+          var frameDc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+          frameDc.document.open();
 
           //Create a new HTML document.
-          frameDoc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
-          frameDoc.document.write('</head><body>');
+          frameDc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
+          frameDc.document.write('</head><body>');
           //Append the external CSS file.
-          frameDoc.document.write('<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/styles/bootstrap.min.css" type="text/css" media="print" />');
-          frameDoc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print_min.css" rel="stylesheet" type="text/css"  media="print" />');
-          //frameDoc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
+          frameDc.document.write('<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/styles/bootstrap.min.css" type="text/css" media="print" />');
+          frameDc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print_min.css" rel="stylesheet" type="text/css"  media="print" />');
+          //frameDc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
 
           //Append the DIV contents.
-          // frameDoc.document.write($("#page-header").html())
-          frameDoc.document.write(contents);
+          // frameDc.document.write($("#page-header").html())
+          frameDc.document.write(contents);
           // alert(contents);
-          frameDoc.document.write('</body></html>');
-          frameDoc.document.close();
+          frameDc.document.write('</body></html>');
+          frameDc.document.close();
           setTimeout(function () {
               window.frames["frame1"].focus();
               window.frames["frame1"].print();
