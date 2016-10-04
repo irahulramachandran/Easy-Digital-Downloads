@@ -704,7 +704,7 @@ add_shortcode( 'edd_receipt', 'edd_receipt_shortcode' );
 
 function get_booking_message($bookingmessage, $payment, $isEmail = false){
 	$user = edd_get_payment_meta_user_info($payment->ID);
-	$useremail = edd_get_payment_booker_email($payment->ID);
+	$useremail = edd_get_payment_email($payment->ID);
 	$guestname = get_post_meta($payment->ID, 'guestname',true);
 	$guestemail = edd_get_payment_guest_email($payment->ID);
 	$name = $user['first_name']." ".$user['last_name'];

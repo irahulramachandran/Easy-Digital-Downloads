@@ -1024,6 +1024,10 @@ function edd_get_payment_booker_email( $payment_id ) {
 	return get_post_meta($payment_id,'edd_booker_email',true);
 }
 
+function edd_get_payment_email( $payment_id ) {
+	return get_post_meta($payment_id,'_edd_payment_user_email',true);
+}
+
 /**
  * Is the payment provided associated with a user account
  *

@@ -1377,7 +1377,7 @@ function edd_bookingmessage_email_tag() {
 add_action( 'edd_add_email_tags', 'edd_bookingmessage_email_tag' );
 
 function edd_bookingmessage_email_template_tags($payment_id){
-	$useremail = edd_get_payment_user_email($payment_id);
+	$useremail = edd_get_payment_email($payment_id);
 	$guestemail = edd_get_payment_guest_email($payment_id);
 
 	if(!empty($guestemail)){
