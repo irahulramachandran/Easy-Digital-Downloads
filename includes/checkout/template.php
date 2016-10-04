@@ -237,7 +237,7 @@ function edd_user_info_fields() {
 		</div>
 
 		<fieldset  class="col-xs-12 no-padding margin-top-10">
-			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+			<div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
 				<div class="hidden-xs col-sm-12 col-md-12">
 					<h2>I AM BOOKING FOR</h2>
 
@@ -493,7 +493,7 @@ function edd_user_info_fields() {
 				</div>
 			</div>
 	</div>
-	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
+	<div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 no-padding">
 		<div class='mini-cart-wrapper checkout_page position-releative'>
 			<?php do_shortcode('[download_cart]'); ?>
 		</div>
