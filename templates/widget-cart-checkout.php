@@ -1,7 +1,7 @@
 <li class="cart_item edd_cart_roomtotal col-xs-12">
   <?php _e( 'Room Total', 'easy-digital-downloads' ); ?> <span class="cart-room-total pull-right"><?php echo edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ); ?></span>
 </li>
-<li class="cart_item edd_cart_addontotal col-xs-12">
+<li class="cart_item edd_cart_addontotal col-xs-12" style="display:none;">
   <?php _e( 'Addon Total', 'easy-digital-downloads' ); ?> <span class="cart-room-total pull-right"><?php echo edd_currency_filter( edd_format_amount( edd_get_cart_addon_total() ) ); ?></span>
 </li>
 <?php if(edd_cart_has_discounts() ){ ?>
