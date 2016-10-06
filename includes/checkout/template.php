@@ -471,7 +471,7 @@ function edd_user_info_fields() {
 							</div>
 						<div class="col-xs-12 margin-top-10">
 							<label>
-							  <input type="checkbox" name="earnDollars" class="earnDollars" id="termsandcondition" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>">terms & conditions</a> governing this booking.</span>
+							  <input type="checkbox" name="earnDollars" class="earnDollars" id="termsandcondition" checked> <span class="addInfo_ckbox">I have read and agreed to the <a href="<?php echo edd_get_termsncondition_page_uri(); ?>" target="new">terms & conditions</a> governing this booking.</span>
 							</label>
 						</div>
 						<div class='hidden-xs col-sm-12 footer-button'>
