@@ -206,8 +206,9 @@ function edd_ajax_add_to_cart() {
 
 			$rateplans = EDD()->session->get( 'rateplans' );
 
-			error_log("rateplans");
+			error_log("-------------------edd_ajax_add_to_cart rateplans---------------------------");
 			error_log(json_encode($rateplans));
+			error_log("-------------------edd_ajax_add_to_cart rateplans---------------------------");
 
 			foreach ($rateplans as $rateplan) {
 				if($rateplan->id == $download_id){
@@ -217,8 +218,11 @@ function edd_ajax_add_to_cart() {
 
 			$price = $download->price;
 			$roomprice = $price;
-			$selectedAddons = $_POST['selectedAddons'];
-			$selectedValues = explode(',',$selectedAddons);
+			$selectedValues = array();
+			if(!empty($_POST['selectedAddons'])){
+				$selectedAddons = $_POST['selectedAddons'];
+				$selectedValues = explode(',',$selectedAddons);
+			}
 			$addons = array();
 			$addontotal = 0;
 
