@@ -142,13 +142,13 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	else{
 		$inclusionsText = "";
 	}
-
-	$quanity = "<select data-download-id='".$downid."' class='quanity edd-quanity pull-right'>";
+	$quanity ="<input type='hidden' value='". $item['quantity'] ."' class='room_value'>";
+	$quanity .= "<select data-download-id='".$downid."' class='quanity edd-quanity pull-right'>";
 	for ($i=1; $i <= intval($availablequantity); $i++) {
 		if($i <= 5){
 			$isSelectedValue = "";
 			if($i == $item['quantity']){
-				$isSelectedValue = " selected='selected'";
+				//$isSelectedValue = " selected='selected'";
 			}
 			if($i == 1){
 				$quanity .= "<option value='".$i."' ".$isSelectedValue.">".$i." Room</option>";
