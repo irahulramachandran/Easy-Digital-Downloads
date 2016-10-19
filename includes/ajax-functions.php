@@ -423,7 +423,7 @@ function edd_ajax_update_cart_item_quantity() {
 
 		$return = array(
 			'download_id' => $download_id,
-			'quantity'    => $quantity,
+			'quantity'    => html_entity_decode( edd_get_cart_quantity() ),
 			'taxes'       => html_entity_decode( edd_currency_filter(edd_format_amount($cart_tax)), ENT_COMPAT, 'UTF-8' ),
 			'subtotal'    => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_subtotal() ) ), ENT_COMPAT, 'UTF-8' ),
 			'roomtotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ), ENT_COMPAT, 'UTF-8' ),

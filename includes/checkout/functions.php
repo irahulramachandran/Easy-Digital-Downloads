@@ -41,6 +41,30 @@ function edd_is_checkout() {
 	return apply_filters( 'edd_is_checkout', $is_checkout );
 }
 
+function edd_is_accommodation() {
+
+	global $wp_query;
+
+	$is_object_set    = isset( $wp_query->queried_object );
+	$is_object_id_set = isset( $wp_query->queried_object_id );
+	$is_checkout      = is_page( edd_get_option( 'accommodation_page' ) );
+
+	if( ! $is_object_set ) {
+
+		unset( $wp_query->queried_object );
+
+	}
+
+	if( ! $is_object_id_set ) {
+
+		unset( $wp_query->queried_object_id );
+
+	}
+
+	return apply_filters( 'edd_is_checkout', $is_checkout );
+}
+
+
 /**
  * Determines if a user can checkout or not
  *

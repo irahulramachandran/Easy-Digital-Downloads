@@ -306,7 +306,7 @@ function edd_user_info_fields() {
 								</div>
 								<div class="hidden-sm hidden-md hidden-lg margin-top-10">
 									City
-									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+									<input class="form-control edd_col_4 CityName_mobile" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
 									State
@@ -316,7 +316,7 @@ function edd_user_info_fields() {
 							<div class="col-xs-12 col-sm-6 ">
 								<div class="hidden-xs margin-top-10">
 									City
-									<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+									<input class="form-control edd_col_4 CityName_web" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
 									Country
@@ -381,7 +381,7 @@ function edd_user_info_fields() {
 							</div>
 							<div class="hidden-sm hidden-md hidden-lg margin-top-10">
 								City
-								<input class="form-control edd_col_4" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
+								<input class="form-control edd_col_4 CityName_tablet" type="text" name="edd_CityName" id="edd_CityName" maxlength="200" value="<?php echo esc_attr( $customer['CityName'] ); ?>" placeholder="City" maxlength="50"/>
 							</div>
 							<div class="margin-top-10">
 								State
@@ -555,6 +555,16 @@ function edd_user_info_fields() {
 				if (e.keyCode == 32) {
 					return false;
 				}
+			});
+
+			var $inputs = $('.CityName_mobile, .CityName_web, .CityName_tablet');
+
+			$inputs.keyup(function(){
+			    $inputs.val($(this).val());
+			});
+
+			$inputs.change(function(){
+			    $inputs.val($(this).val());
 			});
 
 			var stopProgressInterval = false;

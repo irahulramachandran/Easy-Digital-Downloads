@@ -237,6 +237,15 @@ function edd_get_registered_settings() {
 						'desc' => '',
 						'type' => 'header',
 					),
+					'accommodation_page' => array(
+						'id'          => 'accommodation_page',
+						'name'        => __( 'Accommodation Page', 'easy-digital-downloads' ),
+						'desc'        => __( 'This is the Accommodation page where buyers will see the list of Accommodations and Rate plans', 'easy-digital-downloads' ),
+						'type'        => 'select',
+						'options'     => edd_get_pages(),
+						'chosen'      => true,
+						'placeholder' => __( 'Select a page', 'easy-digital-downloads' ),
+					),
 					'purchase_page' => array(
 						'id'          => 'purchase_page',
 						'name'        => __( 'Checkout Page', 'easy-digital-downloads' ),

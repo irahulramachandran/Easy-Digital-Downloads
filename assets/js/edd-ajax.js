@@ -776,8 +776,9 @@ function _bindQuantityChangeEvent(){
 			$(this).next(".edd-cart").slideToggle();
 			if($(window).width() < 768){
 				var height = $(window).height();
-				$(".edd-cart").css("max-height",(height-44-42)+"px");
-				$(".edd-cart").css("height",(height-44-42)+"px !important");
+				var headerheight = $(".mini-cart-wrapper .reservation-summary-header").height();
+				$(".edd-cart").css("max-height",(height-headerheight-20)+"px");
+				$(".edd-cart").css("height",(height-headerheight-20)+"px !important");
 			}
 			if($(this).find(".glyphicon").hasClass("glyphicon-menu-down")){
 				$(this).find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");

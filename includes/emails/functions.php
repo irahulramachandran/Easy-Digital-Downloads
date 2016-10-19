@@ -55,9 +55,10 @@ function edd_email_purchase_receipt( $payment_id, $admin_notice = true ) {
 
 	$emails->send( $to_email, $subject, $message, $attachments );
 
-	if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
-		do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
-	}
+	// if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
+	// 	error_log("Sale Notification EMAIL from edd_email_purchase_receipt");
+	// 	do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
+	// }
 }
 
 function edd_email_purchase_receipt_for_user( $payment_id, $admin_notice = true ) {
@@ -102,6 +103,7 @@ function edd_email_purchase_receipt_for_user( $payment_id, $admin_notice = true 
 	$emails->send( $to_email, $subject, $message, $attachments );
 
 	if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
+		error_log("Sale Notification EMAIL from edd_email_purchase_receipt_for_user");
 		do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
 	}
 }
