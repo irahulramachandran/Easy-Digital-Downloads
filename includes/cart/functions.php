@@ -1649,8 +1649,8 @@ function edd_booking_list_email_template_tags($payment_id){
 				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$address.'</p>';
 				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$phone.'</p>';
 				$booking_list_html .= '<p style="margin:0px auto 10px;">'.$email.'</p>';
-				$booking_list_html .= '<a href="#" style="margin:5px 0px;font-family: Helvetica, Arial, sans-serif; background-color: #820053; color: #fff;font-size: 11px; text-decoration: none;border: 10px solid #820053; margin-top:10px;">Driving Directions</a>';
-				$booking_list_html .= '<a href="#" style="margin:5px 0px;font-family: Helvetica, Arial, sans-serif; background-color: #820053; color: #fff;font-size: 11px; text-decoration: none;border: 10px solid #820053; margin-top:10px;">Parking Instructions</a>';
+				$booking_list_html .= '<a href="https://maps.google.com/?daddr=<?php echo $hotelname; ?>" target="_blank" style="margin:5px 0px;font-family: Helvetica, Arial, sans-serif; background-color: #820053; color: #fff;font-size: 11px; text-decoration: none;border: 10px solid #820053; margin-top:10px;">Driving Directions</a>';
+				//$booking_list_html .= '<a href="#" style="margin:5px 0px;font-family: Helvetica, Arial, sans-serif; background-color: #820053; color: #fff;font-size: 11px; text-decoration: none;border: 10px solid #820053; margin-top:10px;">Parking Instructions</a>';
 				$booking_list_html .= '</td>';
 				$booking_list_html .= '</tr></table>';
 				$booking_list_html .= '</td></tr></table></td></tr>';
