@@ -146,6 +146,7 @@ function edd_ajax_remove_from_cart() {
 
 		$return = array(
 			'removed'       => 1,
+			'show_occupancy_error_message' => edd_show_max_occupancy_message(),
 			'subtotal'      => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_subtotal() ) ), ENT_COMPAT, 'UTF-8' ),
 			'roomtotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ), ENT_COMPAT, 'UTF-8' ),
 			'addontotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_addon_total() ) ), ENT_COMPAT, 'UTF-8' ),
@@ -288,6 +289,7 @@ function edd_ajax_add_to_cart() {
 			$options['roomtypecode'] = $download->roomtypecode;
 			$options['roomtypename'] = $download->roomtypename;
 			$options['roomtypedescription'] = $download->roomtypenamedescription;
+			$options['maxoccupancy'] = $download->maxoccupancy;
 			$options['startdate'] = date('Y-m-d', $fromdatetime);
 			$options['enddate'] = date('Y-m-d', $todatetime);;
 			$options['noofdays'] = $noofdays;
@@ -310,6 +312,7 @@ function edd_ajax_add_to_cart() {
 		}
 
 		$return = array(
+			'show_occupancy_error_message' => edd_show_max_occupancy_message(),
 			'subtotal'      => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_subtotal() ) ), ENT_COMPAT, 'UTF-8' ),
 			'total'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_total() ) ), ENT_COMPAT, 'UTF-8' ),
 			'roomtotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ), ENT_COMPAT, 'UTF-8' ),
@@ -425,6 +428,7 @@ function edd_ajax_update_cart_item_quantity() {
 			'download_id' => $download_id,
 			'quantity'    => html_entity_decode( edd_get_cart_quantity() ),
 			'taxes'       => html_entity_decode( edd_currency_filter(edd_format_amount($cart_tax)), ENT_COMPAT, 'UTF-8' ),
+			'show_occupancy_error_message' => edd_show_max_occupancy_message(),
 			'subtotal'    => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_subtotal() ) ), ENT_COMPAT, 'UTF-8' ),
 			'roomtotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ), ENT_COMPAT, 'UTF-8' ),
 			'addontotal'         => html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_cart_addon_total() ) ), ENT_COMPAT, 'UTF-8' ),

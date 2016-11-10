@@ -1,3 +1,13 @@
+<?php 
+	$showerrormessage = edd_show_max_occupancy_message(); 
+	$className ="";
+	if(!$showerrormessage){
+		$className = "hide";
+	}
+?>
+<li class='cart_item edd_cart_occupancyerror show_occupancy_error_message col-xs-12 <?php echo $className; ?>'>
+	<div class='alert alert-danger'>Your current selection cannot accommodate all of your guests.</div>
+</li>
 <li class="cart_item edd_cart_roomtotal col-xs-12">
   <?php _e( 'Room Total', 'easy-digital-downloads' ); ?> <span class="cart-room-total pull-right"><?php echo edd_currency_filter( edd_format_amount( edd_get_cart_room_total() ) ); ?></span>
 </li>

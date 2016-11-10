@@ -11,6 +11,7 @@
 			<div class="col-xs-8 no-padding">
 				<!-- <span class="item_title">{item_title}</span></br> -->
 				<span class="item_title margin-top-5">{rateplan_item_title}</span>
+				<span class="col-xs-12 item_title margin-top-5 max-occupancy-reservation-summary">{max_occupancy}</span>
 			</div>
 			<div class="col-xs-4 no-padding">
 				<?php $remlink= '<a href="{remove_url}" data-cart-item="{cart_item_id}" data-download-id="{item_id}" data-action="edd_remove_from_cart" class="edd-remove-from-cart btnrem" data-toggle="modal" data-target="#modal-remove">YES</a>'; ?>

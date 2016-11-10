@@ -62,6 +62,12 @@ jQuery(document).ready(function ($) {
 						$('.cart_item.edd_cart_tax span').html( response.tax );
 					}
 
+					if(response.show_occupancy_error_message == "true" || response.show_occupancy_error_message == true){
+						$(".show_occupancy_error_message").removeClass("hide").show();
+					}else{
+						$(".show_occupancy_error_message").hide();
+					}
+
 					$('.cart_item.edd_total span').html( response.total );
 					$(".edd_cart_roomtotal span").html(response.roomtotal);
 					$(".edd_cart_addontotal span").html(response.addontotal);
@@ -240,11 +246,11 @@ jQuery(document).ready(function ($) {
 					$('.cart_item.edd_checkout').show();
 
 					if ($('.cart_item.empty').length) {
-						$(response.cart_item).insertBefore('.edd_cart_roomtotal:first');
+						$(response.cart_item).insertBefore('.show_occupancy_error_message:first');
 						$(".edd_cart_roomtotal,.edd_cart_addontotal").show();
 						$('.cart_item.empty').hide();
 					} else {
-						$(response.cart_item).insertBefore('.edd_cart_roomtotal:first');
+						$(response.cart_item).insertBefore('.show_occupancy_error_message:first');
 					}
 
 					// Update the totals
@@ -256,6 +262,12 @@ jQuery(document).ready(function ($) {
 					$('.edd-cart-meta.edd_total span').html( response.total );
 					$(".edd_cart_roomtotal span").html(response.roomtotal);
 					$(".edd_cart_addontotal span").html(response.addontotal);
+
+					if(response.show_occupancy_error_message == "true" || response.show_occupancy_error_message == true){
+						$(".show_occupancy_error_message").removeClass("hide").show();
+					}else{
+						$(".show_occupancy_error_message").hide();
+					}
 
 					if(response.cart_quantity != "0"){
 						$(".mini-cart-wrapper .reservation-summary-header .item-count").html( response.cart_quantity );
@@ -741,6 +753,12 @@ function _bindQuantityChangeEvent(){
 				$('.edd_cart_subtotal_amount').each(function() {
 					$(this).text(response.subtotal);
 				});
+
+				if(response.show_occupancy_error_message == "true" || response.show_occupancy_error_message == true){
+					$(".show_occupancy_error_message").removeClass("hide").show();
+				}else{
+					$(".show_occupancy_error_message").hide();
+				}
 
 				$('.edd_cart_tax_amount').each(function() {
 					// alert(response.taxes);

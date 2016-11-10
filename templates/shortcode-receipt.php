@@ -271,7 +271,11 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
 			</div>
       <div class="row margin-top-15">
 				<div class="col-xs-12 things-to-do-outer-container">
-					<span class="font-bold margin-bottom-15">Top four things to do in Wollongong</span>
+          <?php
+            $settings = get_option( "snc_theme_settings" );
+            $city = esc_html( stripslashes( $settings["snc_city"] ) );
+          ?>
+					<span class="font-bold margin-bottom-15">Top four things to do in <?php echo $city; ?></span>
 					<div class="pull-left things-to-do-inner-container">
 					<div class="fake-left"></div>
 						<div class="pull-left things-to-do-container">

@@ -81,6 +81,14 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$title  = $options['roomtypename'];
 	$downid  = $options['id'];
 	$rateplantitle = $options['name'];
+	$maxoccupancy = $options['maxoccupancy'];
+	if($maxoccupancy == 1)
+	{
+		$maxoccupancy = "Max Occupancy: 1 Adult";
+	}
+	else{
+		$maxoccupancy = "Max Occupancy: ".$maxoccupancy." Adults";
+	}
 	$imgurl = $options['imgurl'];
 	$roomprice = $options['roomprice'];
 	$roomtypecode = $options['roomtypecode'];
@@ -92,6 +100,9 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	//print_r(json_encode());
 	$inclusion = $options['inclusion'];
 	$adultoccupancy = $options['adultoccupancy'];
+	if(intval($adultoccupancy) != intval($options['maxoccupancy'])){
+		$adultoccupancy = intval($options['maxoccupancy']);
+	}
 	$download_id = $options['id'];
 	$childoccupancy = $options['childoccupancy'];
 	$availablequantity = $options['availablequantity'];
@@ -233,6 +244,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	$item = str_replace('{inclusion}', $inclusionsText, $item);
 	$item = str_replace('{download_id}', $download_id, $item);
 	$item = str_replace('{rateplan_item_title}', $rateplantitle, $item);
+	$item = str_replace('{max_occupancy}', $maxoccupancy, $item);
 	$item = str_replace('{checkin_date}', $startdate, $item);
 	$item = str_replace('{no_of_night}', $noofdays, $item);
 	$item = str_replace('{checkout_date}', $enddate, $item);
@@ -392,6 +404,37 @@ function edd_get_cart_room_total(){
 		$roomtotal = floatval($roomtotal+floatval($options['roomprice']*$item['quantity']));
 	}
 	return $roomtotal;
+}
+
+function edd_show_max_occupancy_message()
+{
+	$cart_items    = edd_get_cart_contents();
+	$total_room_occupancy = 0;
+	foreach ($cart_items as $key => $item) {
+		$id = is_array( $item ) ? $item['id'] : $item;
+		$options    = !empty( $item['options'] ) ? $item['options'] : array();
+		if(!empty($options['maxoccupancy'])){
+			$total_room_occupancy = $total_room_occupancy+(intval($options['maxoccupancy'])*intval($item['quantity']));
+		}
+	}
+
+	error_log($total_room_occupancy);
+	$adultoccupancy = get_cart_selected_occupancy();
+	error_log($adultoccupancy);
+
+	if($total_room_occupancy < $adultoccupancy){
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function get_cart_selected_occupancy()
+{
+	$adultoccupancy = intval(EDD()->session->get('occupancy'));
+	return $adultoccupancy;
 }
 
 function edd_get_cart_addon_total(){
