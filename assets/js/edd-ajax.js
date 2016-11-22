@@ -77,7 +77,7 @@ jQuery(document).ready(function ($) {
 						$("#edd_checkout_wrap").find(".col-xs-12.no-padding").first().html(edd_scripts.empty_cart_message);
 						if( edd_scripts.is_checkout == '1'){
 							$(".bar_group__bar").attr("value","0").css("width","0%");
-							window.location = site_url+'/accommodation/';
+							window.location = site_url+'/'+accommodation_page+'/';
 						}
 						// $('.edd-cart li').hide();
 						// $('.edd-cart').append('<li class="cart_item empty cart-item-row">' + edd_scripts.empty_cart_message + '</li>');
