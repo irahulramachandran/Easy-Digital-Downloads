@@ -154,7 +154,19 @@ function edd_calculate_tax( $amount = 0, $country = false, $state = false ) {
 
 function edd_ibe_calculate_tax($amount){
 	$rate = edd_get_tax_rate( $country, $state );
-	return $amount * $rate;
+	$tax  = 0.00;
+
+	if ( edd_use_taxes() ) {
+		if ( edd_prices_include_tax() ) {
+			$pre_tax = ( $amount / ( 1 + $rate ) );
+			$tax     = $amount - $pre_tax;
+		} else {
+			$tax = $amount * $rate;
+		}
+
+	}
+	
+	return $tax;
 }
 
 /**
