@@ -1602,7 +1602,7 @@ function edd_booking_list_email_template_tags($payment_id){
 		        // $booking_list_html .= '<div style="width:100%; height:140px; display:block; background-size:contain;background-image:url('.wpthumb( $imagePath, 'width=310height=207&crop=1' ).'); background-position:center; background-repeat:no-repeat;"></div>';
 		        //$booking_list_html .= '<div style="width:100%; height:140px; display:block; background-size:contain;background-image:url(https://external-sit4-1.xx.fbcdn.net/safe_image.php?d=AQCC2-XhuDSFnF9g&w=476&h=249&url=https%3A%2F%2Fd152j5tfobgaot.cloudfront.net%2Fwp-content%2Fuploads%2F2016%2F09%2Fjio.png&cfs=1&upscale=1)"></div>';
 		        $booking_list_html .= '<span class="gradient-overlay">';
-		        $booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From AUD <span class="text-bold">'.edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'price', 1))).'</span></p>';
+		        $booking_list_html .= '<p class="pull-right price" style="padding:0px 10px;">From <span class="text-bold">'.get_post_meta($post->ID, 'price', 1).'</span></p>';
 		        $booking_list_html .= '<p class="pull-left title margin-bottom-0" style="padding:0px 10px;font-size:13px;">'.$post->post_title.'</p>';
 		        $booking_list_html .= '</span>';
 		        $booking_list_html .= '</td>';

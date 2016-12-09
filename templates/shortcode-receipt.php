@@ -298,7 +298,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                 <a href="<?php echo get_post_meta($post->ID, 'siteurl', 1); ?>" target="_blank" class="display-block enhance-link">
                   <div class="pull-left no-padding things-to-do" style="background-image:url(<?php echo $imagePath; ?>)">
     								<div class="gradient-overlay">
-    									<p class="pull-right price">From <span class="text-bold"><?php echo edd_currency_filter(edd_format_amount(get_post_meta($post->ID, 'price', 1))); ?></span></p>
+    									<p class="pull-right price">From <span class="text-bold"><?php echo get_post_meta($post->ID, 'price', 1); ?></span></p>
     									<p class="pull-left title margin-bottom-0"><?php echo $post->post_title; ?></p>
     								</div>
     							</div>
