@@ -142,9 +142,9 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                   ?>
                   <div class="roomitem margin-top-10 pull-left col-xs-12 no-padding"> <!-- Loop Starts -->
           					<div class="col-xs-12 col-md-7 no-padding room-image-container">
-                      <img src="<?php echo $imgurl;?>" class="heroImg" style="width:100%;" alt="" />
-          						<div class="room-image" style="background-image:url(<?php echo $imgurl;?>)">
-          						</div>
+                      <img src="<?php echo wpthumb($imgurl, 'width=600&height=315&crop=1');?>" style="width:100%;" alt="" />
+          						<!-- <div class="room-image" style="background-image:url(<?php echo $imgurl;?>)">
+          						</div> -->
           					</div>
           					<div class="col-xs-12 col-md-5 room-details-container">
           						<div class="row no-margin">
@@ -294,6 +294,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
                         $imagePath = $image;
                     }
                 ?>
+                <div style="float:left;">
                 <img class="enhance-stay-img" src="<?php echo $imagePath; ?>" />
                 <a href="<?php echo get_post_meta($post->ID, 'siteurl', 1); ?>" target="_blank" class="display-block enhance-link">
                   <div class="pull-left no-padding things-to-do" style="background-image:url(<?php echo $imagePath; ?>)">
@@ -303,6 +304,10 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     								</div>
     							</div>
                 </a>
+                <h3 style="float: left; clear: both; width: 250px" class="thing-top">
+                From <span class="text-bold"><?php echo get_post_meta($post->ID, 'price', 1); ?></span>
+                <?php echo "<br/>". $post->post_title; ?></h3>
+              </div>
               <?php
                 endforeach;
                 wp_reset_postdata();
@@ -353,9 +358,9 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
           ?>
 				</p>
 				<p class="hotel-location-icons hotel-telephone"><?php echo $phone;?></p>
-				<p class="hotel-location-icons hotel-email"><a href="mailto:<?php echo $email;?>"><?php echo $email;?></a></p>
+				<p class="hotel-location-icons hotel-email"><a href="mailto:<?php echo $email;?>" class="printparking"><?php echo $email;?></a><span class="printpark"><?php echo $email;?></span></p>
 				<p class="pull-left margin-right-10 hotel-location-icons hotel-driving-directions"><a href="https://maps.google.com/?daddr=<?php echo $hotelname; ?>" target="_blank">Driving Directions</a></p>
-				<p class="pull-left icon-parking"><a href="#" data-toggle="modal" data-target="#parking_div">Parking Instructions</a></p>
+				<p class="pull-left icon-parking printparking"><a href="#" data-toggle="modal" data-target="#parking_div">Parking Instructions</a></p>
 			</div>
 		</div>
     <div id="parking_div" class="modal fade" role="dialog">
@@ -529,7 +534,7 @@ function initMap() {
       frameDc.document.write('</body></html>');
       frameDc.document.close();
 
-      
+
 
       $("#btnPrint").click(function () {
           // setTimeout(function () {
