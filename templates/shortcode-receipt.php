@@ -100,7 +100,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
         <h2 class="padding-left-15 mobile-header hidden-md hidden-lg margin-top-0">BOOKING CONFIRMATION ID: <?php echo edd_get_reservation($payment->ID); ?></h2>
   			<div class="col-xs-5 pull-right no-padding">
   				<div class="pull-right confirmation-actions-container">
-  					<a href="#" class="pull-left confirmation-action-btn btn-print" id="btnPrint"></a>
+  					<a href="#" class="pull-left confirmation-action-btn btn-print" active="inactive" id="btnPrint"></a>
   					<a class="pull-left confirmation-action-btn btn-download" href="<?php echo esc_url( edd_pdf_invoices()->get_pdf_invoice_url( $payment->ID ) ); ?>" ></a>
   					<a href="#" class="pull-left confirmation-action-btn btn-share"></a>
             <ul class="list-unstyled social-share-icons recipt">
@@ -500,41 +500,48 @@ function initMap() {
 </script>
 <script type="text/javascript">
   $(document).ready(function () {
+      var contents = $("#dvContents").html();
+      var frame1 = $('<iframe />');
+      frame1[0].name = "frame1";
+      // $("#frame1").width(10000);
+      // $("#frame1").height(10000);
+      // $("#frame1")[0].setAttribute("width", "1000");
+      // $('#frame1', window.parent.document).width('5000px');
+
+      frame1.css({"width": "20000px", "height": "20000px"});
+      frame1.css({"position": "absolute", "top": "-1000000px"});
+      $("body").append(frame1);
+      var frameDc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+      frameDc.document.open();
+
+      //Create a new HTML document.
+      frameDc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
+      frameDc.document.write('</head><body>');
+      //Append the external CSS file.
+      frameDc.document.write('<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/styles/bootstrap.min.css" type="text/css" media="print" />');
+      frameDc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print.css" rel="stylesheet" type="text/css"  media="print" />');
+      //frameDc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
+
+      //Append the DIV contents.
+      // frameDc.document.write($("#page-header").html())
+      frameDc.document.write(contents);
+      // alert(contents);
+      frameDc.document.write('</body></html>');
+      frameDc.document.close();
+
+      
+
       $("#btnPrint").click(function () {
-          var contents = $("#dvContents").html();
-          var frame1 = $('<iframe />');
-          frame1[0].name = "frame1";
-          // $("#frame1").width(10000);
-          // $("#frame1").height(10000);
-          // $("#frame1")[0].setAttribute("width", "1000");
-          // $('#frame1', window.parent.document).width('5000px');
-
-          frame1.css({"width": "20000px", "height": "20000px"});
-          frame1.css({"position": "absolute", "top": "-1000000px"});
-          $("body").append(frame1);
-          var frameDc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-          frameDc.document.open();
-
-          //Create a new HTML document.
-          frameDc.document.write('<html><head><title>BOOKING CONFIRMED</title>');
-          frameDc.document.write('</head><body>');
-          //Append the external CSS file.
-          frameDc.document.write('<link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/styles/bootstrap.min.css" type="text/css" media="print" />');
-          frameDc.document.write('<link href="<?php bloginfo('template_directory'); ?>/assets/styles/print_min.css" rel="stylesheet" type="text/css"  media="print" />');
-          //frameDc.document.write('<link rel="stylesheet" href="<?php //bloginfo('template_directory');  ?>/style.css" type="text/css" media="print" />');
-
-          //Append the DIV contents.
-          // frameDc.document.write($("#page-header").html())
-          frameDc.document.write(contents);
-          // alert(contents);
-          frameDc.document.write('</body></html>');
-          frameDc.document.close();
-          setTimeout(function () {
+          // setTimeout(function () {
+            if($("#btnPrint").attr("active") == "active"){
               window.frames["frame1"].focus();
               window.frames["frame1"].print();
-              frame1.remove();
-          }, 500);
+              //frame1.remove();
+            }
+          // }, 3000);
           return false;
       });
+
+      $("#btnPrint").attr("active", "active");
   });
 </script>

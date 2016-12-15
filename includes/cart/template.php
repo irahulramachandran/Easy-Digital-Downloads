@@ -133,7 +133,7 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 	    $penality = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
 	    foreach ( $terms as $term ) {
 	       //$penality .= "<li style='color:".$term_meta['color'].";'>" . $term->name . "</li>";
-						$penality .= "<span style='color:".$term_meta['color'].";'>".$term->name . "</span></br>";
+						$penality .= "<li style='color:".$term_meta['color'].";'>".$term->name . "</li></br>";
 	    }
 	    $penality .= "</ul>";
 	}
@@ -141,14 +141,14 @@ function edd_get_cart_item_template( $cart_key, $item, $ajax = false ) {
 
 		//$penality = $page->ID;
 	if($inclusion != null){
-		$inclusionsText = "<ul class='list-unstyled list-inline inclusion-list margin-top-5'>";
+		$inclusionsText = "<div class='list-unstyled list-inline inclusion-list margin-top-5'>";
 		foreach ((array)$inclusion as $key => $value) {
 			$term_meta = get_option( "taxonomy_".$value->term_id );
-			$inclusionsText .= "<li style='color:".$term_meta['color']."; padding-right:0px;'>".$value->name."</li>";
-			$inclusionsText .="<li  style='color:".$term_meta['color'].";' class='no-padding'>,</li>";
+			$inclusionsText .= "<span style='color:".$term_meta['color']."; padding-right:0px;'>".$value->name."</span>";
+			$inclusionsText .="<span style='color:".$term_meta['color'].";' class='no-padding'>, </span>";
 		}
 
-		$inclusionsText .="</ul>";
+		$inclusionsText .="</div>";
 	}
 	else{
 		$inclusionsText = "";
