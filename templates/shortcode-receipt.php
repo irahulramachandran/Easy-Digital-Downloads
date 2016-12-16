@@ -304,7 +304,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     								</div>
     							</div>
                 </a>
-                <h3 style="float: left; clear: both; width: 250px; font-size:16px; font-weight: normal" class="thing-top">
+                <h3 style="float: left; clear: both; width: 250px; font-size:16px; margin-top:10px; font-weight: normal" class="thing-top">
                 From <span class="text-bold"><?php echo get_post_meta($post->ID, 'price', 1); ?></span>
                 <?php echo "<br/>". $post->post_title; ?></h3>
               </div>

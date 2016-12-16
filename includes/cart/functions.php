@@ -1433,21 +1433,30 @@ function edd_booking_list_email_template_tags($payment_id){
 				$todatetime = date('d M Y', $todatetime);
 
 				//$imgurl = "http://ec2-52-40-170-168.us-west-2.compute.amazonaws.com:3000/wordpress/wp-content/uploads/cache/2016/04/3363866371/264990945.jpg";
-
+				
 				$booking_list_html .= '<tr class="block" style="float: left;>';
 					$booking_list_html .= '<td style="width:800px; font-family: Helvetica, Arial, sans-serif;">';
 						$booking_list_html .= '<table style="width:800px;float:left;">';
-
+						
 						$booking_list_html .= '<tr>';
 							//Image
-							$booking_list_html .= '<td class="room-image-container" valign="top" style="position:relative;width:400px;">';
-								$booking_list_html .= '<img class="room-image" src="'.wpthumb( $imgurl, 'width=400&height=281&crop=1' ).'" style="height:281px; width:400px"/>';
-							$booking_list_html .= '</td>';
+							if($quantity != "")
+							{
+								$booking_list_html .= '<td class="room-image-container" valign="top" style="position:relative;width:400px;">';
+									$booking_list_html .= '<img class="room-image" src="'.wpthumb( $imgurl, 'width=400&height=281&crop=1' ).'" style="height:281px; width:400px"/>';
+								$booking_list_html .= '</td>';
+							}
+							else{
+								$booking_list_html .= '<td class="room-image-container" valign="top" style="position:relative;width:400px;">';
+								$booking_list_html .= '</td>';
+							}
 							//Room Data
 							$booking_list_html .= '<td class="room-details-container" style="padding:0px; padding-left:15px; width:380px" valign="top">';
 
 							$booking_list_html .= '<table cellspacing="0" cellpadding="0" border="0" width="100%">';
 
+							if($quantity != "")
+							{
 								//Room Data - Title
 								$booking_list_html .= '<tr class="block room-name-plan" style="float: left;width:100%">';
 									$booking_list_html .= '<td class="pull-left" style="width:170px;float:left;">';
@@ -1464,7 +1473,7 @@ function edd_booking_list_email_template_tags($payment_id){
 											$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><p style="font-size:12px;margin:0px;text-align:right">'.$noofdays.'</p></font>';
 									$booking_list_html .= '</td>';
 								$booking_list_html .= '</tr>';
-
+						
 								//Room Data - Date
 								$booking_list_html .= '<tr class="block margin-top-50 arrvial-departure-container" style="float: left;width:100%">';
 									$booking_list_html .= '<td class="pull-left" style="width:170px;float:left;">';
@@ -1476,7 +1485,7 @@ function edd_booking_list_email_template_tags($payment_id){
 										$booking_list_html .= '<font face="\'Open Sans\',Helvetica,Arial,sans-serif"><p class="arrival-date" style="margin:5px 0px 10px;">'.$todatetime.'</p></font>';
 									$booking_list_html .= '</td>';
 								$booking_list_html .= '</tr>';
-
+						
 								//Room Data - Room Total
 								$booking_list_html .= '<tr class="row block no-margin margin-top-30 padding-bottom-10 border-bottom-light room-total" style="float: left;width:100%">';
 									$booking_list_html .= '<td class="pull-left font-bold" style="font-weight:bold; width:170px;float:left;margin-top:50px;">Room Total</td>';
@@ -1490,7 +1499,7 @@ function edd_booking_list_email_template_tags($payment_id){
 											$booking_list_html .= '<td class="pull-right font-bold" style="font-weight:bold;width:160px;float:left;text-align:right;margin-top:10px">'.edd_currency_filter(edd_format_amount($addonTotal*$quantity)).'</td>';
 										$booking_list_html .= '</tr>';
 								}
-
+							}
 								$i++;
 								if($i == $count)
 								{

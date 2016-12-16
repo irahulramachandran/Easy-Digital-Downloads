@@ -127,15 +127,18 @@ function edd_email_booking_modified_for_user( $payment_id, $admin_notice = true 
 
 	error_log("TOEMAIL:".$to_email);
 
-	$subject      = edd_get_option( 'purchase_subject', __( 'Booking Modified', 'easy-digital-downloads' ) );
+	$subject      = 'Booking Modified';
 	$subject      = apply_filters( 'edd_purchase_subject', wp_strip_all_tags( $subject ), $payment_id );
-	$subject      = edd_do_email_tags( $subject, $payment_id );
+	//$subject      = edd_do_email_tags( $subject, $payment_id );
 
-	$heading      = edd_get_option( 'purchase_heading', __( 'Booking Modified', 'easy-digital-downloads' ) );
-	$heading      = apply_filters( 'edd_purchase_heading', $heading, $payment_id, $payment_data );
+	$heading      = 'Booking Modified';
+	//$heading      = apply_filters( 'edd_purchase_heading', $heading, $payment_id, $payment_data );
 
 	$attachments  = apply_filters( 'edd_receipt_attachments', array(), $payment_id, $payment_data );
 	$message      = edd_do_email_tags( edd_get_email_body_content( $payment_id, $payment_data ), $payment_id );
+
+	// print_r($message) ;
+	// die();
 
 	$emails = EDD()->emails;
 
@@ -150,7 +153,7 @@ function edd_email_booking_modified_for_user( $payment_id, $admin_notice = true 
 	$emails->send( $to_email, $subject, $message, $attachments );
 
 	if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
-		error_log("Sale Notification EMAIL from edd_email_purchase_receipt_for_user");
+		//error_log("Sale Notification EMAIL from edd_email_purchase_receipt_for_user");
 		do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
 	}
 }

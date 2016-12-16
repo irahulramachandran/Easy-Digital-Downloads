@@ -722,7 +722,7 @@ function get_booking_message($bookingmessage, $payment, $isEmail = false){
 		$date = $startdate." to ".$enddate;
 	}
 
-	$bookingmessage = str_replace("{name}",$name,$bookingmessage);
+	$bookingmessage = str_replace("{name}",$guestname,$bookingmessage);
 	$bookingmessage = str_replace("{guestname}",$guestname,$bookingmessage);
 	if($isEmail){
 		$bookingmessage = str_replace("{email}","<span class='modifiedemail' data-email='".$useremail."'>".$useremail."</span>",$bookingmessage);
