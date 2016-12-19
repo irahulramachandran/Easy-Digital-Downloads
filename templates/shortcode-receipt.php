@@ -331,7 +331,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
       $latitude = esc_html( stripslashes( $settings["snc_lat"] ) );
       $longitude = esc_html( stripslashes( $settings["snc_long"] ) );
     ?>
-    <div class="row margin-top-15 location-details">
+    <div class="row location-details">
 			<div class="col-xs-12 col-md-7">
 				<span class="font-bold margin-bottom-15">Location Details</span>
         <?php
@@ -344,7 +344,7 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
         ?>
         <div id="confimationmap"></div>
 			</div>
-			<div class="col-xs-12 col-md-5 margin-top-30">
+			<div class="col-xs-12 col-md-5 margin-top-30 location-right">
 				<p class="hotel-location-icons hotel-address">
           <?php
           echo $hotelname.',';
