@@ -154,7 +154,7 @@ function edd_email_booking_modified_for_user( $payment_id, $admin_notice = true 
 
 	if ( $admin_notice && ! edd_admin_notices_disabled( $payment_id ) ) {
 		//error_log("Sale Notification EMAIL from edd_email_purchase_receipt_for_user");
-		do_action( 'edd_admin_sale_notice', $payment_id, $payment_data );
+		do_action( 'edd_admin_modified_notice', $payment_id, $payment_data );
 	}
 }
 
@@ -323,6 +323,48 @@ function edd_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 
 }
 add_action( 'edd_admin_sale_notice', 'edd_admin_email_notice', 10, 2 );
+
+
+function edd_admin_modified_email_notice( $payment_id = 0, $payment_data = array() ) {
+
+	$payment_id = absint( $payment_id );
+
+	if( empty( $payment_id ) ) {
+		return;
+	}
+
+	if( ! edd_get_payment_by( 'id', $payment_id ) ) {
+		return;
+	}
+
+	$from_name   = edd_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+	$from_name   = apply_filters( 'edd_purchase_from_name', $from_name, $payment_id, $payment_data );
+
+	$from_email  = edd_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+	$from_email  = apply_filters( 'edd_admin_sale_from_address', $from_email, $payment_id, $payment_data );
+
+	$subject     = "Booking Modified";
+
+	$headers     = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
+	$headers    .= "Reply-To: ". $from_email . "\r\n";
+	//$headers  .= "MIME-Version: 1.0\r\n";
+	$headers    .= "Content-Type: text/html; charset=utf-8\r\n";
+	$headers     = apply_filters( 'edd_admin_sale_notification_headers', $headers, $payment_id, $payment_data );
+
+	$attachments = apply_filters( 'edd_admin_sale_notification_attachments', array(), $payment_id, $payment_data );
+
+	$message     = edd_get_sale_notification_body_content( $payment_id, $payment_data );
+
+	$emails = EDD()->emails;
+	$emails->__set( 'from_name', $from_name );
+	$emails->__set( 'from_email', $from_email );
+	$emails->__set( 'headers', $headers );
+	$emails->__set( 'heading', __( 'New Sale!', 'easy-digital-downloads' ) );
+
+	$emails->send( edd_get_admin_notice_emails(), $subject, $message, $attachments );
+
+}
+add_action( 'edd_admin_modified_notice', 'edd_admin_modified_email_notice', 10, 2 );
 
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be
