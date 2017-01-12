@@ -277,11 +277,11 @@ function edd_user_info_fields() {
 						<div class="col-xs-12 no-padding">
 							<div class="col-xs-12 col-sm-6">
 								<div class="margin-top-10">
-									First Name
+									First Name*
 									<input class="form-control edd_col_3" type="text" name="edd_first" id="edd_first" maxlength="50" value="<?php echo esc_attr( $customer['first_name'] ); ?>" placeholder="First Name" maxlength="50"/>
 								</div>
 								<div class="margin-top-10">
-									Last Name
+									Last Name*
 									<input class="form-control edd_col_3" type="text" name="edd_last" id="edd_last" maxlength="50" value="<?php echo esc_attr( $customer['last_name'] ); ?>" placeholder="Last Name" maxlength="50"/>
 								</div>
 							</div>
@@ -427,10 +427,10 @@ function edd_user_info_fields() {
 								Expiry Date*
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='MM'   autocomplete="off" type="text" name="card_expiry_month" maxlength="2" id="card_expiry_month"/>
+									<input class="form-control edd_expiry" placeholder='MM' autocomplete="off" type="text" name="card_expiry_month" maxlength="2" id="card_expiry_month"/>
 								</div>
 								<div class="col-xs-6">
-									<input class="form-control edd_expiry" placeholder='YYYY'   autocomplete="off" type="text" name="card_expiry_year" maxlength="4" id="card_expiry_year"/>
+									<input class="form-control edd_expiry" placeholder='YYYY' autocomplete="off" type="text" name="card_expiry_year" maxlength="4" id="card_expiry_year"/>
 								</div>
 							</div>
 
@@ -578,6 +578,18 @@ function edd_user_info_fields() {
 							return false;
 					}
 
+					if ($("#edd_first").val() == "") {
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
+					if ($("#edd_last").val() == "") {
+						$(".bar_group__bar").attr("value","50").css("width","50%");
+						$(".bar_group .personal-info").removeClass("active");
+						return false;
+					}
+
 					if ($("#card_name").val() == "") {
 						$(".bar_group__bar").attr("value","50").css("width","50%");
 						$(".bar_group .personal-info").removeClass("active");
@@ -660,24 +672,24 @@ function edd_user_info_fields() {
 			$("#edd_cvc").mask("0000");
 
 			$('#card_number').validateCreditCard(function(result) {
-					console.log(result);
-					if(result.card_type == null)
-					{
-							$('#card_number').removeClass().addClass("form-control");
-					}
-					else
-					{
-							$('#card_number').addClass(result.card_type.name);
-					}
+				console.log(result);
+				if(result.card_type == null)
+				{
+						$('#card_number').removeClass().addClass("form-control");
+				}
+				else
+				{
+						$('#card_number').addClass(result.card_type.name);
+				}
 
-					if(!result.valid)
-					{
-							$('#card_number').removeClass("valid");
-					}
-					else
-					{
-							$('#card_number').addClass("valid");
-					}
+				if(!result.valid)
+				{
+						$('#card_number').removeClass("valid");
+				}
+				else
+				{
+						$('#card_number').addClass("valid");
+				}
 			});
 		});
 	</script>

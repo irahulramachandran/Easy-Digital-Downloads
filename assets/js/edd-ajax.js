@@ -475,7 +475,32 @@ jQuery(document).ready(function ($) {
 
 	function valid(){
 		errors = [];
+		
+		if($.trim($("#edd_first").val()) == "")
+		{
+			var error = {};
+			error.id = "#edd_first";
+			error.message = "First name cannot be empty";
+			errors.push(error);
+			$("#edd_first").parent(".margin-top-10").addClass("has-error");
+		}
+		else{
+			$("#edd_first").parent(".margin-top-10").removeClass("has-error");
+		}
 
+		if($.trim($("#edd_last").val()) == "")
+		{
+			var error = {};
+			error.id = "#edd_last";
+			error.message = "Last name cannot be empty";
+			errors.push(error);
+			$("#edd_last").parent(".margin-top-10").addClass("has-error");
+		}
+		else{
+			$("#edd_last").parent(".margin-top-10").removeClass("has-error");
+		}
+
+		var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 		if($("#edd_email").val() == ""){
 			var error = {};
 			error.id = "#edd_email";
@@ -483,15 +508,13 @@ jQuery(document).ready(function ($) {
 			errors.push(error);
 			$("#edd_email").parent(".margin-top-10").addClass("has-error");
 		}
-
-		var Email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if ($("#edd_email").val()!= "" && Email.test($('#edd_email').val()) == false) {
-        var error = {};
-        error.id = "#edd_email";
-        error.message = "Email is not valid.";
-        errors.push(error);
-				$("#edd_email").parent(".margin-top-10").addClass("has-error");
-    }
+	    else if (Email.test($('#edd_email').val()) == false) {
+	        var error = {};
+	        error.id = "#edd_email";
+	        error.message = "Email is not valid.";
+	        errors.push(error);
+			$("#edd_email").parent(".margin-top-10").addClass("has-error");
+	    }
 		else{
 			$("#edd_email").parent(".margin-top-10").removeClass("has-error");
 		}
@@ -550,7 +573,7 @@ jQuery(document).ready(function ($) {
 			}
 		}
 
-		if($("#card_expiry_year").val() == ""){
+		if($("#card_expiry_year").val() == "" || $.trim($("#card_expiry_year").val()).length != 4){
 			var error = {};
 			error.id = "#card_expiry_year";
 			error.message = "Expiry Year field cannot be empty";
@@ -577,8 +600,11 @@ jQuery(document).ready(function ($) {
 			//-- Card expiration must be future month
 			var currentYear = d.getFullYear();
 			var currentMonth = d.getMonth() + 1;
-			if (currentMonth < 10) {
+			if (Number(currentMonth) < 10) {
 				currentMonth = "0" + currentMonth;
+			}
+			if (Number(exp_mon) < 10) {
+				exp_mon = "0" + exp_mon;
 			}
 			var curYrMn = currentYear.toString() + currentMonth.toString();
 			var expYrMn = exp_year + exp_mon;
