@@ -91,6 +91,9 @@ $imageURL = $cart[0]['item_number']['options']['imgurl'];
     //the_content();
     //echo get_stylesheet_directory();
     // include( get_stylesheet_directory() . '/templates/template-navbar.php');
+	session_start(); 
+	$_SESSION['totval']=edd_payment_amount($payment->ID);
+	 $total_amt = edd_payment_amount($payment->ID);
   ?>
   <h2 class="pageheader-print">BOOKING CONFIRMATION <?php echo edd_get_reservation($payment->ID); ?></h2>
   <div class="container main-container">
